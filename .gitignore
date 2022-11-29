@@ -1,0 +1,10 @@
+
+*.d
+*.o
+*.swp
+.DS_Store
+*.cmake
+*.xml
+
+armgcc
+iar

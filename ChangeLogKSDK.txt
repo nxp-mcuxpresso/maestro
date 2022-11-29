@@ -1,0 +1,26 @@
+/*!
+@page middleware_log Middleware Change Log
+
+@section maestro Maestro Audio Framework for MCUXpresso SDK
+  The currently supported version is 1.5.0
+  - 1.5.0
+    - Enabled switching from 2 to 4 channel output during processing
+    - PadReturn type has been replaced by FlowReturn
+    - Support of AAC, WAV, FLAC decoders
+    - Renamed eap element to audio_proc element
+    - Added audio_proc to VIT pipeline to support VoiceSeeker
+    - Minor bug fixes
+  - 1.4.0
+    - Use Opusfile lib for Ogg Opus decoder
+    - Refactor code, fix issues found in unit tests
+    - Various bug fixes
+  - 1.3.0
+    - Make Maestro framework open source (except mp3 and wav decoder)
+    - Refactor code, remove unused parts, add comments
+  - 1.2.0
+    - Unified buffering in audio source, audio sink
+    - Various improvements and bug fixes
+  - 1.0_rev0
+    - initial version of framework with support for Cortex-M7 platforms
+
+*/

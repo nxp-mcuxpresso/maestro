@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ksdk:manifest xmlns:ksdk="http://nxp.com/ksdk/2.0/ksdk_manifest_v3.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="SDK_2.x_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_10" name="Maestro Audio Framework for MCU" brief="Maestro Audio Framework library for MCU" format_version="3.10" api_version="2.0.0" xsi:schemaLocation="http://nxp.com/ksdk/2.0/ksdk_manifest_v3.0.xsd http://nxp.com/mcuxpresso/sdk/sdk_manifest_v3.10.xsd">
-  <!--Timestamp (UTC): 2023-01-10 16:34:31.740995-->
-  <!--This manifest is generated based on sdk repo commit: 11a5f6af5190bfe018a89b4d02c239713dc4cfa6-->
+  <!--Timestamp (UTC): 2023-03-27 10:46:25.506711-->
+  <!--This manifest is generated based on sdk repo commit: 7a3cf97dd3582e3ee8a98ede814ff1f2a45ea519-->
   <externalDefinitions>
     <definition extID="MIMXRT1062xxxxA"/>
-    <definition extID="MIMXRT1062xxxxB"/>
     <definition extID="core0_MIMXRT1062xxxxA"/>
-    <definition extID="core0_MIMXRT1062xxxxB"/>
     <definition extID="armgcc"/>
     <definition extID="mcuxpresso"/>
   </externalDefinitions>
   <ksdk id="MCUXpressoSDK2130_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_10" name="MCUXpressoSDK2130_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_10" version="2.13.0"/>
   <components>
-    <component id="middleware.maestro_framework.MIMXRT1062" name="maestro_framework" brief="MCU Maestro Audio Framework" version="1.5.0" full_name="Maestro Audio Framework Middleware" devices="MIMXRT1062xxxxA MIMXRT1062xxxxB" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
+    <component id="middleware.maestro_framework.MIMXRT1062" name="maestro_framework" brief="MCU Maestro Audio Framework" version="1.5.0" full_name="Maestro Audio Framework Middleware" devices="MIMXRT1062xxxxA" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
       <dependencies>
         <all>
           <component_dependency value="middleware.maestro_framework.doc.MIMXRT1062"/>
@@ -33,16 +31,16 @@
       <source relative_path="./config" project_relative_path="config" type="c_include">
         <files mask="audio_cfg.h"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA core0_MIMXRT1062xxxxB">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA">
         <files mask="libmp3.a"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA core0_MIMXRT1062xxxxB">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA">
         <files mask="libwav.a"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA core0_MIMXRT1062xxxxB">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA">
         <files mask="libaac.a"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA core0_MIMXRT1062xxxxB">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm7f/armgcc/release" project_relative_path="libs/cm7f/armgcc/release" type="lib" device_cores="core0_MIMXRT1062xxxxA">
         <files mask="libflac.a"/>
       </source>
       <source exclude="true" relative_path="./mcu-audio/ogg" project_relative_path="mcu-audio/ogg" type="other">
@@ -62,7 +60,7 @@
         <include_path relative_path="./inc" project_relative_path="inc" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.doc.MIMXRT1062" name="maestro_framework" brief="MCU Maestro Audio Framework Doc" version="1.5.0" full_name="Maestro Audio Framework Middleware Doc" devices="MIMXRT1062xxxxA MIMXRT1062xxxxB" category="Audio/Maestro Audio Framework" user_visible="false" type="middleware" package_base_path=".././" project_base_path="maestro">
+    <component id="middleware.maestro_framework.doc.MIMXRT1062" name="maestro_framework" brief="MCU Maestro Audio Framework Doc" version="1.5.0" full_name="Maestro Audio Framework Middleware Doc" devices="MIMXRT1062xxxxA" category="Audio/Maestro Audio Framework" user_visible="false" type="middleware" package_base_path=".././" project_base_path="maestro">
       <source exclude="true" relative_path="./docs" project_relative_path="docs" type="doc">
         <files mask="index.html"/>
       </source>
@@ -825,7 +823,7 @@
         <files mask="middleware_maestro_framework_doc_MIMXRT1062.cmake" hidden="true"/>
       </source>
     </component>
-    <component id="middleware.maestro_framework.ogg.MIMXRT1062" name="maestro_framework_ogg" brief="MCU Maestro Audio Framework Ogg" version="1.0.0" full_name="Maestro Audio Framework Ogg" devices="MIMXRT1062xxxxA MIMXRT1062xxxxB" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/ogg" project_base_path="maestro/ogg">
+    <component id="middleware.maestro_framework.ogg.MIMXRT1062" name="maestro_framework_ogg" brief="MCU Maestro Audio Framework Ogg" version="1.0.0" full_name="Maestro Audio Framework Ogg" devices="MIMXRT1062xxxxA" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/ogg" project_base_path="maestro/ogg">
       <source relative_path="../../include/ogg" project_relative_path="include/ogg" type="c_include">
         <files mask="memory.h"/>
         <files mask="ogg.h"/>
@@ -846,7 +844,7 @@
         <include_path relative_path="../../src" project_relative_path="src" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.opus.MIMXRT1062" name="maestro_framework_opus" brief="MCU Maestro Audio Framework Opus" version="1.0.0" full_name="Maestro Audio Framework Opus" devices="MIMXRT1062xxxxA MIMXRT1062xxxxB" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/opus" project_base_path="maestro/opus">
+    <component id="middleware.maestro_framework.opus.MIMXRT1062" name="maestro_framework_opus" brief="MCU Maestro Audio Framework Opus" version="1.0.0" full_name="Maestro Audio Framework Opus" devices="MIMXRT1062xxxxA" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/opus" project_base_path="maestro/opus">
       <source relative_path="../../celt" project_relative_path="celt" type="src">
         <files mask="bands.c"/>
         <files mask="celt.c"/>
@@ -1069,7 +1067,7 @@
         <include_path relative_path="../../src" project_relative_path="src" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.opusfile.MIMXRT1062" name="maestro_framework_opusfile" brief="MCU Maestro Audio Framework Opusfile" version="1.0.0" full_name="Maestro Audio Framework Opusfile" devices="MIMXRT1062xxxxA MIMXRT1062xxxxB" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/opusfile" project_base_path="maestro/opusfile">
+    <component id="middleware.maestro_framework.opusfile.MIMXRT1062" name="maestro_framework_opusfile" brief="MCU Maestro Audio Framework Opusfile" version="1.0.0" full_name="Maestro Audio Framework Opusfile" devices="MIMXRT1062xxxxA" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/opusfile" project_base_path="maestro/opusfile">
       <source relative_path="../../src" project_relative_path="src" type="src">
         <files mask="info.c"/>
         <files mask="internal.c"/>
@@ -1090,7 +1088,7 @@
         <include_path relative_path="../../src" project_relative_path="src" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.streamer.MIMXRT1062" name="maestro_framework_streamer_core" brief="MCU Maestro Audio Framework Streamer Core" version="1.5.0" full_name="Maestro Audio Framework Streamer Core" devices="MIMXRT1062xxxxA MIMXRT1062xxxxB" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././streamer" project_base_path="maestro/streamer">
+    <component id="middleware.maestro_framework.streamer.MIMXRT1062" name="maestro_framework_streamer_core" brief="MCU Maestro Audio Framework Streamer Core" version="1.5.0" full_name="Maestro Audio Framework Streamer Core" devices="MIMXRT1062xxxxA" category="Audio/Maestro Audio Framework" user_visible="true" type="middleware" package_base_path=".././streamer" project_base_path="maestro/streamer">
       <source relative_path="../cci/include" project_relative_path="cci/include" type="c_include">
         <files mask="cci_metadata.h"/>
         <files mask="codec_interface.h"/>

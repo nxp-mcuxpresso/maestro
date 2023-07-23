@@ -2,7 +2,11 @@
 @page middleware_log Middleware Change Log
 
 @section maestro Maestro Audio Framework for MCUXpresso SDK
-  The currently supported version is 1.5.0
+  The currently supported version is 1.6.0
+  - 1.6.0
+    - Up to 2 parallel pipelines supported
+    - Synchronous Sample Rate Converter support Added
+    - Various improvements and bug fixes
   - 1.5.0
     - Enabled switching from 2 to 4 channel output during processing
     - PadReturn type has been replaced by FlowReturn

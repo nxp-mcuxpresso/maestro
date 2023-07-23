@@ -1,0 +1,5371 @@
+---
+middleware.maestro_framework.opus:
+  section-type: component
+  contents:
+    repo_base_path: middleware/maestro/mcu-audio/opus
+    project_base_path: maestro/opus
+    cc-include:
+    - repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+    - repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+    - repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+    - repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+    - repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+    files:
+    - source: middleware/maestro/mcu-audio/opus/celt/bands.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/celt.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/celt_decoder.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/celt_encoder.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/celt_lpc.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/cwrs.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/entcode.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/entdec.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/entenc.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/kiss_fft.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/laplace.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/mathops.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/mdct.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/modes.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/pitch.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/quant_bands.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/rate.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/vq.c
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/celt/_kiss_fft_guts.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/arch.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/bands.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/celt.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/celt_lpc.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/cpu_support.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/cwrs.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/ecintrin.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/entcode.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/entdec.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/entenc.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/fixed_c5x.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/fixed_c6x.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/fixed_debug.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/fixed_generic.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/float_cast.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/kiss_fft.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/laplace.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/mathops.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/mdct.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/mfrngcod.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/modes.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/os_support.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/pitch.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/quant_bands.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/rate.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/stack_alloc.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/static_modes_fixed.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/static_modes_float.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/celt/vq.h
+      repo_relative_path: celt
+      project_relative_path: celt
+      package_relative_path: celt
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/config.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus_cci.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus_cci_raw.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus_custom.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus_defines.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus_multistream.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus_projection.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/opus_types.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/include/test_opus_common.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/A2NLSF.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/CNG.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/HP_variable_cutoff.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/LPC_analysis_filter.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/LPC_fit.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/LPC_inv_pred_gain.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/LP_variable_cutoff.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF2A.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF_VQ.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF_VQ_weights_laroia.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF_decode.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF_del_dec_quant.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF_encode.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF_stabilize.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NLSF_unpack.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NSQ.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/NSQ_del_dec.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/PLC.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/VAD.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/VQ_WMat_EC.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/ana_filt_bank_1.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/biquad_alt.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/bwexpander.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/bwexpander_32.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/check_control_input.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/code_signs.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/control_SNR.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/control_audio_bandwidth.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/control_codec.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/debug.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/dec_API.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/decode_core.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/decode_frame.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/decode_indices.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/decode_parameters.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/decode_pitch.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/decode_pulses.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/decoder_set_fs.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/enc_API.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/encode_indices.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/encode_pulses.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/gain_quant.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/init_decoder.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/init_encoder.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/inner_prod_aligned.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/interpolate.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/lin2log.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/log2lin.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/pitch_est_tables.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/process_NLSFs.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/quant_LTP_gains.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_down2.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_down2_3.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_private_AR2.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_private_IIR_FIR.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_private_down_FIR.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_private_up2_HQ.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_rom.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/shell_coder.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/sigm_Q15.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/sort.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/stereo_LR_to_MS.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/stereo_MS_to_LR.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/stereo_decode_pred.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/stereo_encode_pred.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/stereo_find_predictor.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/stereo_quant_pred.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/sum_sqr_shift.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/table_LSF_cos.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/tables_LTP.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/tables_NLSF_CB_NB_MB.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/tables_NLSF_CB_WB.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/tables_gain.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/tables_other.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/tables_pitch_lag.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/tables_pulses_per_block.c
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/LTP_analysis_filter_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/LTP_scale_ctrl_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/apply_sine_window_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/autocorr_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/burg_modified_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/corrMatrix_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/encode_frame_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/find_LPC_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/find_LTP_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/find_pitch_lags_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/find_pred_coefs_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/k2a_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/k2a_Q16_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/noise_shape_analysis_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/pitch_analysis_core_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/process_gains_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/regularize_correlations_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/residual_energy16_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/residual_energy_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/schur64_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/schur_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/vector_ops_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/warped_autocorrelation_FIX.c
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/silk/API.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/Inlines.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/MacroCount.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/MacroDebug.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/NSQ.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/PLC.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/SigProc_FIX.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/control.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/debug.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/define.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/errors.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/macros.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/main.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/pitch_est_defines.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_private.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_rom.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/resampler_structs.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/structs.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/tables.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/tuning_parameters.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/typedef.h
+      repo_relative_path: silk
+      project_relative_path: silk
+      package_relative_path: silk
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/main_FIX.h
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/silk/fixed/structs_FIX.h
+      repo_relative_path: silk/fixed
+      project_relative_path: silk/fixed
+      package_relative_path: silk/fixed
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/src/opus.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/opus_cci.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/opus_cci_raw.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/opus_decoder.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/opus_encoder.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/opus_multistream.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/opus_multistream_decoder.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/opus_multistream_encoder.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/repacketizer.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opus/src/analysis.h
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/src/mlp.h
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/src/opus_private.h
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opus/COPYING
+      exclude: true
+      hidden: true
+      repo_relative_path: "./"
+      project_relative_path: "./"
+      package_relative_path: "./"
+      type: other
+    - source: middleware/maestro/mcu-audio/opus/middleware_maestro_framework_opus.cmake
+      type: workspace
+      toolchains: armgcc
+      hidden: true
+    configuration:
+      cc-define:
+        HAVE_CONFIG_H: 
+    package_base_path: middleware/maestro/mcu-audio/opus
+  belong_to: set.middleware.maestro_framework
+  section_info:
+    description: MCU Maestro Audio Framework Opus
+    version: 1.0.0
+    type: middleware
+    user_visible: always
+    full_name: Maestro Audio Framework Opus
+    taxonomy:
+      csub: opus
+      cclass: Audio
+      cgroup: Framework
+    display_name: maestro_framework_opus
+    vendor: NXP
+  meta-name: middleware.maestro_framework.opus
+  cmake_module_name: middleware_maestro_framework_opus
+middleware.maestro_framework.opusfile:
+  section-type: component
+  contents:
+    repo_base_path: middleware/maestro/mcu-audio/opusfile
+    project_base_path: maestro/opusfile
+    cc-include:
+    - repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+    - repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+    files:
+    - source: middleware/maestro/mcu-audio/opusfile/src/info.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opusfile/src/internal.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opusfile/src/opusfile.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opusfile/src/stream.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/opusfile/src/internal.h
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opusfile/include/opusfile.h
+      repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+      type: c_include
+    - source: middleware/maestro/mcu-audio/opusfile/COPYING
+      exclude: true
+      hidden: true
+      repo_relative_path: "./"
+      project_relative_path: "./"
+      package_relative_path: "./"
+      type: other
+    - source: middleware/maestro/mcu-audio/opusfile/middleware_maestro_framework_opusfile.cmake
+      type: workspace
+      toolchains: armgcc
+      hidden: true
+    configuration:
+      cc-define:
+        HAVE_CONFIG_H: 
+    package_base_path: middleware/maestro/mcu-audio/opusfile
+  belong_to: set.middleware.maestro_framework
+  section_info:
+    description: MCU Maestro Audio Framework Opusfile
+    version: 1.0.0
+    type: middleware
+    user_visible: always
+    full_name: Maestro Audio Framework Opusfile
+    taxonomy:
+      csub: opusfile
+      cclass: Audio
+      cgroup: Framework
+    display_name: maestro_framework_opusfile
+    vendor: NXP
+  meta-name: middleware.maestro_framework.opusfile
+  cmake_module_name: middleware_maestro_framework_opusfile
+middleware.maestro_framework.ogg:
+  section-type: component
+  contents:
+    repo_base_path: middleware/maestro/mcu-audio/ogg
+    project_base_path: maestro/ogg
+    cc-include:
+    - repo_relative_path: include
+      project_relative_path: include
+      package_relative_path: include
+    - repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+    files:
+    - source: middleware/maestro/mcu-audio/ogg/include/ogg/memory.h
+      repo_relative_path: include/ogg
+      project_relative_path: include/ogg
+      package_relative_path: include/ogg
+      type: c_include
+    - source: middleware/maestro/mcu-audio/ogg/include/ogg/ogg.h
+      repo_relative_path: include/ogg
+      project_relative_path: include/ogg
+      package_relative_path: include/ogg
+      type: c_include
+    - source: middleware/maestro/mcu-audio/ogg/include/ogg/os_types.h
+      repo_relative_path: include/ogg
+      project_relative_path: include/ogg
+      package_relative_path: include/ogg
+      type: c_include
+    - source: middleware/maestro/mcu-audio/ogg/src/framing.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/ogg/src/memory.c
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: src
+    - source: middleware/maestro/mcu-audio/ogg/src/crctable.h
+      repo_relative_path: src
+      project_relative_path: src
+      package_relative_path: src
+      type: c_include
+    - source: middleware/maestro/mcu-audio/ogg/COPYING
+      exclude: true
+      hidden: true
+      repo_relative_path: "./"
+      project_relative_path: "./"
+      package_relative_path: "./"
+      type: other
+    - source: middleware/maestro/mcu-audio/ogg/middleware_maestro_framework_ogg.cmake
+      type: workspace
+      toolchains: armgcc
+      hidden: true
+    configuration:
+      cc-define:
+        HAVE_CONFIG_H: 
+    package_base_path: middleware/maestro/mcu-audio/ogg
+  belong_to: set.middleware.maestro_framework
+  section_info:
+    description: MCU Maestro Audio Framework Ogg
+    version: 1.0.0
+    type: middleware
+    user_visible: always
+    full_name: Maestro Audio Framework Ogg
+    taxonomy:
+      csub: ogg
+      cclass: Audio
+      cgroup: Framework
+    display_name: maestro_framework_ogg
+    vendor: NXP
+  meta-name: middleware.maestro_framework.ogg
+  cmake_module_name: middleware_maestro_framework_ogg
+middleware.maestro_framework.doc:
+  section-type: component
+  contents:
+    repo_base_path: middleware/maestro
+    project_base_path: maestro
+    files:
+    - source: middleware/maestro/docs/index.html
+      exclude: true
+      type: doc
+      repo_relative_path: docs
+      project_relative_path: docs
+      package_relative_path: docs
+    - source: middleware/maestro/docs/src/LVC__Types_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/LVC__Types_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/aacdec_start.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/annotated.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/annotated_dup.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__proc_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__proc_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__proc_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__proc_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink__pcmrtos_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink__pcmrtos_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink__pcmrtos_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__sink__pcmrtos_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src__pcmrtos_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src__pcmrtos_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src__pcmrtos_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/audio__src__pcmrtos_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/bc_s.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/bdwn.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cci__codec__type__conversion_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cci__codec__type__conversion_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cci__metadata_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cci__metadata_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ccidec_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ccidec_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ccidec_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ccidec_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cei_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cei_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cei__enctypes_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cei__enctypes_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cei__table_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/cei__table_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/classes.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/closed.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codec__interface_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codec__interface_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codec__interface_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codec__interface_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codec__interface__public__api_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codec__interface__public__api_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codec_flow.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codecextractmetadata_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/codecextractmetadata_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/customdoxygen.css
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder__pads_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder__pads_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder__pads_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/decoder__pads_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_09c368f94a4ceb2a0ab51c686fa3f34a.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_27572bb7135b2aed50a12b695ac102f7.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_3011f417f47a2f1757a119bb2b6678f7.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_31b2f1d6653e3410a2de348edc054f4b.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_6343cdd224fb18bab339c25e250c0ab5.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_72ccead873c9c44a43b71eb584d84baf.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_7d4bffc30d6bb72c004c672b0b15a03f.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_7f27e557e2b5ccf3e7af2c250dae6925.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_8da1243e135ad2073cfde7cf1f60b0f9.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_a0ca4d96eaffbbc747c3e40a45a7dda3.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_a753ed7e94826fae81d50bc01e3595f4.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_ac63662da0d688fa8bd4f66397a3bf04.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_b80bfe80509f7be30c69d6b8307c8ce5.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_bb14acadcc9c6e0b0efab3b339a130cb.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_be7de2811e7b2903a1c63c530e2329f8.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_bf14883e86cd277860239a84004d696e.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_bfccd401955b95cf8c75461437045ac0.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_c10f813485221bef8c5a72414f9e2bee.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_cdad1f4fa813539d4a2cca747b2f86bd.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_e4fd4aec6719dce5076d59c812fc0a62.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dir_f5879de724d6c7af5db22be3d4d2d409.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/doc.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/doxygen.css
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/doxygen.svg
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/dynsections.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/elements.svg
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/error_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/error_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/errordefs_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/errordefs_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__sink_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__sink_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__sink_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__sink_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__src__freertos_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__src__freertos_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__src__freertos_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__src__freertos_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__utils_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__utils_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__utils_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/file__utils_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/files.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/files_dup.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/flacdec_start.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/folderclosed.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/folderopen.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/fs_logo.gif
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_b.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_d.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_dup.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_e.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_f.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_func.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_g.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_i.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_k.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_l.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_m.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_n.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_o.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_p.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_q.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_r.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_s.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_u.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_v.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_b.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_d.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_e.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_f.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_g.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_i.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_k.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_l.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_m.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_n.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_o.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_p.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_q.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_r.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_s.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_u.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_v.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_w.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_x.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_vars_y.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_w.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_x.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/functions_y.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/general__utils_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/general__utils_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/general__utils_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/general__utils_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_a.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_b.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_d.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_a.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_b.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_d.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_e.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_f.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_g.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_i.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_l.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_m.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_n.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_p.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_q.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_r.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_s.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_v.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_w.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_x.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_defs_y.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_dup.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_e.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_enum.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_b.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_d.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_e.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_f.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_i.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_l.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_m.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_p.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_s.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_eval_v.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_f.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_a.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_d.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_e.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_f.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_g.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_i.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_l.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_m.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_n.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_o.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_p.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_q.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_r.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_s.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_u.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_func_v.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_g.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_i.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_l.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_m.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_n.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_o.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_p.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_q.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_r.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_s.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_type.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_u.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_v.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_vars.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_w.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_x.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/globals_y.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/group__asi__dffi.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/group__asi__dffi.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/index.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/jquery.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/maestro.svg
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/maestroApp.svg
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/maestro__logging_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/maestro__logging_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/md_CeiEncoder.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/md_ProgrammersGuide.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/md_wavdec.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__sink_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__sink_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__sink_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__sink_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__src_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__src_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__src_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mem__src_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/menu.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/menudata.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/modules.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/modules.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/mp3dec_start.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/nav_f.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/nav_g.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/nav_h.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtree.css
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtree.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreedata.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex0.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex1.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex2.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex3.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex4.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex5.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex6.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex7.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex8.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/navtreeindex9.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/netbuf__src_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/netbuf__src_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/netbuf__src_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/netbuf__src_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/open.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pad_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pad_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pad_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pad_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pages.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pipeline_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pipeline_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pipeline_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/pipeline_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/resize.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ringbuffer_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ringbuffer_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ringbuffer_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/ringbuffer_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/splitbar.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__api_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__api_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__audiosrc_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__audiosrc_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__audiosrc_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__audiosrc_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__element_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__element_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__element_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__element_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__element__properties_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__element__properties_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__fs_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__fs_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__fs_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__fs_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__message_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__message_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__mic2file_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__mic2file_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__msg_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__msg_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__opusmem2mem_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__opusmem2mem_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__opusmem2mem_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__opusmem2mem_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__pcm_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__pcm_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__vit__filesink_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__vit__filesink_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__vit__filesink_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/streamer__vit__filesink_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAUDSRC__SET__NAME__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAUDSRC__SET__NAME__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAlbumArt.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAlbumArt.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioPacketHeader.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioPacketHeader.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioRefData__t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioRefData__t.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioSinkPadDeviceIOFuncType.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioSinkPadDeviceIOFuncType.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioSrcBufferQueue__t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structAudioSrcBufferQueue__t.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structBufferInfo.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structBufferInfo.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCCIDecInfo.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCCIDecInfo.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCCI__Ctx.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCCI__Ctx.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCeiBitstreamInfo.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCeiBitstreamInfo.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCeiEncoderFunctions.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCeiEncoderFunctions.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCeiOpusConfig.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structCeiOpusConfig.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structDecoderHandlersType.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structDecoderHandlersType.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structELEMENT__PROPERTY__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structELEMENT__PROPERTY__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structEXT__PROCESS__DESC__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structEXT__PROCESS__DESC__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structEXT__PROCESS__REFDAT__DESC__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structEXT__PROCESS__REFDAT__DESC__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementEncoder.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementEncoder.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementInit.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementInit.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementNetbufSrc.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementNetbufSrc.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementPropertyLookup.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structElementPropertyLookup.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structFileDump.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structFileDump.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structFile__Fs__Rec.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structFile__Fs__Rec.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__BPMModuleStats__st.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__BPMModuleStats__st.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__ContextTable__st.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__ContextTable__st.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__MemoryRegion__st.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__MemoryRegion__st.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__MemoryTable__st.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structLVM__MemoryTable__st.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structMEMSRC__SET__BUFFER__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structMEMSRC__SET__BUFFER__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structPCMRtosDeviceInfo.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structPCMRtosDeviceInfo.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structPCMSinkDeviceInfo.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structPCMSinkDeviceInfo.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structPacketHeader.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structPacketHeader.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structQUEUE__SET__BUFFER__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structQUEUE__SET__BUFFER__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structRawPacketHeader.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structRawPacketHeader.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSET__BUFFER__DESC__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSET__BUFFER__DESC__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSSRC__Instance__t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSSRC__Instance__t.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSSRC__Params__t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSSRC__Params__t.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__CREATE__PARAM.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__CREATE__PARAM.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__MSG__HANDLER__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__MSG__HANDLER__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__MSG__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__MSG__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTREAMER__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTRING__DESC__T.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structSTRING__DESC__T.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamBuffer.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamBuffer.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamEvent.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamEvent.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamImageType.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamImageType.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamMessage.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamMessage.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamQuery.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamQuery.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamStringType.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamStringType.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamerFileSrcConfig.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structStreamerFileSrcConfig.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structTrackInfo.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structTrackInfo.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementAudioProc.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementAudioProc.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementAudioSink.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementAudioSink.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementAudioSrc.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementAudioSrc.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementDecoder.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementDecoder.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementFileSink.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementFileSink.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementFileSrc.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementFileSrc.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementMemSink.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementMemSink.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementMemSrc.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementMemSrc.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementVitSink.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__ElementVitSink.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__PadSink.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__PadSink.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__PadSrc.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__PadSrc.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__Pipeline.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__Pipeline.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__StreamElement.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__StreamElement.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__StreamPad.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/struct__StreamPad.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structcodec__interface__function__table__t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structcodec__interface__function__table__t.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structdecoder__callback__FunctionTable__t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structdecoder__callback__FunctionTable__t.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structext__proc__args.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structext__proc__args.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structfile__meta__data__t.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structfile__meta__data__t.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structringbuf.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/structringbuf.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/sync_off.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/sync_on.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/tab_a.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/tab_b.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/tab_h.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/tab_s.png
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/tabs.css
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/unionStreamData.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/unionStreamData.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/vit__sink_8c.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/vit__sink_8c.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/vit__sink_8h.html
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/docs/src/vit__sink_8h.js
+      exclude: true
+      hidden: true
+      type: doc
+      repo_relative_path: docs/src
+      project_relative_path: docs/src
+      package_relative_path: docs/src
+    - source: middleware/maestro/mcu-audio/ssrc/doc/Synchronous_Sample_Rate_Converter_User_Guide.pdf
+      exclude: true
+      type: doc
+      repo_relative_path: mcu-audio/ssrc/doc
+      project_relative_path: mcu-audio/ssrc/doc
+      package_relative_path: mcu-audio/ssrc/doc
+    - source: middleware/maestro/middleware_maestro_framework_doc.cmake
+      type: workspace
+      toolchains: armgcc
+      hidden: true
+    package_base_path: middleware/maestro
+  belong_to: set.middleware.maestro_framework
+  section_info:
+    description: MCU Maestro Audio Framework Doc
+    version: 1.6.0
+    type: middleware
+    user_visible: never
+    full_name: Maestro Audio Framework Middleware Doc
+    taxonomy:
+      csub: doc
+      cclass: Audio
+      cgroup: Framework
+    display_name: maestro_framework
+    vendor: NXP
+  meta-name: middleware.maestro_framework.doc
+  cmake_module_name: middleware_maestro_framework_doc
+set.middleware.maestro_framework:
+  section-type: set
+  belong_to: set.middleware.maestro_framework
+  section_info:
+    fixed_id: nxp_maestro_audio_framework
+    version: 1.6.0
+    display_name: Maestro Audio Framework for MCU
+    description: Maestro Audio Framework library for MCU
+    set_location:
+      repo_base_path: middleware/maestro
+    type: middleware
+    vendor: NXP
+    product:
+      scr:
+      - scr.middleware.maestro_framework
+      kex_package:
+        kex_web_ui:
+          ui_control: true
+          ui_release_specific: true
+          ui_control_default: true
+          ui_category: Middleware
+      cmsis_pack:
+        vendor: NXP
+        supported: false
+    component_taxonomy:
+      maestro:
+        cclass: Audio
+        cgroup: Framework
+  dependency:
+    allOf:
+    - board:
+      - evkmimxrt685
+      - mimxrt685audevk
+      - evkmimxrt1040
+      - evkbimxrt1050
+      - evkmimxrt1060
+      - evkbmimxrt1060
+      - evkmimxrt1064
+      - evkmimxrt1160
+      - evkmimxrt1170
+      - evkbmimxrt1170
+      - lpcxpresso55s69
+scr.middleware.maestro_framework:
+  belong_to: set.middleware.maestro_framework
+  section-type: scr
+  contents:
+    license:
+    - license.EULA
+    Name: Maestro Audio Framework
+    Version: 1.6.0
+    Format: Source
+    Description: Maestro MCU Audio Framework
+    Location: middleware/maestro
+    Origin: NXP (Proprietary) Flac (BSD 3-clause) Ogg (BSD 3-clause) Opus (BSD 3-clause)
+      Opusfile (BSD 3-clause)
+    Url: https://github.com/xiph/flac https://github.com/xiph/ogg https://github.com/xiph/opus
+      https://github.com/xiph/opusfile
+middleware.maestro_framework.codecs:
+  section-type: component
+  contents:
+    repo_base_path: middleware/maestro
+    project_base_path: maestro
+    files:
+    - source: middleware/maestro/libs/cm7f/armgcc/release/libmp3.a
+      cores: cm7f
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm7f/armgcc/release
+      project_relative_path: libs/cm7f/armgcc/release
+      package_relative_path: libs/cm7f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm7f/armgcc/release/libwav.a
+      cores: cm7f
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm7f/armgcc/release
+      project_relative_path: libs/cm7f/armgcc/release
+      package_relative_path: libs/cm7f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm7f/armgcc/release/libaac.a
+      cores: cm7f
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm7f/armgcc/release
+      project_relative_path: libs/cm7f/armgcc/release
+      package_relative_path: libs/cm7f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm7f/armgcc/release/libflac.a
+      cores: cm7f
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm7f/armgcc/release
+      project_relative_path: libs/cm7f/armgcc/release
+      package_relative_path: libs/cm7f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm7f/armgcc/release/libssrc.a
+      cores: cm7f
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm7f/armgcc/release
+      project_relative_path: libs/cm7f/armgcc/release
+      package_relative_path: libs/cm7f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm33f/armgcc/release/libmp3.a
+      cores: cm33
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm33f/armgcc/release
+      project_relative_path: libs/cm33f/armgcc/release
+      package_relative_path: libs/cm33f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm33f/armgcc/release/libwav.a
+      cores: cm33
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm33f/armgcc/release
+      project_relative_path: libs/cm33f/armgcc/release
+      package_relative_path: libs/cm33f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm33f/armgcc/release/libaac.a
+      cores: cm33
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm33f/armgcc/release
+      project_relative_path: libs/cm33f/armgcc/release
+      package_relative_path: libs/cm33f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm33f/armgcc/release/libflac.a
+      cores: cm33
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm33f/armgcc/release
+      project_relative_path: libs/cm33f/armgcc/release
+      package_relative_path: libs/cm33f/armgcc/release
+      type: lib
+    - source: middleware/maestro/libs/cm33f/armgcc/release/libssrc.a
+      cores: cm33
+      toolchains: armgcc mcux
+      attribute: extra-libraries
+      repo_relative_path: libs/cm33f/armgcc/release
+      project_relative_path: libs/cm33f/armgcc/release
+      package_relative_path: libs/cm33f/armgcc/release
+      type: lib
+    - source: middleware/maestro/middleware_maestro_framework_codecs.cmake
+      type: workspace
+      toolchains: armgcc
+      hidden: true
+    package_base_path: middleware/maestro
+  belong_to: set.middleware.maestro_framework
+  section_info:
+    description: MCU Maestro Audio Framework
+    version: 1.6.0
+    type: middleware
+    user_visible: always
+    full_name: Maestro Audio Framework Middleware
+    taxonomy:
+      csub: codecs
+      cclass: Audio
+      cgroup: Framework
+    display_name: maestro_framework
+    vendor: NXP
+  dependency:
+    allOf:
+    - middleware.maestro_framework
+  meta-name: middleware.maestro_framework.codecs
+  cmake_module_name: middleware_maestro_framework_codecs
+middleware.maestro_framework:
+  section-type: component
+  contents:
+    repo_base_path: middleware/maestro
+    project_base_path: maestro
+    cc-include:
+    - repo_relative_path: config
+      project_relative_path: config
+      package_relative_path: config
+    - repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+    - repo_relative_path: streamer/cci/include
+      project_relative_path: streamer/cci/include
+      package_relative_path: streamer/cci/include
+    - repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+    - repo_relative_path: streamer/decoders/cci_dec
+      project_relative_path: streamer/decoders/cci_dec
+      package_relative_path: streamer/decoders/cci_dec
+    - repo_relative_path: streamer/devices
+      project_relative_path: streamer/devices
+      package_relative_path: streamer/devices
+    - repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+    - repo_relative_path: streamer/encoders/opus
+      project_relative_path: streamer/encoders/opus
+      package_relative_path: streamer/encoders/opus
+    - repo_relative_path: streamer/encoders/cei
+      project_relative_path: streamer/encoders/cei
+      package_relative_path: streamer/encoders/cei
+    - repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+    files:
+    - source: middleware/maestro/inc/error.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/file_utils.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/general_utils.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/maestro_logging.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/ringbuffer.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/streamer_api.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/streamer_element_properties.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/streamer_message.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/inc/streamer_pcm.h
+      repo_relative_path: inc
+      project_relative_path: inc
+      package_relative_path: inc
+      type: c_include
+    - source: middleware/maestro/config/audio_cfg.h
+      repo_relative_path: config
+      project_relative_path: config
+      package_relative_path: config
+      type: c_include
+    - source: middleware/maestro/streamer/cci/include/LVC_Types.h
+      repo_relative_path: streamer/cci/include
+      project_relative_path: streamer/cci/include
+      package_relative_path: streamer/cci/include
+      type: c_include
+    - source: middleware/maestro/streamer/cci/include/cci_metadata.h
+      repo_relative_path: streamer/cci/include
+      project_relative_path: streamer/cci/include
+      package_relative_path: streamer/cci/include
+      type: c_include
+    - source: middleware/maestro/streamer/cci/include/codec_interface.h
+      repo_relative_path: streamer/cci/include
+      project_relative_path: streamer/cci/include
+      package_relative_path: streamer/cci/include
+      type: c_include
+    - source: middleware/maestro/streamer/cci/include/codec_interface_public_api.h
+      repo_relative_path: streamer/cci/include
+      project_relative_path: streamer/cci/include
+      package_relative_path: streamer/cci/include
+      type: c_include
+    - source: middleware/maestro/streamer/cci/include/errordefs.h
+      repo_relative_path: streamer/cci/include
+      project_relative_path: streamer/cci/include
+      package_relative_path: streamer/cci/include
+      type: c_include
+    - source: middleware/maestro/streamer/cci/include/ssrc_head.h
+      repo_relative_path: streamer/cci/include
+      project_relative_path: streamer/cci/include
+      package_relative_path: streamer/cci/include
+      type: c_include
+    - source: middleware/maestro/streamer/core/pad.h
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: c_include
+    - source: middleware/maestro/streamer/core/pipeline.h
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: c_include
+    - source: middleware/maestro/streamer/core/streamer.h
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: c_include
+    - source: middleware/maestro/streamer/core/streamer_element.h
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: c_include
+    - source: middleware/maestro/streamer/decoders/cci_dec/ccidec.h
+      repo_relative_path: streamer/decoders/cci_dec
+      project_relative_path: streamer/decoders/cci_dec
+      package_relative_path: streamer/decoders/cci_dec
+      type: c_include
+    - source: middleware/maestro/streamer/devices/audio_sink_pcmrtos.h
+      repo_relative_path: streamer/devices
+      project_relative_path: streamer/devices
+      package_relative_path: streamer/devices
+      type: c_include
+    - source: middleware/maestro/streamer/devices/audio_src_pcmrtos.h
+      repo_relative_path: streamer/devices
+      project_relative_path: streamer/devices
+      package_relative_path: streamer/devices
+      type: c_include
+    - source: middleware/maestro/streamer/elements/audio_proc.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/audio_sink.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/audio_src.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/decoder.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/decoder_pads.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/encoder.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/file_sink.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/file_src_freertos.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/mem_sink.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/mem_src.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/netbuf_src.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/elements/vit_sink.h
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_audiosrc.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_fs.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_mic2file.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_opusmem2mem.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_pcm_speaker.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_pcm_speaker_mem.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_testeapfile2file.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_vit.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/pipelines/streamer_vit_filesink.h
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: c_include
+    - source: middleware/maestro/streamer/encoders/cei/cei.h
+      repo_relative_path: streamer/encoders/cei
+      project_relative_path: streamer/encoders/cei
+      package_relative_path: streamer/encoders/cei
+      type: c_include
+    - source: middleware/maestro/streamer/encoders/cei/cei_enctypes.h
+      repo_relative_path: streamer/encoders/cei
+      project_relative_path: streamer/encoders/cei
+      package_relative_path: streamer/encoders/cei
+      type: c_include
+    - source: middleware/maestro/streamer/encoders/cei/cei_table.h
+      repo_relative_path: streamer/encoders/cei
+      project_relative_path: streamer/encoders/cei
+      package_relative_path: streamer/encoders/cei
+      type: c_include
+    - source: middleware/maestro/streamer/encoders/opus/opusenc_cei.h
+      repo_relative_path: streamer/encoders/opus
+      project_relative_path: streamer/encoders/opus
+      package_relative_path: streamer/encoders/opus
+      type: c_include
+    - source: middleware/maestro/streamer/core/pad.c
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: src
+    - source: middleware/maestro/streamer/core/pipeline.c
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: src
+    - source: middleware/maestro/streamer/core/streamer.c
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: src
+    - source: middleware/maestro/streamer/core/streamer_element.c
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: src
+    - source: middleware/maestro/streamer/core/streamer_msg.c
+      repo_relative_path: streamer/core
+      project_relative_path: streamer/core
+      package_relative_path: streamer/core
+      type: src
+    - source: middleware/maestro/streamer/decoders/cci_dec/ccidec.c
+      repo_relative_path: streamer/decoders/cci_dec
+      project_relative_path: streamer/decoders/cci_dec
+      package_relative_path: streamer/decoders/cci_dec
+      type: src
+    - source: middleware/maestro/streamer/decoders/cci_dec/codec_interface.c
+      repo_relative_path: streamer/decoders/cci_dec
+      project_relative_path: streamer/decoders/cci_dec
+      package_relative_path: streamer/decoders/cci_dec
+      type: src
+    - source: middleware/maestro/streamer/decoders/cci_dec/codecextractmetadata.c
+      repo_relative_path: streamer/decoders/cci_dec
+      project_relative_path: streamer/decoders/cci_dec
+      package_relative_path: streamer/decoders/cci_dec
+      type: src
+    - source: middleware/maestro/streamer/devices/audio_sink_pcmrtos.c
+      repo_relative_path: streamer/devices
+      project_relative_path: streamer/devices
+      package_relative_path: streamer/devices
+      type: src
+    - source: middleware/maestro/streamer/devices/audio_src_pcmrtos.c
+      repo_relative_path: streamer/devices
+      project_relative_path: streamer/devices
+      package_relative_path: streamer/devices
+      type: src
+    - source: middleware/maestro/streamer/elements/audio_proc.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/audio_sink.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/audio_src.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/decoder.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/decoder_pads.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/file_sink.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/file_src_freertos.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/mem_sink.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/vit_sink.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/mem_src.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/elements/netbuf_src.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/parsers/cci/cci_codec_type_conversion.c
+      repo_relative_path: streamer/parsers/cci
+      project_relative_path: streamer/parsers/cci
+      package_relative_path: streamer/parsers/cci
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_audiosrc.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_fs.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_mic2file.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_opusmem2mem.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_pcm_speaker.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_pcm_speaker_mem.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_testeapfile2file.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_vit.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/pipelines/streamer_vit_filesink.c
+      repo_relative_path: streamer/pipelines
+      project_relative_path: streamer/pipelines
+      package_relative_path: streamer/pipelines
+      type: src
+    - source: middleware/maestro/streamer/elements/encoder.c
+      repo_relative_path: streamer/elements
+      project_relative_path: streamer/elements
+      package_relative_path: streamer/elements
+      type: src
+    - source: middleware/maestro/streamer/encoders/opus/opusenc_cei.c
+      repo_relative_path: streamer/encoders/opus
+      project_relative_path: streamer/encoders/opus
+      package_relative_path: streamer/encoders/opus
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/mp3/mp3_extractmetadata.c
+      repo_relative_path: streamer/cci/metadata/src/mp3
+      project_relative_path: streamer/cci/metadata/src/mp3
+      package_relative_path: streamer/cci/metadata/src/mp3
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/mp3/mp3_id3v2.c
+      repo_relative_path: streamer/cci/metadata/src/mp3
+      project_relative_path: streamer/cci/metadata/src/mp3
+      package_relative_path: streamer/cci/metadata/src/mp3
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/mp3/mp3_vbr.c
+      repo_relative_path: streamer/cci/metadata/src/mp3
+      project_relative_path: streamer/cci/metadata/src/mp3
+      package_relative_path: streamer/cci/metadata/src/mp3
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/mp3/mp3_id3v2.h
+      repo_relative_path: streamer/cci/metadata/src/mp3
+      project_relative_path: streamer/cci/metadata/src/mp3
+      package_relative_path: streamer/cci/metadata/src/mp3
+      type: c_include
+    - source: middleware/maestro/streamer/cci/metadata/src/mp3/mp3_id3v2_internal.h
+      repo_relative_path: streamer/cci/metadata/src/mp3
+      project_relative_path: streamer/cci/metadata/src/mp3
+      package_relative_path: streamer/cci/metadata/src/mp3
+      type: c_include
+    - source: middleware/maestro/streamer/cci/metadata/src/mp3/mp3_metadata.h
+      repo_relative_path: streamer/cci/metadata/src/mp3
+      project_relative_path: streamer/cci/metadata/src/mp3
+      package_relative_path: streamer/cci/metadata/src/mp3
+      type: c_include
+    - source: middleware/maestro/streamer/cci/metadata/src/adpcm/adpcm_extractmetadata.c
+      repo_relative_path: streamer/cci/metadata/src/adpcm
+      project_relative_path: streamer/cci/metadata/src/adpcm
+      package_relative_path: streamer/cci/metadata/src/adpcm
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/adpcm/wav_common.c
+      repo_relative_path: streamer/cci/metadata/src/adpcm
+      project_relative_path: streamer/cci/metadata/src/adpcm
+      package_relative_path: streamer/cci/metadata/src/adpcm
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/adpcm/wav_metadata.h
+      repo_relative_path: streamer/cci/metadata/src/adpcm
+      project_relative_path: streamer/cci/metadata/src/adpcm
+      package_relative_path: streamer/cci/metadata/src/adpcm
+      type: c_include
+    - source: middleware/maestro/streamer/cci/metadata/src/adpcm/wavedata.h
+      repo_relative_path: streamer/cci/metadata/src/adpcm
+      project_relative_path: streamer/cci/metadata/src/adpcm
+      package_relative_path: streamer/cci/metadata/src/adpcm
+      type: c_include
+    - source: middleware/maestro/streamer/cci/metadata/src/adpcm/wavedefs.h
+      repo_relative_path: streamer/cci/metadata/src/adpcm
+      project_relative_path: streamer/cci/metadata/src/adpcm
+      package_relative_path: streamer/cci/metadata/src/adpcm
+      type: c_include
+    - source: middleware/maestro/streamer/cci/metadata/src/opus/opus_extractmetadata.c
+      repo_relative_path: streamer/cci/metadata/src/opus
+      project_relative_path: streamer/cci/metadata/src/opus
+      package_relative_path: streamer/cci/metadata/src/opus
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/aac/aac_extractmetadata.c
+      repo_relative_path: streamer/cci/metadata/src/aac
+      project_relative_path: streamer/cci/metadata/src/aac
+      package_relative_path: streamer/cci/metadata/src/aac
+      type: src
+    - source: middleware/maestro/streamer/cci/metadata/src/flac/flac_extractmetadata.c
+      repo_relative_path: streamer/cci/metadata/src/flac
+      project_relative_path: streamer/cci/metadata/src/flac
+      package_relative_path: streamer/cci/metadata/src/flac
+      type: src
+    - source: middleware/maestro/streamer/utils/file_utils.c
+      repo_relative_path: streamer/utils
+      project_relative_path: streamer/utils
+      package_relative_path: streamer/utils
+      type: src
+    - source: middleware/maestro/streamer/utils/general_utils.c
+      repo_relative_path: streamer/utils
+      project_relative_path: streamer/utils
+      package_relative_path: streamer/utils
+      type: src
+    - source: middleware/maestro/streamer/utils/maestro_logging.c
+      repo_relative_path: streamer/utils
+      project_relative_path: streamer/utils
+      package_relative_path: streamer/utils
+      type: src
+    - source: middleware/maestro/streamer/utils/ringbuffer.c
+      repo_relative_path: streamer/utils
+      project_relative_path: streamer/utils
+      package_relative_path: streamer/utils
+      type: src
+    - source: middleware/maestro/middleware_maestro_framework.cmake
+      type: workspace
+      toolchains: armgcc
+      hidden: true
+    configuration:
+      tools:
+        iar:
+          cc-flags:
+          - "--vla"
+          - "--align_sp_on_irq"
+          - "--macro_positions_in_diagnostics"
+          - "--header_context"
+          - "--no_unroll"
+          - "--no_inline"
+          - "--no_tbaa"
+          - "--no_unaligned_access"
+          - "--dlib_config full"
+          - "--diag_suppress Pa050,Pa082,Pe186,Pe815"
+      cc-define:
+        CASCFG_PLATFORM_FREERTOS: 
+        FSL_OS_SELECTED: SDK_OS_FREERTOS
+        FSL_OSA_TASK_ENABLE: 1
+    package_base_path: middleware/maestro
+  belong_to: set.middleware.maestro_framework
+  section_info:
+    description: MCU Maestro Audio Framework Streamer Core
+    version: 1.6.0
+    type: middleware
+    user_visible: always
+    full_name: Maestro Audio Framework Streamer Core
+    taxonomy:
+      csub: maestro_framework
+      cclass: Audio
+      cgroup: Framework
+    display_name: maestro_framework_streamer_core
+    vendor: NXP
+  dependency:
+    allOf:
+    - middleware.maestro_framework.doc
+  meta-name: middleware.maestro_framework
+  cmake_module_name: middleware_maestro_framework

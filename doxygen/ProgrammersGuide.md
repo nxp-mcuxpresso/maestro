@@ -8,7 +8,7 @@ This document describes the framework in its detail, and the usage of API for pi
 ## Architecture overview
 
 A high-level block diagram of the streamer used in Maestro is shown below. An element is the most important class
-of objects in the streamer (see `streamer_element.c`). A chain of elements will be created and linked together when a pipeline is
+of objects in the streamer (see `streamer_element.c`). A chain of elements will be created and linked together when a [pipeline](pipeline_8c.html) is
 created. Data flows through this chain of elements in form of data buffers. An element has one specific function, which can be the reading
 of data from a file, decoding of this data, or outputting this data to a sink device. By chaining together several such
 elements, a pipeline is created that can do a specific task, for example, the playback.

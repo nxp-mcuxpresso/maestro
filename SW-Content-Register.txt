@@ -1,5 +1,5 @@
 maestro                    Name: Maestro Audio Framework
-                           Version: 1.5.0
+                           Version: 1.6.0
                            Outgoing License: LA_OPT_NXP_Software_License.txt
                            v39 August 2022- Additional distribution license
                            granted - License in Section 2.3 applies

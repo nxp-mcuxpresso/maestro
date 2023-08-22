@@ -9,7 +9,7 @@
     <definition extID="core0_MIMXRT1062xxxxB"/>
     <definition extID="mcuxpresso"/>
   </externalDefinitions>
-  <ksdk id="MCUXpressoSDK2140_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_13" name="MCUXpressoSDK2140_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_13" version="2.14.0"/>
+  <ksdk id="MCUXpressoSDK2141_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_13" name="MCUXpressoSDK2141_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_13" version="2.14.1" revision="Provided by Script"/>
   <components>
     <component id="middleware.maestro_framework.opus.MIMXRT1062" name="maestro_framework_opus" brief="MCU Maestro Audio Framework Opus" version="1.0.0" full_name="Maestro Audio Framework Opus" devices="MIMXRT1062xxxxA MIMXRT1062xxxxB" category="Audio/Framework" user_visible="true" type="middleware" package_base_path="../middleware/maestro/mcu-audio/opus" project_base_path="maestro/opus">
       <defines>

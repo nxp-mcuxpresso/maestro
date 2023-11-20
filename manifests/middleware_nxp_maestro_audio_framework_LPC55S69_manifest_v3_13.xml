@@ -8,9 +8,9 @@
     <definition extID="cm33_core1_LPC55S69"/>
     <definition extID="mcuxpresso"/>
   </externalDefinitions>
-  <ksdk id="MCUXpressoSDK2140_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_13" name="MCUXpressoSDK2140_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_13" version="2.14.0"/>
+  <ksdk id="MCUXpressoSDK2140_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_13" name="MCUXpressoSDK2140_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_13" version="2.14.0" revision="2.14.0"/>
   <components>
-    <component id="middleware.maestro_framework.opus.LPC55S69" name="maestro_framework_opus" brief="MCU Maestro Audio Framework Opus" version="1.0.0" full_name="Maestro Audio Framework Opus" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path="../middleware/maestro/mcu-audio/opus" project_base_path="maestro/opus">
+    <component id="middleware.maestro_framework.opus.LPC55S69" name="maestro_framework_opus" brief="MCU Maestro Audio Framework Opus" version="1.0.0" full_name="Maestro Audio Framework Opus" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/opus" project_base_path="maestro/opus">
       <defines>
         <define name="HAVE_CONFIG_H" value=""/>
       </defines>
@@ -232,14 +232,14 @@
         <files mask="middleware_maestro_framework_opus.cmake" hidden="true"/>
       </source>
       <include_paths>
-        <include_path relative_path="../../../../celt" project_relative_path="celt" type="c_include"/>
-        <include_path relative_path="../../../../include" project_relative_path="include" type="c_include"/>
-        <include_path relative_path="../../../../silk" project_relative_path="silk" type="c_include"/>
-        <include_path relative_path="../../../../silk/fixed" project_relative_path="silk/fixed" type="c_include"/>
-        <include_path relative_path="../../../../src" project_relative_path="src" type="c_include"/>
+        <include_path relative_path="../../celt" project_relative_path="celt" type="c_include"/>
+        <include_path relative_path="../../include" project_relative_path="include" type="c_include"/>
+        <include_path relative_path="../../silk" project_relative_path="silk" type="c_include"/>
+        <include_path relative_path="../../silk/fixed" project_relative_path="silk/fixed" type="c_include"/>
+        <include_path relative_path="../../src" project_relative_path="src" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.opusfile.LPC55S69" name="maestro_framework_opusfile" brief="MCU Maestro Audio Framework Opusfile" version="1.0.0" full_name="Maestro Audio Framework Opusfile" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path="../middleware/maestro/mcu-audio/opusfile" project_base_path="maestro/opusfile">
+    <component id="middleware.maestro_framework.opusfile.LPC55S69" name="maestro_framework_opusfile" brief="MCU Maestro Audio Framework Opusfile" version="1.0.0" full_name="Maestro Audio Framework Opusfile" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/opusfile" project_base_path="maestro/opusfile">
       <defines>
         <define name="HAVE_CONFIG_H" value=""/>
       </defines>
@@ -262,11 +262,11 @@
         <files mask="middleware_maestro_framework_opusfile.cmake" hidden="true"/>
       </source>
       <include_paths>
-        <include_path relative_path="../../../../include" project_relative_path="include" type="c_include"/>
-        <include_path relative_path="../../../../src" project_relative_path="src" type="c_include"/>
+        <include_path relative_path="../../include" project_relative_path="include" type="c_include"/>
+        <include_path relative_path="../../src" project_relative_path="src" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.ogg.LPC55S69" name="maestro_framework_ogg" brief="MCU Maestro Audio Framework Ogg" version="1.0.0" full_name="Maestro Audio Framework Ogg" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path="../middleware/maestro/mcu-audio/ogg" project_base_path="maestro/ogg">
+    <component id="middleware.maestro_framework.ogg.LPC55S69" name="maestro_framework_ogg" brief="MCU Maestro Audio Framework Ogg" version="1.0.0" full_name="Maestro Audio Framework Ogg" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././mcu-audio/ogg" project_base_path="maestro/ogg">
       <defines>
         <define name="HAVE_CONFIG_H" value=""/>
       </defines>
@@ -289,15 +289,15 @@
         <files mask="middleware_maestro_framework_ogg.cmake" hidden="true"/>
       </source>
       <include_paths>
-        <include_path relative_path="../../../../include" project_relative_path="include" type="c_include"/>
-        <include_path relative_path="../../../../src" project_relative_path="src" type="c_include"/>
+        <include_path relative_path="../../include" project_relative_path="include" type="c_include"/>
+        <include_path relative_path="../../src" project_relative_path="src" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.doc.LPC55S69" name="maestro_framework" brief="MCU Maestro Audio Framework Doc" version="1.6.0" full_name="Maestro Audio Framework Middleware Doc" devices="LPC55S69" category="Audio/Framework" user_visible="false" type="middleware" package_base_path="../middleware/maestro" project_base_path="maestro">
-      <source exclude="true" relative_path="../../docs" project_relative_path="docs" type="doc">
+    <component id="middleware.maestro_framework.doc.LPC55S69" name="maestro_framework" brief="MCU Maestro Audio Framework Doc" version="1.6.0" full_name="Maestro Audio Framework Middleware Doc" devices="LPC55S69" category="Audio/Framework" user_visible="false" type="middleware" package_base_path=".././" project_base_path="maestro">
+      <source exclude="true" relative_path="./docs" project_relative_path="docs" type="doc">
         <files mask="index.html"/>
       </source>
-      <source exclude="true" relative_path="../../docs/src" project_relative_path="docs/src" type="doc">
+      <source exclude="true" relative_path="./docs/src" project_relative_path="docs/src" type="doc">
         <files mask="LVC__Types_8h.html" hidden="true"/>
         <files mask="LVC__Types_8h.js" hidden="true"/>
         <files mask="aacdec_start.html" hidden="true"/>
@@ -789,37 +789,37 @@
         <files mask="vit__sink_8h.html" hidden="true"/>
         <files mask="vit__sink_8h.js" hidden="true"/>
       </source>
-      <source exclude="true" relative_path="../../mcu-audio/ssrc/doc" project_relative_path="mcu-audio/ssrc/doc" type="doc">
+      <source exclude="true" relative_path="./mcu-audio/ssrc/doc" project_relative_path="mcu-audio/ssrc/doc" type="doc">
         <files mask="Synchronous_Sample_Rate_Converter_User_Guide.pdf"/>
       </source>
       <source toolchain="armgcc" relative_path="./" type="workspace">
         <files mask="middleware_maestro_framework_doc.cmake" hidden="true"/>
       </source>
     </component>
-    <component id="middleware.maestro_framework.codecs.LPC55S69" name="maestro_framework" brief="MCU Maestro Audio Framework" version="1.6.0" full_name="Maestro Audio Framework Middleware" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path="../middleware/maestro" project_base_path="maestro">
+    <component id="middleware.maestro_framework.codecs.LPC55S69" name="maestro_framework" brief="MCU Maestro Audio Framework" version="1.6.0" full_name="Maestro Audio Framework Middleware" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
       <dependencies>
         <component_dependency value="middleware.maestro_framework.LPC55S69"/>
       </dependencies>
-      <source toolchain="armgcc mcuxpresso" relative_path="../../libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
         <files mask="libmp3.a"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="../../libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
         <files mask="libwav.a"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="../../libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
         <files mask="libaac.a"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="../../libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
         <files mask="libflac.a"/>
       </source>
-      <source toolchain="armgcc mcuxpresso" relative_path="../../libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
+      <source toolchain="armgcc mcuxpresso" relative_path="./libs/cm33f/armgcc/release" project_relative_path="libs/cm33f/armgcc/release" type="lib" device_cores="cm33_core0_LPC55S69 cm33_core1_LPC55S69">
         <files mask="libssrc.a"/>
       </source>
       <source toolchain="armgcc" relative_path="./" type="workspace">
         <files mask="middleware_maestro_framework_codecs.cmake" hidden="true"/>
       </source>
     </component>
-    <component id="middleware.maestro_framework.LPC55S69" name="maestro_framework_streamer_core" brief="MCU Maestro Audio Framework Streamer Core" version="1.6.0" full_name="Maestro Audio Framework Streamer Core" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path="../middleware/maestro" project_base_path="maestro">
+    <component id="middleware.maestro_framework.LPC55S69" name="maestro_framework_streamer_core" brief="MCU Maestro Audio Framework Streamer Core" version="1.6.0" full_name="Maestro Audio Framework Streamer Core" devices="LPC55S69" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
       <defines>
         <define name="CASCFG_PLATFORM_FREERTOS" value=""/>
         <define name="FSL_OS_SELECTED" value="SDK_OS_FREERTOS"/>
@@ -828,7 +828,7 @@
       <dependencies>
         <component_dependency value="middleware.maestro_framework.doc.LPC55S69"/>
       </dependencies>
-      <source relative_path="../../inc" project_relative_path="inc" type="c_include">
+      <source relative_path="./inc" project_relative_path="inc" type="c_include">
         <files mask="error.h"/>
         <files mask="file_utils.h"/>
         <files mask="general_utils.h"/>
@@ -839,10 +839,10 @@
         <files mask="streamer_message.h"/>
         <files mask="streamer_pcm.h"/>
       </source>
-      <source relative_path="../../config" project_relative_path="config" type="c_include">
+      <source relative_path="./config" project_relative_path="config" type="c_include">
         <files mask="audio_cfg.h"/>
       </source>
-      <source relative_path="../../streamer/cci/include" project_relative_path="streamer/cci/include" type="c_include">
+      <source relative_path="./streamer/cci/include" project_relative_path="streamer/cci/include" type="c_include">
         <files mask="LVC_Types.h"/>
         <files mask="cci_metadata.h"/>
         <files mask="codec_interface.h"/>
@@ -850,20 +850,20 @@
         <files mask="errordefs.h"/>
         <files mask="ssrc_head.h"/>
       </source>
-      <source relative_path="../../streamer/core" project_relative_path="streamer/core" type="c_include">
+      <source relative_path="./streamer/core" project_relative_path="streamer/core" type="c_include">
         <files mask="pad.h"/>
         <files mask="pipeline.h"/>
         <files mask="streamer.h"/>
         <files mask="streamer_element.h"/>
       </source>
-      <source relative_path="../../streamer/decoders/cci_dec" project_relative_path="streamer/decoders/cci_dec" type="c_include">
+      <source relative_path="./streamer/decoders/cci_dec" project_relative_path="streamer/decoders/cci_dec" type="c_include">
         <files mask="ccidec.h"/>
       </source>
-      <source relative_path="../../streamer/devices" project_relative_path="streamer/devices" type="c_include">
+      <source relative_path="./streamer/devices" project_relative_path="streamer/devices" type="c_include">
         <files mask="audio_sink_pcmrtos.h"/>
         <files mask="audio_src_pcmrtos.h"/>
       </source>
-      <source relative_path="../../streamer/elements" project_relative_path="streamer/elements" type="c_include">
+      <source relative_path="./streamer/elements" project_relative_path="streamer/elements" type="c_include">
         <files mask="audio_proc.h"/>
         <files mask="audio_sink.h"/>
         <files mask="audio_src.h"/>
@@ -877,7 +877,7 @@
         <files mask="netbuf_src.h"/>
         <files mask="vit_sink.h"/>
       </source>
-      <source relative_path="../../streamer/pipelines" project_relative_path="streamer/pipelines" type="c_include">
+      <source relative_path="./streamer/pipelines" project_relative_path="streamer/pipelines" type="c_include">
         <files mask="streamer_audiosrc.h"/>
         <files mask="streamer_fs.h"/>
         <files mask="streamer_mic2file.h"/>
@@ -888,31 +888,31 @@
         <files mask="streamer_vit.h"/>
         <files mask="streamer_vit_filesink.h"/>
       </source>
-      <source relative_path="../../streamer/encoders/cei" project_relative_path="streamer/encoders/cei" type="c_include">
+      <source relative_path="./streamer/encoders/cei" project_relative_path="streamer/encoders/cei" type="c_include">
         <files mask="cei.h"/>
         <files mask="cei_enctypes.h"/>
         <files mask="cei_table.h"/>
       </source>
-      <source relative_path="../../streamer/encoders/opus" project_relative_path="streamer/encoders/opus" type="c_include">
+      <source relative_path="./streamer/encoders/opus" project_relative_path="streamer/encoders/opus" type="c_include">
         <files mask="opusenc_cei.h"/>
       </source>
-      <source relative_path="../../streamer/core" project_relative_path="streamer/core" type="src">
+      <source relative_path="./streamer/core" project_relative_path="streamer/core" type="src">
         <files mask="pad.c"/>
         <files mask="pipeline.c"/>
         <files mask="streamer.c"/>
         <files mask="streamer_element.c"/>
         <files mask="streamer_msg.c"/>
       </source>
-      <source relative_path="../../streamer/decoders/cci_dec" project_relative_path="streamer/decoders/cci_dec" type="src">
+      <source relative_path="./streamer/decoders/cci_dec" project_relative_path="streamer/decoders/cci_dec" type="src">
         <files mask="ccidec.c"/>
         <files mask="codec_interface.c"/>
         <files mask="codecextractmetadata.c"/>
       </source>
-      <source relative_path="../../streamer/devices" project_relative_path="streamer/devices" type="src">
+      <source relative_path="./streamer/devices" project_relative_path="streamer/devices" type="src">
         <files mask="audio_sink_pcmrtos.c"/>
         <files mask="audio_src_pcmrtos.c"/>
       </source>
-      <source relative_path="../../streamer/elements" project_relative_path="streamer/elements" type="src">
+      <source relative_path="./streamer/elements" project_relative_path="streamer/elements" type="src">
         <files mask="audio_proc.c"/>
         <files mask="audio_sink.c"/>
         <files mask="audio_src.c"/>
@@ -926,10 +926,10 @@
         <files mask="netbuf_src.c"/>
         <files mask="encoder.c"/>
       </source>
-      <source relative_path="../../streamer/parsers/cci" project_relative_path="streamer/parsers/cci" type="src">
+      <source relative_path="./streamer/parsers/cci" project_relative_path="streamer/parsers/cci" type="src">
         <files mask="cci_codec_type_conversion.c"/>
       </source>
-      <source relative_path="../../streamer/pipelines" project_relative_path="streamer/pipelines" type="src">
+      <source relative_path="./streamer/pipelines" project_relative_path="streamer/pipelines" type="src">
         <files mask="streamer_audiosrc.c"/>
         <files mask="streamer_fs.c"/>
         <files mask="streamer_mic2file.c"/>
@@ -940,38 +940,38 @@
         <files mask="streamer_vit.c"/>
         <files mask="streamer_vit_filesink.c"/>
       </source>
-      <source relative_path="../../streamer/encoders/opus" project_relative_path="streamer/encoders/opus" type="src">
+      <source relative_path="./streamer/encoders/opus" project_relative_path="streamer/encoders/opus" type="src">
         <files mask="opusenc_cei.c"/>
       </source>
-      <source relative_path="../../streamer/cci/metadata/src/mp3" project_relative_path="streamer/cci/metadata/src/mp3" type="src">
+      <source relative_path="./streamer/cci/metadata/src/mp3" project_relative_path="streamer/cci/metadata/src/mp3" type="src">
         <files mask="mp3_extractmetadata.c"/>
         <files mask="mp3_id3v2.c"/>
         <files mask="mp3_vbr.c"/>
       </source>
-      <source relative_path="../../streamer/cci/metadata/src/mp3" project_relative_path="streamer/cci/metadata/src/mp3" type="c_include">
+      <source relative_path="./streamer/cci/metadata/src/mp3" project_relative_path="streamer/cci/metadata/src/mp3" type="c_include">
         <files mask="mp3_id3v2.h"/>
         <files mask="mp3_id3v2_internal.h"/>
         <files mask="mp3_metadata.h"/>
       </source>
-      <source relative_path="../../streamer/cci/metadata/src/adpcm" project_relative_path="streamer/cci/metadata/src/adpcm" type="src">
+      <source relative_path="./streamer/cci/metadata/src/adpcm" project_relative_path="streamer/cci/metadata/src/adpcm" type="src">
         <files mask="adpcm_extractmetadata.c"/>
         <files mask="wav_common.c"/>
       </source>
-      <source relative_path="../../streamer/cci/metadata/src/adpcm" project_relative_path="streamer/cci/metadata/src/adpcm" type="c_include">
+      <source relative_path="./streamer/cci/metadata/src/adpcm" project_relative_path="streamer/cci/metadata/src/adpcm" type="c_include">
         <files mask="wav_metadata.h"/>
         <files mask="wavedata.h"/>
         <files mask="wavedefs.h"/>
       </source>
-      <source relative_path="../../streamer/cci/metadata/src/opus" project_relative_path="streamer/cci/metadata/src/opus" type="src">
+      <source relative_path="./streamer/cci/metadata/src/opus" project_relative_path="streamer/cci/metadata/src/opus" type="src">
         <files mask="opus_extractmetadata.c"/>
       </source>
-      <source relative_path="../../streamer/cci/metadata/src/aac" project_relative_path="streamer/cci/metadata/src/aac" type="src">
+      <source relative_path="./streamer/cci/metadata/src/aac" project_relative_path="streamer/cci/metadata/src/aac" type="src">
         <files mask="aac_extractmetadata.c"/>
       </source>
-      <source relative_path="../../streamer/cci/metadata/src/flac" project_relative_path="streamer/cci/metadata/src/flac" type="src">
+      <source relative_path="./streamer/cci/metadata/src/flac" project_relative_path="streamer/cci/metadata/src/flac" type="src">
         <files mask="flac_extractmetadata.c"/>
       </source>
-      <source relative_path="../../streamer/utils" project_relative_path="streamer/utils" type="src">
+      <source relative_path="./streamer/utils" project_relative_path="streamer/utils" type="src">
         <files mask="file_utils.c"/>
         <files mask="general_utils.c"/>
         <files mask="maestro_logging.c"/>
@@ -981,16 +981,16 @@
         <files mask="middleware_maestro_framework.cmake" hidden="true"/>
       </source>
       <include_paths>
-        <include_path relative_path="../../config" project_relative_path="config" type="c_include"/>
-        <include_path relative_path="../../inc" project_relative_path="inc" type="c_include"/>
-        <include_path relative_path="../../streamer/cci/include" project_relative_path="streamer/cci/include" type="c_include"/>
-        <include_path relative_path="../../streamer/core" project_relative_path="streamer/core" type="c_include"/>
-        <include_path relative_path="../../streamer/decoders/cci_dec" project_relative_path="streamer/decoders/cci_dec" type="c_include"/>
-        <include_path relative_path="../../streamer/devices" project_relative_path="streamer/devices" type="c_include"/>
-        <include_path relative_path="../../streamer/elements" project_relative_path="streamer/elements" type="c_include"/>
-        <include_path relative_path="../../streamer/encoders/opus" project_relative_path="streamer/encoders/opus" type="c_include"/>
-        <include_path relative_path="../../streamer/encoders/cei" project_relative_path="streamer/encoders/cei" type="c_include"/>
-        <include_path relative_path="../../streamer/pipelines" project_relative_path="streamer/pipelines" type="c_include"/>
+        <include_path relative_path="./config" project_relative_path="config" type="c_include"/>
+        <include_path relative_path="./inc" project_relative_path="inc" type="c_include"/>
+        <include_path relative_path="./streamer/cci/include" project_relative_path="streamer/cci/include" type="c_include"/>
+        <include_path relative_path="./streamer/core" project_relative_path="streamer/core" type="c_include"/>
+        <include_path relative_path="./streamer/decoders/cci_dec" project_relative_path="streamer/decoders/cci_dec" type="c_include"/>
+        <include_path relative_path="./streamer/devices" project_relative_path="streamer/devices" type="c_include"/>
+        <include_path relative_path="./streamer/elements" project_relative_path="streamer/elements" type="c_include"/>
+        <include_path relative_path="./streamer/encoders/opus" project_relative_path="streamer/encoders/opus" type="c_include"/>
+        <include_path relative_path="./streamer/encoders/cei" project_relative_path="streamer/encoders/cei" type="c_include"/>
+        <include_path relative_path="./streamer/pipelines" project_relative_path="streamer/pipelines" type="c_include"/>
       </include_paths>
     </component>
   </components>

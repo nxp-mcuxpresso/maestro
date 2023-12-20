@@ -1,25 +1,11 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef _AUDIO_CFG_H_
 #define _AUDIO_CFG_H_
-
-/*
- * Audio Decoders
- */
-#define CASCFG_NUM_OF_PING_PONG_BUFFER 2
-#define CASCFG_ENABLE_MP3_CODEC        1
-#define CASCFG_ENABLE_OPUS_CODEC       1
-#define CASCFG_ENABLE_OGG_OPUS         1
-#define CASCFG_ENABLE_AAC_CODEC        1
-#define CASCFG_ENABLE_WAV_CODEC        1
-#define CASCFG_ENABLE_FLAC_CODEC       1
 
 /*
  * Metadata Configuration

@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -38,7 +35,7 @@ int32_t ccidec_extract_meta_data(audio_stream_type_t stream_type, file_meta_data
             ret = (uint8_t)codec_extract_metadata_wave(meta_data, ctx);
             break;
 #endif
-#ifdef CASCFG_ENABLE_MP3_CODEC
+#ifdef MP3_DEC
         case STREAM_TYPE_MP3:
             ret = (uint8_t)codec_extract_metadata_mp3(meta_data, ctx);
             break;
@@ -54,7 +51,7 @@ int32_t ccidec_extract_meta_data(audio_stream_type_t stream_type, file_meta_data
             ret = codec_extract_metadata_ogg_opus(meta_data, ctx);
             break;
 #endif /* OGG_OPUS_DEC */
-#ifdef AAC_DEC
+#if defined(AAC_DEC) && !defined(__ICCARM__)
         case STREAM_TYPE_AAC:
             ret = (uint8_t)codec_extract_metadata_aac(meta_data, ctx);
             break;

@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -33,7 +30,7 @@
  *
  * @retval Decoder Type
  */
-const int32_t stream_type_conversion(int32_t stream_type)
+int32_t stream_type_conversion(int32_t stream_type)
 {
     int32_t decoder_type;
 
@@ -67,7 +64,7 @@ const int32_t stream_type_conversion(int32_t stream_type)
  *
  * @retval CCI Stream Type
  */
-const uint8_t cci_decoder_type_conversion(DecoderType decoder_type)
+uint8_t cci_decoder_type_conversion(DecoderType decoder_type)
 {
     audio_stream_type_t cci_type;
 

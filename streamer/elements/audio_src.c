@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -38,7 +35,7 @@ static uint8_t audiosrc_src_activate_push(StreamPad *pad, uint8_t active);
 static uint8_t audiosrc_src_activate_pull(StreamPad *pad, uint8_t active);
 static uint8_t audiosrc_src_activate(StreamPad *pad, uint8_t active);
 static int32_t audiosrc_get_property(StreamElement *element_ptr, uint16_t prop, uint64_t *val_ptr);
-static int32_t audiosrc_set_property(StreamElement *element_ptr, uint16_t prop, uint64_t val);
+static int32_t audiosrc_set_property(StreamElement *element_ptr, uint16_t prop, uint32_t val);
 static int32_t audiosrc_set_device_name(ElementHandle element, const char *device_name, const char *output_device_name);
 static int32_t audiosrc_set_device_type(ElementHandle element, uint32_t device_type);
 static int32_t audiosrc_set_push_chunk_size(ElementHandle element, uint32_t chunk_size);
@@ -138,6 +135,15 @@ int32_t audiosrc_init(StreamElement *element)
     audiosrc->end_of_stream           = false;
     audiosrc->retries                 = 0;
     audiosrc->continuous_read         = false;
+
+    audiosrc->appFunctions.open_func      = NULL;
+    audiosrc->appFunctions.close_func     = NULL;
+    audiosrc->appFunctions.start_func     = NULL;
+    audiosrc->appFunctions.process_func   = NULL;
+    audiosrc->appFunctions.set_param_func = NULL;
+    audiosrc->appFunctions.get_param_func = NULL;
+    audiosrc->appFunctions.mute_func      = NULL;
+    audiosrc->appFunctions.volume_func    = NULL;
 
     /* set element change state function */
     audiosrc->change_state = audiosrc_change_state;
@@ -643,7 +649,8 @@ static int32_t audiosrc_src_process(StreamPad *pad)
                 audiosrc->retries = 0;
             }
 
-            if (pad_push(pad, &buf) != FLOW_OK)
+            ret = pad_push(pad, &buf);
+            if (ret != FLOW_OK)
             {
                 STREAMER_LOG_ERR(DBG_AUDIO_SRC, ERRCODE_GENERAL_ERROR, "[AudioSRC]Flow not ok3\n");
                 goto pause;
@@ -938,7 +945,8 @@ static int32_t audiosrc_get_property(StreamElement *element_ptr, uint16_t prop, 
 
     switch (prop)
     {
-        case PROP_AUDIOSRC_GET_CHUNK_SIZE:
+        case PROP_MICROPHONE_GET_CHUNK_SIZE:
+        case PROP_USB_SRC_GET_CHUNK_SIZE:
             ret = audiosrc_get_push_chunk_size((ElementHandle)(uintptr_t)element_ptr, val_ptr);
             break;
 
@@ -962,46 +970,66 @@ static int32_t audiosrc_get_property(StreamElement *element_ptr, uint16_t prop, 
  * @returns AudioSinkStreamErrorType
  *
  */
-static int32_t audiosrc_set_property(StreamElement *element_ptr, uint16_t prop, uint64_t val)
+static int32_t audiosrc_set_property(StreamElement *element_ptr, uint16_t prop, uint32_t val)
 {
     int32_t ret = AUDIOSRC_SUCCESS;
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SRC);
-
+    ElementAudioSrc *audio_src_ptr = (ElementAudioSrc *)element_ptr;
     switch (prop)
     {
-        case PROP_AUDIOSRC_SET_DEVICE_TYPE:
+        case PROP_MICROPHONE_SET_DEVICE_TYPE:
+        case PROP_USB_SRC_SET_DEVICE_TYPE:
             ret = audiosrc_set_device_type((ElementHandle)(uintptr_t)element_ptr, val);
             break;
 
-        case PROP_AUDIOSRC_SET_CHUNK_SIZE:
+        case PROP_MICROPHONE_SET_CHUNK_SIZE:
+        case PROP_USB_SRC_SET_CHUNK_SIZE:
             ret = audiosrc_set_push_chunk_size((ElementHandle)(uintptr_t)element_ptr, val);
             break;
 
-        case PROP_AUDIOSRC_SET_SAMPLE_RATE:
+        case PROP_MICROPHONE_SET_SAMPLE_RATE:
+        case PROP_USB_SRC_SET_SAMPLE_RATE:
             ret = audiosrc_set_sampling_rate((ElementHandle)(uintptr_t)element_ptr, val);
             break;
 
-        case PROP_AUDIOSRC_SET_DEVICE_NAME:
+        case PROP_MICROPHONE_SET_DEVICE_NAME:
+        case PROP_USB_SRC_SET_DEVICE_NAME:
             ret = audiosrc_set_device_name((ElementHandle)(uintptr_t)element_ptr,
                                            ((AUDSRC_SET_NAME_T *)(uintptr_t)val)->device_name,
                                            ((AUDSRC_SET_NAME_T *)(uintptr_t)val)->output_device_name);
             break;
 
-        case PROP_AUDIOSRC_SET_CONTINUOUS_READ:
+        case PROP_MICROPHONE_SET_CONTINUOUS_READ:
+        case PROP_USB_SRC_SET_CONTINUOUS_READ:
             ret = audiosrc_set_continuous_read((ElementHandle)(uintptr_t)element_ptr, (bool)val);
             break;
-        case PROP_AUDIOSRC_SET_DUMMY_TX_ENABLE:
+        case PROP_MICROPHONE_SET_DUMMY_TX_ENABLE:
+        case PROP_USB_SRC_SET_DUMMY_TX_ENABLE:
             ret = audiosrc_set_dummy_tx_enable((ElementHandle)(uintptr_t)element_ptr, (bool)val);
             break;
-        case PROP_AUDIOSRC_SET_NUM_CHANNELS:
+        case PROP_MICROPHONE_SET_NUM_CHANNELS:
+        case PROP_USB_SRC_SET_NUM_CHANNELS:
             ret = audiosrc_set_num_channels((ElementHandle)(uintptr_t)element_ptr, val);
             break;
-        case PROP_AUDIOSRC_SET_BITS_PER_SAMPLE:
+        case PROP_MICROPHONE_SET_BITS_PER_SAMPLE:
+        case PROP_USB_SRC_SET_BITS_PER_SAMPLE:
             ret = audiosrc_set_bits_per_sample((ElementHandle)(uintptr_t)element_ptr, val);
             break;
-        case PROP_AUDIOSRC_SET_FRAME_MS:
+        case PROP_MICROPHONE_SET_FRAME_MS:
+        case PROP_USB_SRC_SET_FRAME_MS:
             ret = audiosrc_set_frame_ms((ElementHandle)(uintptr_t)element_ptr, val);
+            break;
+        case PROP_MICROPHONE_SET_APP_FUNCTIONS:
+        case PROP_USB_SRC_SET_APP_FUNCTIONS:
+            audio_src_ptr->appFunctions.open_func      = ((EXT_AUDIOELEMENT_DESC_T *)val)->open_func;
+            audio_src_ptr->appFunctions.close_func     = ((EXT_AUDIOELEMENT_DESC_T *)val)->close_func;
+            audio_src_ptr->appFunctions.start_func     = ((EXT_AUDIOELEMENT_DESC_T *)val)->start_func;
+            audio_src_ptr->appFunctions.process_func   = ((EXT_AUDIOELEMENT_DESC_T *)val)->process_func;
+            audio_src_ptr->appFunctions.set_param_func = ((EXT_AUDIOELEMENT_DESC_T *)val)->set_param_func;
+            audio_src_ptr->appFunctions.get_param_func = ((EXT_AUDIOELEMENT_DESC_T *)val)->get_param_func;
+            audio_src_ptr->appFunctions.mute_func      = ((EXT_AUDIOELEMENT_DESC_T *)val)->mute_func;
+            audio_src_ptr->appFunctions.volume_func    = ((EXT_AUDIOELEMENT_DESC_T *)val)->volume_func;
             break;
         default:
             ret = AUDIOSRC_ERROR_INVALID_ARGS;

@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -43,9 +40,34 @@ int streamer_build_audiosrc_pipeline(int8_t pipeline_index,
     AUDSRC_SET_NAME_T audsrc_name;
     StreamElement *element;
 
+    int audio_src_idx  = ELEMENT_LAST_INDEX;
+    int audio_sink_idx = ELEMENT_LAST_INDEX;
+
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    task_data->pipeline_type = pipeline_type;
+    switch (pipeline_type)
+    {
+        case STREAM_PIPELINE_PCM:
+            audio_src_idx  = ELEMENT_MICROPHONE_INDEX;
+            audio_sink_idx = ELEMENT_SPEAKER_INDEX;
+            break;
+
+        case STREAM_PIPELINE_PCM_USB_MIC:
+            audio_src_idx  = ELEMENT_MICROPHONE_INDEX;
+            audio_sink_idx = ELEMENT_USB_SINK_INDEX;
+            break;
+
+        case STREAM_PIPELINE_PCM_USB_SPEAKER:
+            audio_src_idx  = ELEMENT_USB_SRC_INDEX;
+            audio_sink_idx = ELEMENT_SPEAKER_INDEX;
+            break;
+        default:
+            audio_src_idx  = ELEMENT_LAST_INDEX;
+            audio_sink_idx = ELEMENT_LAST_INDEX;
+            break;
+    }
+
+    task_data->pipeline_type[pipeline_index] = pipeline_type;
 
     /* Create the pipeline */
     ret = create_pipeline(&task_data->pipes[pipeline_index], pipeline_index, pipeline_type, &task_data->mq_out);
@@ -56,36 +78,38 @@ int streamer_build_audiosrc_pipeline(int8_t pipeline_index,
     }
 
     /* Create each of the pipeline elements: AUDIOSRC, AUDIOSINK */
-    ret = create_element(&task_data->elems[ELEMENT_AUDIO_SRC_INDEX], TYPE_ELEMENT_AUDIO_SRC, 0);
+    ret = create_element(&task_data->elems[pipeline_index][audio_src_idx], TYPE_ELEMENT_AUDIO_SRC, 0);
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "create element(%d) failed:%d\n", ELEMENT_AUDIO_SRC_INDEX, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "create element(%d) failed:%d\n", audio_src_idx, ret);
         goto err_catch;
     }
 
-    ret = create_element(&task_data->elems[ELEMENT_AUDIO_SINK_INDEX], TYPE_ELEMENT_AUDIO_SINK, 0);
+    ret = create_element(&task_data->elems[pipeline_index][audio_sink_idx], TYPE_ELEMENT_AUDIO_SINK, 0);
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "create element(%d) failed:%d\n", ELEMENT_AUDIO_SINK_INDEX, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "create element(%d) failed:%d\n", audio_sink_idx, ret);
         goto err_catch;
     }
 
-    element = (StreamElement *)task_data->elems[ELEMENT_AUDIO_SINK_INDEX];
+    element = (StreamElement *)task_data->elems[pipeline_index][audio_sink_idx];
     /* Configure as push mode */
     element->sink_pad[0].scheduling = SCHEDULING_PUSH;
 
     /* Add each of the created elements to the pipeline */
-    ret = add_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[ELEMENT_AUDIO_SRC_INDEX], level++);
+    ret = add_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[pipeline_index][audio_src_idx],
+                               level++);
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "add element(%d) failed:%d\n", ELEMENT_AUDIO_SRC_INDEX, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "add element(%d) failed:%d\n", audio_src_idx, ret);
         goto err_catch;
     }
 
-    ret = add_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[ELEMENT_AUDIO_SINK_INDEX], level++);
+    ret = add_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[pipeline_index][audio_sink_idx],
+                               level++);
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "add element(%d) failed:%d\n", ELEMENT_AUDIO_SINK_INDEX, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "add element(%d) failed:%d\n", audio_sink_idx, ret);
         goto err_catch;
     }
 
@@ -94,11 +118,12 @@ int streamer_build_audiosrc_pipeline(int8_t pipeline_index,
      *    Level-0        Level-1(optional)  Level-2
      *   Audiosrc[src]->[sink]Queue[src]->[sink]Audio
      */
-    ret = link_elements(task_data->elems[ELEMENT_AUDIO_SRC_INDEX], 0, task_data->elems[ELEMENT_AUDIO_SINK_INDEX], 0);
+    ret = link_elements(task_data->elems[pipeline_index][audio_src_idx], 0,
+                        task_data->elems[pipeline_index][audio_sink_idx], 0);
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "link element(%d) to element(%d) failed:%d\n",
-                         ELEMENT_AUDIO_SRC_INDEX, ELEMENT_AUDIO_SINK_INDEX, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "link element(%d) to element(%d) failed:%d\n", audio_src_idx,
+                         audio_sink_idx, ret);
         goto err_catch;
     }
 
@@ -107,67 +132,72 @@ int streamer_build_audiosrc_pipeline(int8_t pipeline_index,
     /* Set the device name */
     audsrc_name.device_name        = in_dev_name;
     audsrc_name.output_device_name = out_dev_name;
-    prop.prop                      = PROP_AUDIOSRC_SET_DEVICE_NAME;
-    prop.val                       = (uintptr_t)&audsrc_name;
+    prop.prop =
+        (audio_src_idx == ELEMENT_USB_SRC_INDEX) ? PROP_USB_SRC_SET_DEVICE_NAME : PROP_MICROPHONE_SET_DEVICE_NAME;
+    prop.val = (uintptr_t)&audsrc_name;
 
-    ret = element_set_property(task_data->elems[ELEMENT_AUDIO_SRC_INDEX], prop.prop, prop.val);
+    ret = element_set_property(task_data->elems[pipeline_index][audio_src_idx], prop.prop, prop.val);
 
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                         ELEMENT_AUDIO_SRC_INDEX, PROP_AUDIOSRC_SET_DEVICE_NAME, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n", audio_src_idx,
+                         prop.prop, ret);
         goto err_catch;
     }
 
     /* Set the sample rate */
-    prop.prop = PROP_AUDIOSRC_SET_SAMPLE_RATE;
-    prop.val  = STREAMER_AUDIO_SRC_DEFAULT_SAMPLE_RATE;
+    prop.prop =
+        (audio_src_idx == ELEMENT_USB_SRC_INDEX) ? PROP_USB_SRC_SET_SAMPLE_RATE : PROP_MICROPHONE_SET_SAMPLE_RATE;
+    prop.val = STREAMER_AUDIO_SRC_DEFAULT_SAMPLE_RATE;
 
-    ret = element_set_property(task_data->elems[ELEMENT_AUDIO_SRC_INDEX], prop.prop, prop.val);
+    ret = element_set_property(task_data->elems[pipeline_index][audio_src_idx], prop.prop, prop.val);
 
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                         ELEMENT_AUDIO_SRC_INDEX, PROP_AUDIOSRC_SET_SAMPLE_RATE, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n", audio_src_idx,
+                         prop.prop, ret);
         goto err_catch;
     }
 
     /* Set the device type based on the input device name */
 
-    prop.val  = (uint32_t)AUDIOSRC_PCMRTOS;
-    prop.prop = PROP_AUDIOSRC_SET_DEVICE_TYPE;
+    prop.val = (uint32_t)AUDIOSRC_PCMRTOS;
+    prop.prop =
+        (audio_src_idx == ELEMENT_USB_SRC_INDEX) ? PROP_USB_SRC_SET_DEVICE_TYPE : PROP_MICROPHONE_SET_DEVICE_TYPE;
 
-    ret = element_set_property(task_data->elems[ELEMENT_AUDIO_SRC_INDEX], prop.prop, prop.val);
+    ret = element_set_property(task_data->elems[pipeline_index][audio_src_idx], prop.prop, prop.val);
 
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                         ELEMENT_AUDIO_SRC_INDEX, PROP_AUDIOSRC_SET_DEVICE_TYPE, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n", audio_src_idx,
+                         prop.prop, ret);
         goto err_catch;
     }
 
     /* Set the audio sink output device */
-    prop.prop = PROP_AUDIOSINK_DEVICE_DRIVER_TYPE;
-    prop.val  = STREAMER_DEFAULT_OUT_DEVICE;
-    ret       = element_set_property(task_data->elems[ELEMENT_AUDIO_SINK_INDEX], prop.prop, prop.val);
+    prop.prop =
+        (audio_sink_idx == ELEMENT_USB_SINK_INDEX) ? PROP_USB_SINK_DEVICE_DRIVER_TYPE : PROP_SPEAKER_DEVICE_DRIVER_TYPE;
+    prop.val = STREAMER_DEFAULT_OUT_DEVICE;
+    ret      = element_set_property(task_data->elems[pipeline_index][audio_sink_idx], prop.prop, prop.val);
 
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                         ELEMENT_AUDIO_SINK_INDEX, PROP_AUDIOSINK_DEVICE_DRIVER_TYPE, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n", audio_sink_idx,
+                         prop.prop, ret);
         goto err_catch;
     }
 
     /* Set the audio sink device name */
-    prop.prop = PROP_AUDIOSINK_DEVICE_DRIVER_STRING_NAME;
+    prop.prop = (audio_sink_idx == ELEMENT_USB_SINK_INDEX) ? PROP_USB_SINK_DEVICE_DRIVER_STRING_NAME :
+                                                             PROP_SPEAKER_DEVICE_DRIVER_STRING_NAME;
     prop.val  = (uintptr_t)out_dev_name;
 
-    ret = element_set_property(task_data->elems[ELEMENT_AUDIO_SINK_INDEX], prop.prop, prop.val);
+    ret = element_set_property(task_data->elems[pipeline_index][audio_sink_idx], prop.prop, prop.val);
 
     if (STREAM_OK != ret)
     {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                         ELEMENT_AUDIO_SINK_INDEX, PROP_AUDIOSINK_DEVICE_DRIVER_STRING_NAME, ret);
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n", audio_sink_idx,
+                         prop.prop, ret);
         goto err_catch;
     }
 
@@ -186,11 +216,36 @@ err_catch:
 int streamer_destroy_audiosrc_pipeline(int8_t pipeline_index, STREAMER_T *task_data)
 {
     int ret;
+    int audio_src_idx  = ELEMENT_LAST_INDEX;
+    int audio_sink_idx = ELEMENT_LAST_INDEX;
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
+    switch (task_data->pipeline_type[pipeline_index])
+    {
+        case STREAM_PIPELINE_PCM:
+            audio_src_idx  = ELEMENT_MICROPHONE_INDEX;
+            audio_sink_idx = ELEMENT_SPEAKER_INDEX;
+            break;
+
+        case STREAM_PIPELINE_PCM_USB_MIC:
+            audio_src_idx  = ELEMENT_MICROPHONE_INDEX;
+            audio_sink_idx = ELEMENT_USB_SINK_INDEX;
+            break;
+
+        case STREAM_PIPELINE_PCM_USB_SPEAKER:
+            audio_src_idx  = ELEMENT_USB_SRC_INDEX;
+            audio_sink_idx = ELEMENT_SPEAKER_INDEX;
+            break;
+        default:
+            audio_src_idx  = ELEMENT_LAST_INDEX;
+            audio_sink_idx = ELEMENT_LAST_INDEX;
+            break;
+    }
+
     /* unlink elements in pipeline */
-    ret = unlink_elements(task_data->elems[ELEMENT_AUDIO_SRC_INDEX], 0, task_data->elems[ELEMENT_AUDIO_SINK_INDEX], 0);
+    ret = unlink_elements(task_data->elems[pipeline_index][audio_src_idx], 0,
+                          task_data->elems[pipeline_index][audio_sink_idx], 0);
     if (STREAM_OK != ret)
     {
         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Failed to unlink audio src and audio sink\n");
@@ -198,14 +253,14 @@ int streamer_destroy_audiosrc_pipeline(int8_t pipeline_index, STREAMER_T *task_d
     }
 
     /* remove_elements from pipeline*/
-    ret = remove_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[ELEMENT_AUDIO_SRC_INDEX]);
+    ret = remove_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[pipeline_index][audio_src_idx]);
     if (STREAM_OK != ret)
     {
         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Failed to remove audio src\n");
         return ret;
     }
 
-    ret = remove_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[ELEMENT_AUDIO_SINK_INDEX]);
+    ret = remove_element_pipeline(task_data->pipes[pipeline_index], task_data->elems[pipeline_index][audio_sink_idx]);
     if (STREAM_OK != ret)
     {
         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Failed to remove audio sink\n");
@@ -213,21 +268,21 @@ int streamer_destroy_audiosrc_pipeline(int8_t pipeline_index, STREAMER_T *task_d
     }
 
     /* destroy elements*/
-    ret = destroy_element(task_data->elems[ELEMENT_AUDIO_SRC_INDEX]);
+    ret = destroy_element(task_data->elems[pipeline_index][audio_src_idx]);
     if (STREAM_OK != ret)
     {
         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Failed to remove audio src\n");
         return ret;
     }
-    task_data->elems[ELEMENT_AUDIO_SRC_INDEX] = (uintptr_t)NULL;
+    task_data->elems[pipeline_index][audio_src_idx] = (uintptr_t)NULL;
 
-    ret = destroy_element(task_data->elems[ELEMENT_AUDIO_SINK_INDEX]);
+    ret = destroy_element(task_data->elems[pipeline_index][audio_sink_idx]);
     if (STREAM_OK != ret)
     {
         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Failed to remove audio sink\n");
         return ret;
     }
-    task_data->elems[ELEMENT_AUDIO_SINK_INDEX] = (uintptr_t)NULL;
+    task_data->elems[pipeline_index][audio_sink_idx] = (uintptr_t)NULL;
 
     /* destroy pipeline*/
     ret = destroy_pipeline(task_data->pipes[pipeline_index]);

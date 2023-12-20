@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef PIPELINE_H
@@ -341,6 +338,15 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg);
  * @return none
  */
 int32_t set_repeat_pipeline(PipelineHandle handle, bool repeat);
+
+/*!
+ * @brief Get pipeline repeat mode
+ * @param handle Pointer to a pipeline object
+ *
+ * @return repeat repeat true or false
+ */
+bool get_repeat_pipeline(PipelineHandle handle);
+
 /*!
  * @brief Clears the pipeline track info cache
  * @details Clears all track info from the pipeline cache

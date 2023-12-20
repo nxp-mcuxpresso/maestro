@@ -6,5 +6,8 @@ var streamer__element__properties_8h =
     [ "STRING_DESC_T", "structSTRING__DESC__T.html", "structSTRING__DESC__T" ],
     [ "MEMSRC_SET_BUFFER_T", "structMEMSRC__SET__BUFFER__T.html", "structMEMSRC__SET__BUFFER__T" ],
     [ "AUDSRC_SET_NAME_T", "structAUDSRC__SET__NAME__T.html", "structAUDSRC__SET__NAME__T" ],
-    [ "QUEUE_SET_BUFFER_T", "structQUEUE__SET__BUFFER__T.html", "structQUEUE__SET__BUFFER__T" ]
+    [ "QUEUE_SET_BUFFER_T", "structQUEUE__SET__BUFFER__T.html", "structQUEUE__SET__BUFFER__T" ],
+    [ "EXT_PROCESS_REFDAT_DESC_T", "structEXT__PROCESS__REFDAT__DESC__T.html", "structEXT__PROCESS__REFDAT__DESC__T" ],
+    [ "AudioRefData_t", "structAudioRefData__t.html", "structAudioRefData__t" ],
+    [ "EXT_AUDIOELEMENT_DESC_T", "structEXT__AUDIOELEMENT__DESC__T.html", "structEXT__AUDIOELEMENT__DESC__T" ]
 ];

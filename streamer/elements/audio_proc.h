@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef AUDIO_PROC_H
@@ -16,6 +13,7 @@
  */
 
 #include "streamer_element.h"
+#include "streamer_element_properties.h"
 
 /** @brief Get audio chunk size */
 #define AUDIO_CHUNK_SIZE(pstaudio_packet) ((pstaudio_packet)->chunk_size)
@@ -38,6 +36,21 @@ typedef int (*AudioProcPostProcFunc)(void *, void *, int);
  * @brief audio sink deinitialize function proto type
  */
 typedef int (*AudioProcDeinitFunc)(void);
+
+/*!
+ * @brief Function prototype for set num of reference data buffers
+ */
+typedef int (*AudioProcRefDataSetNumBuffFunc)(int);
+
+/*!
+ * @brief Function prototype for processing reference data (VoiceSeeker)
+ */
+typedef int (*AudioProcRefDataPushFunc)(void *);
+
+/*!
+ * @brief Function to set debugging (VoiceSeeker)
+ */
+typedef int (*AudioProcSetDebuggingFunc)(bool);
 
 /*!
  * @brief VIT sink element's data structure.
@@ -71,6 +84,12 @@ struct _ElementAudioProc
     AudioProcDeinitFunc deinit_func; /*!< @brief AUDIO_PROC deinit function pointer */
     void *arg_ptr;                   /*!< @brief AUDIO_PROC arguments pointer */
     bool initialized;                /*!< @brief AUDIO_PROC initialized flag */
+
+    /* VoiceSeeker functions */
+    AudioProcRefDataSetNumBuffFunc
+        refdata_set_num_buff_func; /*!< @brief Function to set number of reference data buffers(VoiceSeeker) */
+    AudioProcRefDataPushFunc refdata_push_func;   /*!< @brief Function to process reference data (VoiceSeeker) */
+    AudioProcSetDebuggingFunc set_debugging_func; /*!< @brief Function to set debugging (VoiceSeeker) */
 };
 typedef struct _ElementAudioProc ElementAudioProc;
 
@@ -116,5 +135,14 @@ int32_t audio_proc_register_ext_processing(ElementHandle element,
                                            AudioProcPostProcFunc proc_func_ptr,
                                            AudioProcDeinitFunc deinit_func_ptr,
                                            void *arg_ptr);
+
+int32_t audio_proc_register_refdata_processing(ElementHandle element,
+                                               AudioProcRefDataSetNumBuffFunc set_num_buff,
+                                               AudioProcRefDataPushFunc refdata_push,
+                                               AudioProcSetDebuggingFunc set_debugging);
+
+int32_t audio_proc_refdata_set_num_buff(ElementHandle element, uint32_t num_buff);
+int32_t audio_proc_refdata_push(ElementHandle element, AudioRefData_t *ref_data);
+int32_t audio_proc_set_debugging(ElementHandle element, bool set_debugging);
 
 #endif

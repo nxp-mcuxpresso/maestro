@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -38,7 +35,7 @@ const codec_interface_function_table_t g_codec_function_table[STREAM_TYPE_COUNT]
         NULL,
         NULL,
     },
-#ifdef CASCFG_ENABLE_MP3_CODEC
+#ifdef MP3_DEC
     {
         &MP3DecoderGetMemorySize,
         &MP3DecoderInit,
@@ -172,7 +169,7 @@ const codec_interface_function_table_t g_codec_function_table[STREAM_TYPE_COUNT]
 
 #endif /* OGG_OPUS_DEC */
 
-#ifdef AAC_DEC
+#if defined(AAC_DEC) && !defined(__ICCARM__)
     {
         &AACDecoderGetMemorySize,
         &AACDecoderInit,

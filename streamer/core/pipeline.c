@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -644,8 +641,7 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
         case MSG_EOS:
             if (pipeline->repeat)
             {
-                set_state_pipeline((PipelineHandle)pipeline, STATE_NULL);
-                set_state_pipeline((PipelineHandle)pipeline, STATE_PLAYING);
+                seek_pipeline((PipelineHandle)pipeline, 0);
             }
             else
             {
@@ -963,6 +959,20 @@ int32_t set_repeat_pipeline(PipelineHandle handle, bool repeat)
 
     STREAMER_FUNC_EXIT(DBG_CORE);
     return STREAM_OK;
+}
+
+bool get_repeat_pipeline(PipelineHandle handle)
+{
+    Pipeline *pipeline = (Pipeline *)handle;
+
+    STREAMER_FUNC_ENTER(DBG_CORE);
+
+    /* If any of the arguments are invalid */
+    if (pipeline == NULL)
+        return STREAM_ERR_INVALID_ARGS;
+
+    STREAMER_FUNC_EXIT(DBG_CORE);
+    return pipeline->repeat;
 }
 
 void clear_pipeline_trackinfo(PipelineHandle handle)

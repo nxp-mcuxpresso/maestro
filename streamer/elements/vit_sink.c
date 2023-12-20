@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -77,7 +74,7 @@ static FlowReturn vitsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *b
     FlowReturn ret                   = FLOW_OK;
     uint32_t pkt_hdr_size            = 0, raw_data_size;
     int8_t *data_ptr;
-    char dummy_arg;
+    int dummy_arg = 0;
     int vit_ret;
     AudioPacketHeader *data_packet = NULL;
     uint32_t chunk_size;
@@ -141,7 +138,7 @@ static FlowReturn vitsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *b
         STREAMER_LOG_DEBUG(DBG_VIT_SINK, "[Vit SINK]External VIT process function is not registered");
         return FLOW_ERROR;
     }
-    vit_ret = vit_sink_element->proc_func(&dummy_arg, (short *)data_ptr, chunk_size);
+    vit_ret = vit_sink_element->proc_func((void *)&pkt_hdr_size, (void *)buf, chunk_size);
     if (vit_ret != 0)
     {
         STREAMER_LOG_DEBUG(DBG_VIT_SINK, "[Vit SINK]VIT Execute: %d\n", vit_ret);
@@ -259,6 +256,10 @@ static int32_t vitsink_change_state(StreamElement *element_ptr, PipelineState ne
 
         case STATE_CHANGE_READY_TO_NULL:
             STREAMER_LOG_DEBUG(DBG_VIT_SINK, "[VIT SINK]STATE_CHANGE_READY_TO_NULL\n");
+            if ((vit_sink_ptr->initialized == true) && (vit_sink_ptr->deinit_func != NULL))
+            {
+                vit_sink_ptr->deinit_func();
+            }
             /* Nothing to do here for a VIT sink */
             break;
 
@@ -348,12 +349,12 @@ static int32_t vitsink_set_property(StreamElement *element_ptr, uint16_t prop, u
 
     switch (prop)
     {
-        case PROP_VITSINK_FPOINT:
+        case PROP_VITSINK_FUNCPTR:
         {
             EXT_PROCESS_DESC_T *desc_ptr = (EXT_PROCESS_DESC_T *)val;
             ret                          = vit_register_ext_processing((ElementHandle)element_ptr, desc_ptr->init_func,
-                                              (VitSinkPostProcFunc)desc_ptr->proc_func, desc_ptr->deinit_func,
-                                              desc_ptr->arg_ptr);
+                                                                       (VitSinkPostProcFunc)desc_ptr->proc_func, desc_ptr->deinit_func,
+                                                                       desc_ptr->arg_ptr);
         }
         break;
             /*

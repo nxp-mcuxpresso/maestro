@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -436,8 +433,7 @@ int32_t filesrc_src_pad_process(StreamPad *pad)
         }
         else if (ret != FLOW_ERROR)
         {
-            /* Update audio packet header values as values may have been changed in the AUDIO_PROC element as part of a
-             * crossover preset */
+            /* Update audio packet header values as values may have been changed in the AUDIO_PROC element. */
             if (filesrc->file_type == AUDIO_DATA)
             {
                 AudioPacketHeader *pkt_hdr = NULL;
@@ -1126,7 +1122,7 @@ static int32_t filesrc_set_property(StreamElement *element_ptr, uint16_t prop, u
 
         case PROP_FILESRC_SET_FILE_TYPE:
             STREAMER_LOG_DEBUG(DBG_FILESRC, "set file type:%d\n", val);
-            if (val < 0 || val > 1)
+            if (val > 1)
             {
                 ret = STREAM_ERR_INVALID_ARGS;
             }

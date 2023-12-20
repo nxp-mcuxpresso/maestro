@@ -1,10 +1,7 @@
 /*
- * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ * Copyright 2018-2023 NXP.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*!
@@ -22,10 +19,11 @@
 #include "streamer_fs.h"
 #include "streamer_mic2file.h"
 #include "streamer_vit.h"
-#include "streamer_testeapfile2file.h"
 #include "streamer_audiosrc.h"
 #include "streamer_element_properties.h"
 #include "streamer_pcm_speaker.h"
+#include "streamer_pcm_speaker_mem.h"
+#include "streamer_vit_filesink.h"
 
 #ifdef STREAMER_ENABLE_MEM_SRC
 #include "mem_src.h"
@@ -61,29 +59,21 @@ typedef struct
  * is associated with. Properties can be used to configure the individual
  * pipeline elements.
  */
-static ElementPropertyLookup property_lookup_table[] = {{PROP_AUDIOSRC_MASK, ELEMENT_AUDIO_SRC_INDEX},
-#ifdef STREAMER_ENABLE_FILESRC
+static ElementPropertyLookup property_lookup_table[] = {{PROP_MICROPHONE_MASK, ELEMENT_MICROPHONE_INDEX},
                                                         {PROP_FILESRC_MASK, ELEMENT_FILE_SRC_INDEX},
-#endif
-#ifdef STREAMER_ENABLE_MEM_SRC
                                                         {PROP_MEMSRC_MASK, ELEMENT_MEM_SRC_INDEX},
-#endif
                                                         {PROP_NETBUFSRC_MASK, ELEMENT_NETBUF_SRC_INDEX},
                                                         {PROP_DECODER_MASK, ELEMENT_DECODER_INDEX},
-                                                        {PROP_AUDIOSINK_MASK, ELEMENT_AUDIO_SINK_INDEX},
-#ifdef STREAMER_ENABLE_FILE_SINK
+                                                        {PROP_SPEAKER_MASK, ELEMENT_SPEAKER_INDEX},
                                                         {PROP_FILESINK_MASK, ELEMENT_FILE_SINK_INDEX},
-#endif
-#ifdef STREAMER_ENABLE_MEM_SINK
                                                         {PROP_MEMSINK_MASK, ELEMENT_MEM_SINK_INDEX},
-#endif
-#ifdef STREAMER_ENABLE_VIT_SINK
                                                         {PROP_VITSINK_MASK, ELEMENT_VIT_INDEX},
-#endif
-#ifdef STREAMER_ENABLE_AUDIO_PROC
-                                                        {PROP_AUDIO_PROC_MASK, ELEMENT_AUDIO_PROC_INDEX},
-#endif
-                                                        {PROP_ENCODER_MASK, ELEMENT_ENCODER_INDEX}};
+                                                        {PROP_VOICESEEKER_MASK, ELEMENT_VOICESEEKER_INDEX},
+                                                        {PROP_SRC_MASK, ELEMENT_SRC_INDEX},
+                                                        {PROP_ENCODER_MASK, ELEMENT_ENCODER_INDEX},
+                                                        {PROP_USB_SRC_MASK, ELEMENT_USB_SRC_INDEX},
+                                                        {PROP_USB_SINK_MASK, ELEMENT_USB_SINK_INDEX},
+                                                        {PROP_ASRC_MASK, ELEMENT_ASRC_INDEX}};
 
 /*
  * GLOBAL FUNCTIONS
@@ -127,11 +117,12 @@ int streamer_msg_create_pipeline(STREAMER_T *task_data, void *msg_data)
             case STREAM_PIPELINE_FILESYSTEM:
             case STREAM_PIPELINE_MEM:
             case STREAM_PIPELINE_NETBUF:
-            case STREAM_PIPELINE_AUDIO_PROC:
                 ret = streamer_build_fs_pipeline(streamer_msg->pipeline_index, streamer_msg->out_dev_name,
                                                  streamer_msg->pipeline_type, task_data);
                 break;
             case STREAM_PIPELINE_PCM:
+            case STREAM_PIPELINE_PCM_USB_MIC:
+            case STREAM_PIPELINE_PCM_USB_SPEAKER:
                 ret = streamer_build_audiosrc_pipeline(streamer_msg->pipeline_index, streamer_msg->in_dev_name,
                                                        streamer_msg->out_dev_name, streamer_msg->pipeline_type,
                                                        task_data);
@@ -145,20 +136,24 @@ int streamer_msg_create_pipeline(STREAMER_T *task_data, void *msg_data)
                 ret = streamer_build_vit_pipeline(streamer_msg->pipeline_index, streamer_msg->in_dev_name,
                                                   streamer_msg->out_dev_name, streamer_msg->pipeline_type, task_data);
                 break;
-
+            case STREAM_PIPELINE_VIT_FILESINK:
+                ret = streamer_build_vit_filesink_pipeline(streamer_msg->pipeline_index, streamer_msg->in_dev_name,
+                                                           streamer_msg->out_dev_name, streamer_msg->pipeline_type,
+                                                           task_data);
+                break;
             case STREAM_PIPELINE_OPUS_MEM2MEM:
                 ret = streamer_build_opusmem2mem_pipeline(streamer_msg->pipeline_index, streamer_msg->pipeline_type,
                                                           task_data);
                 break;
 
             case STREAM_PIPELINE_PCM_AUDIO:
-            case STREAM_PIPELINE_PCM_AUDIO_PROC_AUDIO:
                 ret = streamer_build_pcm_speaker_pipeline(streamer_msg->pipeline_index, streamer_msg->pipeline_type,
                                                           task_data);
                 break;
-            case STREAM_PIPELINE_TEST_AUDIO_PROCFILE2FILE:
-                ret = streamer_build_audio_procfile2file_pipeline(streamer_msg->pipeline_index,
-                                                                  streamer_msg->pipeline_type, task_data);
+
+            case STREAM_PIPELINE_PCM_AUDIO_MEM:
+                ret = streamer_build_pcm_speaker_mem_pipeline(streamer_msg->pipeline_index, streamer_msg->pipeline_type,
+                                                              task_data);
                 break;
 
             default:
@@ -212,11 +207,12 @@ int streamer_msg_destroy_pipeline(STREAMER_T *task_data, void *msg_data)
             case STREAM_PIPELINE_FILESYSTEM:
             case STREAM_PIPELINE_MEM:
             case STREAM_PIPELINE_NETBUF:
-            case STREAM_PIPELINE_AUDIO_PROC:
                 ret = streamer_destroy_fs_pipeline(streamer_msg->pipeline_index, task_data);
                 break;
 
             case STREAM_PIPELINE_PCM:
+            case STREAM_PIPELINE_PCM_USB_MIC:
+            case STREAM_PIPELINE_PCM_USB_SPEAKER:
                 ret = streamer_destroy_audiosrc_pipeline(streamer_msg->pipeline_index, task_data);
                 break;
 
@@ -231,13 +227,14 @@ int streamer_msg_destroy_pipeline(STREAMER_T *task_data, void *msg_data)
             case STREAM_PIPELINE_VIT:
                 ret = streamer_destroy_vit_pipeline(streamer_msg->pipeline_index, task_data);
                 break;
+            case STREAM_PIPELINE_VIT_FILESINK:
+                ret = streamer_destroy_vit_filesink_pipeline(streamer_msg->pipeline_index, task_data);
+                break;
             case STREAM_PIPELINE_PCM_AUDIO:
-            case STREAM_PIPELINE_PCM_AUDIO_PROC_AUDIO:
                 ret = streamer_destroy_pcm_speaker_pipeline(streamer_msg->pipeline_index, task_data);
                 break;
-
-            case STREAM_PIPELINE_TEST_AUDIO_PROCFILE2FILE:
-                ret = streamer_destroy_audio_procfile2file_pipeline(streamer_msg->pipeline_index, task_data);
+            case STREAM_PIPELINE_PCM_AUDIO_MEM:
+                ret = streamer_destroy_pcm_speaker_mem_pipeline(streamer_msg->pipeline_index, task_data);
                 break;
 
             default:
@@ -491,12 +488,6 @@ static int streamer_get_element_index(STREAMER_T *task_data, ELEMENT_PROPERTY_T 
         return element_idx;
     }
 
-    if (!task_data->elems[element_idx])
-    {
-        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Unable to find element (index = %d)\n", element_idx);
-        element_idx = ELEMENT_NOT_USED;
-    }
-
     STREAMER_FUNC_EXIT(DBG_CORE);
     return element_idx;
 }
@@ -529,7 +520,14 @@ int streamer_msg_set_property(STREAMER_T *task_data, void *msg_data)
         return STREAM_ERR_INVALID_ARGS;
     }
 
-    ret = element_set_property(task_data->elems[element_index], property.prop, property.val);
+    if (!task_data->elems[streamer_msg->pipeline_index][element_index])
+    {
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_INVALID_ARGS;
+    }
+
+    ret = element_set_property(task_data->elems[streamer_msg->pipeline_index][element_index], property.prop,
+                               property.val);
 
     if (ret != STREAM_OK)
     {
@@ -569,8 +567,14 @@ int streamer_msg_get_property(STREAMER_T *task_data, void *msg_data)
         return STREAM_ERR_INVALID_ARGS;
     }
 
-    ret = element_get_property(task_data->elems[element_index], streamer_msg->element_property.prop,
-                               streamer_msg->get_value);
+    if (!task_data->elems[streamer_msg->pipeline_index][element_index])
+    {
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_INVALID_ARGS;
+    }
+
+    ret = element_get_property(task_data->elems[streamer_msg->pipeline_index][element_index],
+                               streamer_msg->element_property.prop, streamer_msg->get_value);
 
     streamer_msg->errorcode = ret;
 
@@ -629,10 +633,11 @@ int streamer_msg_set_file(STREAMER_T *task_data, void *msg_data)
     }
 
     /* SET THE FILE PATH FOR FILESOURCE ELEMENT */
-    if (task_data->elems[ELEMENT_FILE_SRC_INDEX])
+    if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX])
     {
         property.prop = PROP_FILESRC_SET_LOCATION;
-        ret           = element_set_property(task_data->elems[ELEMENT_FILE_SRC_INDEX], property.prop, property.val);
+        ret           = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX],
+                                             property.prop, property.val);
         if (STREAM_OK != ret)
         {
             STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
@@ -648,11 +653,12 @@ int streamer_msg_set_file(STREAMER_T *task_data, void *msg_data)
         return STREAM_ERR_ELEMENT_NOT_FOUND;
     }
 
-    if (task_data->elems[ELEMENT_DECODER_INDEX])
+    if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX])
     {
         property.prop = PROP_DECODER_DECODER_TYPE;
         property.val  = config.decoder_type;
-        ret           = element_set_property(task_data->elems[ELEMENT_DECODER_INDEX], property.prop, property.val);
+        ret = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX], property.prop,
+                                   property.val);
         if (STREAM_OK != ret)
         {
             STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
@@ -665,7 +671,8 @@ int streamer_msg_set_file(STREAMER_T *task_data, void *msg_data)
         {
             property.prop = PROP_FILESRC_SET_CHUNK_SIZE;
             property.val  = STREAMER_WAVE_FILE_CHUNK_SIZE;
-            ret           = element_set_property(task_data->elems[ELEMENT_FILE_SRC_INDEX], property.prop, property.val);
+            ret           = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX],
+                                                 property.prop, property.val);
 
             if (STREAM_OK != ret)
             {
@@ -682,13 +689,14 @@ int streamer_msg_set_file(STREAMER_T *task_data, void *msg_data)
     }
 
     /* CCI contains the parsers, omit the streamer parser element if using CCI */
-    if (task_data->elems[ELEMENT_DECODER_INDEX])
+    if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX])
     {
         /* CONFIGURE DECODER ACCORDING TO PARSER TYPE*/
         property.prop = PROP_DECODER_PARSE_TAG;
         property.val  = PARSER_TYPE_BY_PASS == config.parser_type ? true : false;
 
-        ret = element_set_property(task_data->elems[ELEMENT_DECODER_INDEX], property.prop, property.val);
+        ret = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX], property.prop,
+                                   property.val);
 
         if (STREAM_OK != ret)
         {

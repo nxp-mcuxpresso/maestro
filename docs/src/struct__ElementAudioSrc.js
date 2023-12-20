@@ -1,7 +1,7 @@
 var struct__ElementAudioSrc =
 [
     [ "change_state", "struct__ElementAudioSrc.html#a45b0956a959a79669b0a9b1c0002f394", null ],
-    [ "set_property", "struct__ElementAudioSrc.html#a395dce930f285b3a84a72935364dc297", null ],
+    [ "set_property", "struct__ElementAudioSrc.html#a88a55c2926945d80137ad211427f9e41", null ],
     [ "get_property", "struct__ElementAudioSrc.html#a166a68def3c27a1232092b4a0cf7cea2", null ],
     [ "parent", "struct__ElementAudioSrc.html#a60ba4d6cdc8a1b0d51bd6de6af051d07", null ],
     [ "key", "struct__ElementAudioSrc.html#a6ddadb20fd9efab175b29d1b17941bb6", null ],
@@ -24,5 +24,6 @@ var struct__ElementAudioSrc =
     [ "continuous_read", "struct__ElementAudioSrc.html#a9c60119579c3c8aca7a434e64c77f5ff", null ],
     [ "dummy_tx", "struct__ElementAudioSrc.html#ac0a36900a9fa22ffd4918971337e4867", null ],
     [ "frame_ms", "struct__ElementAudioSrc.html#a732a0a4e14239445fe379514e0b90192", null ],
-    [ "first_run", "struct__ElementAudioSrc.html#af645179167e85e75b56ee7099376780a", null ]
+    [ "first_run", "struct__ElementAudioSrc.html#af645179167e85e75b56ee7099376780a", null ],
+    [ "appFunctions", "struct__ElementAudioSrc.html#ad6fd7cd2d8e4288200b54cb498cd9f65", null ]
 ];

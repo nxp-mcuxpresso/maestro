@@ -1,10 +1,7 @@
 /*
  * Copyright 2018-2022 NXP.
- * This software is owned or controlled by NXP and may only be used strictly in accordance with the
- * license terms that accompany it. By expressly accepting such terms or by downloading, installing,
- * activating and/or otherwise using the software, you are agreeing that you have read, and that you
- * agree to comply with and are bound by, such license terms. If you do not agree to be bound by the
- * applicable license terms, then you may not retain, install, activate or otherwise use the software.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #ifndef CCIDEC_H
@@ -25,6 +22,8 @@
  * STRUCTURES AND OTHER TYPEDEFS
  */
 
+#define NUM_OF_PING_PONG_BUFFER 2
+
 /**
  * @brief Common codec interface information
  *
@@ -42,7 +41,7 @@ typedef struct
                                       decrement this as read from filesrc_buffer */
     uint32_t filesrc_offset[3];    /*!< @brief represents offset into the file
                                     (from StreamBuffer buffer.offset) */
-    uint8_t *packed_buffer[CASCFG_NUM_OF_PING_PONG_BUFFER]; /*!< @brief buffer used to create audio packet -
+    uint8_t *packed_buffer[NUM_OF_PING_PONG_BUFFER]; /*!< @brief buffer used to create audio packet -
                                  used by StreamBuffer */
     int32_t dec_frame_size;                                 /*!< @brief Used to keep the maximum buffer size
                                                                   and depending of the decoder type>*/

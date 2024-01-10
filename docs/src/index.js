@@ -23,7 +23,7 @@ var index =
       [ "Codecs", "index.html#autotoc_md19", null ],
       [ "VIT", "index.html#autotoc_md20", null ],
       [ "VoiceSeeker", "index.html#autotoc_md21", null ],
-      [ "EAP", "index.html#autotoc_md22", null ],
-      [ "SSRC", "index.html#autotoc_md23", null ]
+      [ "SSRC", "index.html#autotoc_md22", null ],
+      [ "ASRC", "index.html#autotoc_md23", null ]
     ] ]
 ];

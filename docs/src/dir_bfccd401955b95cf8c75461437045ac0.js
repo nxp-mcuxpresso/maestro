@@ -7,6 +7,5 @@ var dir_bfccd401955b95cf8c75461437045ac0 =
     [ "ringbuffer.h", "ringbuffer_8h.html", "ringbuffer_8h" ],
     [ "streamer_api.h", "streamer__api_8h.html", "streamer__api_8h" ],
     [ "streamer_element_properties.h", "streamer__element__properties_8h.html", "streamer__element__properties_8h" ],
-    [ "streamer_message.h", "streamer__message_8h.html", "streamer__message_8h" ],
-    [ "streamer_pcm.h", "streamer__pcm_8h.html", "streamer__pcm_8h" ]
+    [ "streamer_message.h", "streamer__message_8h.html", "streamer__message_8h" ]
 ];

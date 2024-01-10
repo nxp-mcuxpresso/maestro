@@ -1,18 +1,30 @@
 maestro                    Name: Maestro Audio Framework
-                           Version: 1.5.0
-                           Outgoing License: LA_OPT_NXP_Software_License.txt
-                           v39 August 2022- Additional distribution license
-                           granted - License in Section 2.3 applies
-                           License File: LA_OPT_NXP_Software_License.txt
-                           Format: Source and static libraries
+                           Version: 1.7.0
+                           Outgoing License: LA_OPT_NXP_Software_License.txt September 2023 - Additional distribution license - License in Section 2.3 applies
+                           License File: LICENSE.txt
+                           Format: Maestro package
                            Description: Maestro MCU Audio Framework
                            Location: https://github.com/nxp-mcuxpresso/maestro
+
+Package content:
+                           Precompiled libraries
+                           Outgoing License: LA_OPT_NXP_Software_License.txt September 2023 - Additional distribution license - License in Section 2.3 applies
+                           License File: LICENSE.txt
+                           Release location: ./libs/*
+                           Format: Binary
                            Origin: NXP (Proprietary)
                                    Flac (BSD 3-clause)
+                           Url:    https://github.com/xiph/flac
+
+                           Redistributable source files
+                           Outgoing License: BSD 3-clause
+                           License File: COPYING-BSD-3
+                           Release location: ./config/*, .inc/*, .mcu-audio/*, .streamer/*, .template/*
+                           Format: Source and header files
+                           Origin: NXP (BSD 3-clause)
                                    Ogg (BSD 3-clause)
                                    Opus (BSD 3-clause)
                                    Opusfile (BSD 3-clause)
-                           Url: https://github.com/xiph/flac
-                                https://github.com/xiph/ogg
-                                https://github.com/xiph/opus
-                                https://github.com/xiph/opusfile
+                           Url:    https://github.com/xiph/ogg
+                                   https://github.com/xiph/opus
+                                   https://github.com/xiph/opusfile

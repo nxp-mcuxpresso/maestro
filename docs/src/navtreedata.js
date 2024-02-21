@@ -25,34 +25,7 @@
 var NAVTREE =
 [
   [ "Maestro Audio Framework", "index.html", [
-    [ "Getting started with Maestro framework", "index.html", [
-      [ "Introduction", "index.html#autotoc_md1", null ],
-      [ "Supported examples", "index.html#autotoc_md2", [
-        [ "maestro_playback", "index.html#autotoc_md3", null ],
-        [ "maestro_record", "index.html#autotoc_md4", null ],
-        [ "maestro_usb_mic", "index.html#autotoc_md5", null ],
-        [ "maestro_usb_speaker", "index.html#autotoc_md6", null ],
-        [ "maestro_sync", "index.html#autotoc_md7", null ]
-      ] ],
-      [ "Example applications overview", "index.html#autotoc_md8", null ],
-      [ "Commands", "index.html#autotoc_md9", [
-        [ "version", "index.html#autotoc_md10", null ],
-        [ "file", "index.html#autotoc_md11", null ],
-        [ "record_mic", "index.html#autotoc_md12", null ],
-        [ "opus encode", "index.html#autotoc_md13", null ],
-        [ "usb_mic", "index.html#autotoc_md14", null ],
-        [ "usb_speaker", "index.html#autotoc_md15", null ],
-        [ "start", "index.html#autotoc_md16", null ]
-      ] ],
-      [ "Configuration options", "index.html#autotoc_md17", null ],
-      [ "Supported features", "index.html#autotoc_md18", [
-        [ "Codecs", "index.html#autotoc_md19", null ],
-        [ "VIT", "index.html#autotoc_md20", null ],
-        [ "VoiceSeeker", "index.html#autotoc_md21", null ],
-        [ "EAP", "index.html#autotoc_md22", null ],
-        [ "SSRC", "index.html#autotoc_md23", null ]
-      ] ]
-    ] ],
+    [ "Getting started with Maestro framework", "index.html", "index" ],
     [ "Maestro Audio Framework Programmer's Guide", "md_ProgrammersGuide.html", [
       [ "Introduction", "md_ProgrammersGuide.html#autotoc_md25", null ],
       [ "Architecture overview", "md_ProgrammersGuide.html#autotoc_md26", null ],
@@ -79,31 +52,31 @@ var NAVTREE =
       [ "Element properties", "md_CeiEncoder.html#autotoc_md44", null ],
       [ "CEI definition - implementing your own encoder", "md_CeiEncoder.html#autotoc_md45", null ]
     ] ],
-    [ "AAC decoder", "aacdec_start.html", [
-      [ "AAC decoder features", "aacdec_start.html#autotoc_md46", null ],
-      [ "Specification and reference", "aacdec_start.html#autotoc_md47", null ],
-      [ "Performance", "aacdec_start.html#autotoc_md48", [
-        [ "Memory information", "aacdec_start.html#autotoc_md49", null ],
-        [ "CPU usage", "aacdec_start.html#autotoc_md50", null ]
+    [ "AAC decoder", "md_aacdec.html", [
+      [ "AAC decoder features", "md_aacdec.html#autotoc_md46", null ],
+      [ "Specification and reference", "md_aacdec.html#autotoc_md47", null ],
+      [ "Performance", "md_aacdec.html#autotoc_md48", [
+        [ "Memory information", "md_aacdec.html#autotoc_md49", null ],
+        [ "CPU usage", "md_aacdec.html#autotoc_md50", null ]
       ] ]
     ] ],
-    [ "FLAC decoder", "flacdec_start.html", [
-      [ "FLAC decoder features", "flacdec_start.html#autotoc_md51", null ],
-      [ "Specification and reference", "flacdec_start.html#autotoc_md52", [
-        [ "Official website", "flacdec_start.html#autotoc_md53", null ],
-        [ "Inbound licensing", "flacdec_start.html#autotoc_md54", null ]
+    [ "FLAC decoder", "md_flacdec.html", [
+      [ "FLAC decoder features", "md_flacdec.html#autotoc_md51", null ],
+      [ "Specification and reference", "md_flacdec.html#autotoc_md52", [
+        [ "Official website", "md_flacdec.html#autotoc_md53", null ],
+        [ "Inbound licensing", "md_flacdec.html#autotoc_md54", null ]
       ] ],
-      [ "Performance", "flacdec_start.html#autotoc_md55", [
-        [ "Memory information", "flacdec_start.html#autotoc_md56", null ],
-        [ "CPU usage", "flacdec_start.html#autotoc_md57", null ],
-        [ "Following test cases are performed:", "flacdec_start.html#autotoc_md58", null ]
+      [ "Performance", "md_flacdec.html#autotoc_md55", [
+        [ "Memory information", "md_flacdec.html#autotoc_md56", null ],
+        [ "CPU usage", "md_flacdec.html#autotoc_md57", null ],
+        [ "Following test cases are performed:", "md_flacdec.html#autotoc_md58", null ]
       ] ]
     ] ],
-    [ "MP3 decoder", "mp3dec_start.html", [
-      [ "MP3 decoder features", "mp3dec_start.html#autotoc_md59", null ],
-      [ "Performance", "mp3dec_start.html#autotoc_md60", [
-        [ "Memory information", "mp3dec_start.html#autotoc_md61", null ],
-        [ "CPU usage", "mp3dec_start.html#autotoc_md62", null ]
+    [ "MP3 decoder", "md_mp3dec.html", [
+      [ "MP3 decoder features", "md_mp3dec.html#autotoc_md59", null ],
+      [ "Performance", "md_mp3dec.html#autotoc_md60", [
+        [ "Memory information", "md_mp3dec.html#autotoc_md61", null ],
+        [ "CPU usage", "md_mp3dec.html#autotoc_md62", null ]
       ] ]
     ] ],
     [ "WAV decoder", "md_wavdec.html", [
@@ -141,15 +114,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "LVC__Types_8h.html",
-"audio__sink__pcmrtos_8h.html#a043254bd941a12bd9c487f39e3d74990",
-"decoder_8h.html#a10aab45d4e85d74dffe02b5e0b27ded2",
-"globals_defs_y.html",
-"pad_8h.html#a0557c37b7b3093294af1c6794979cca0",
-"streamer__api_8h.html#a1abb7fc632ea61f43d927e80d7a39958",
-"streamer__element__properties_8h.html#a3813dce788312ca7db2f66b1392ac236",
-"structElementEncoder.html#a1daa4bc6b8a6731330eabf55d56a82f0",
-"struct__ElementAudioSink.html#abb904fd48c04c976b54fb47d04b4414c",
-"structringbuf.html#af43bcf56233301d218aa6042e5457623"
+"audio__src_8c.html#a0a93cb4915b9f75f9d06ddd28cb8d66c",
+"decoder_8h.html#aced9cbf47a568adc615e90d22daf7270acbf57da23ec001093023954ab913f45d",
+"globals_eval_p.html",
+"pad_8h.html#a02291801821c51de06e39c5136db8905aebad261a2b86b1b8fd42cf3aa8ac36c6",
+"streamer__api_8h.html#a18b1f235d3f685354db260ffc9c8fb56",
+"streamer__message_8h.html",
+"structMEMSRC__SET__BUFFER__T.html#af5034b95498a50997d51725187f1ea32",
+"struct__ElementFileSink.html#a9c6b23cf4a3aaa2996dd17b2a4073875"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -33,18 +33,6 @@ message("middleware_maestro_framework_codecs component is included from ${CMAKE_
 
 if(CONFIG_USE_middleware_maestro_framework)
 
-if(CONFIG_CORE STREQUAL cm7f AND (CONFIG_TOOLCHAIN STREQUAL armgcc OR CONFIG_TOOLCHAIN STREQUAL mcux))
-  target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
-    -Wl,--start-group
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libmp3.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libwav.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libaac.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libflac.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libssrc.a
-      -Wl,--end-group
-  )
-endif()
-
 if(CONFIG_CORE STREQUAL cm33 AND (CONFIG_TOOLCHAIN STREQUAL armgcc OR CONFIG_TOOLCHAIN STREQUAL mcux))
   target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
     -Wl,--start-group
@@ -396,14 +384,6 @@ target_include_directories(${MCUX_SDK_PROJECT_NAME} PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/include
   ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/src
 )
-
-if(CONFIG_CORE STREQUAL cm7f AND (CONFIG_TOOLCHAIN STREQUAL armgcc OR CONFIG_TOOLCHAIN STREQUAL mcux))
-  target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
-    -Wl,--start-group
-      ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/../../libs/cm7f/armgcc/release/libasrc.a
-      -Wl,--end-group
-  )
-endif()
 
 else()
 

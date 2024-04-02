@@ -11,7 +11,7 @@
     <definition extID="middleware.fatfs.LPC55S69"/>
     <definition extID="CMSIS_DSP_Include.LPC55S69"/>
   </externalDefinitions>
-  <ksdk id="MCUXpressoSDK2150_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_14" name="MCUXpressoSDK2150_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_14" version="2.15.0" revision="2.15.0"/>
+  <ksdk id="MCUXpressoSDK215100_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_14" name="MCUXpressoSDK215100_middleware_nxp_maestro_audio_framework_LPC55S69_manifest_v3_14" version="2.15.100" revision="2.15.100"/>
   <components>
     <component id="middleware.maestro_framework.template.LPC55S69" name="maestro_framework_template" brief="maestro_framework template" version="1.0.0" full_name="maestro_framework template configuration" category="Audio/Framework" user_visible="false" type="project_template" package_base_path=".././" project_base_path="maestro">
       <dependencies>

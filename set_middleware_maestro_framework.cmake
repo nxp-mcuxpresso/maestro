@@ -1,10 +1,143 @@
 include_guard(GLOBAL)
 
 
+if (CONFIG_USE_middleware_maestro_framework_template)
+# Add set(CONFIG_USE_middleware_maestro_framework_template true) in config.cmake to use this component
+
+message("middleware_maestro_framework_template component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+
+add_config_file(${CMAKE_CURRENT_LIST_DIR}/./template/streamer_pcm.c "" middleware_maestro_framework_template)
+add_config_file(${CMAKE_CURRENT_LIST_DIR}/./template/streamer_pcm.h "" middleware_maestro_framework_template)
+
+target_include_directories(${MCUX_SDK_PROJECT_NAME} PUBLIC
+  ${CMAKE_CURRENT_LIST_DIR}/./template
+)
+
+
+endif()
+
+
+if (CONFIG_USE_middleware_maestro_framework_doc)
+# Add set(CONFIG_USE_middleware_maestro_framework_doc true) in config.cmake to use this component
+
+message("middleware_maestro_framework_doc component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+
+
+endif()
+
+
+if (CONFIG_USE_middleware_maestro_framework_codecs)
+# Add set(CONFIG_USE_middleware_maestro_framework_codecs true) in config.cmake to use this component
+
+message("middleware_maestro_framework_codecs component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+
+if(CONFIG_USE_middleware_maestro_framework)
+
+if(CONFIG_CORE STREQUAL cm33 AND (CONFIG_TOOLCHAIN STREQUAL armgcc OR CONFIG_TOOLCHAIN STREQUAL mcux))
+  target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
+    -Wl,--start-group
+      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libmp3.a
+      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libwav.a
+      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libaac.a
+      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libflac.a
+      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libssrc.a
+      -Wl,--end-group
+  )
+endif()
+
+else()
+
+message(SEND_ERROR "middleware_maestro_framework_codecs dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
+
+endif()
+
+endif()
+
+
+if (CONFIG_USE_middleware_maestro_framework)
+# Add set(CONFIG_USE_middleware_maestro_framework true) in config.cmake to use this component
+
+message("middleware_maestro_framework component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+
+if(CONFIG_USE_middleware_maestro_framework_doc AND CONFIG_USE_component_osa_free_rtos AND CONFIG_USE_middleware_fatfs AND CONFIG_USE_middleware_maestro_framework_template)
+
+target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/pad.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/pipeline.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/streamer.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/streamer_element.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/streamer_msg.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec/ccidec.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec/codec_interface.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec/codecextractmetadata.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/devices/audio_sink_pcmrtos.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/devices/audio_src_pcmrtos.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/audio_proc.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/audio_sink.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/audio_src.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/decoder.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/decoder_pads.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/file_sink.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/file_src_freertos.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/mem_sink.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/vit_sink.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/mem_src.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/netbuf_src.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/parsers/cci/cci_codec_type_conversion.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/encoder.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/encoders/opus/opusenc_cei.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/mp3/mp3_extractmetadata.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/mp3/mp3_id3v2.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/mp3/mp3_vbr.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/adpcm/adpcm_extractmetadata.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/adpcm/wav_common.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/opus/opus_extractmetadata.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/aac/aac_extractmetadata.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/flac/flac_extractmetadata.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/file_utils.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/general_utils.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/maestro_logging.c
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/ringbuffer.c
+)
+
+target_include_directories(${MCUX_SDK_PROJECT_NAME} PUBLIC
+  ${CMAKE_CURRENT_LIST_DIR}/./config
+  ${CMAKE_CURRENT_LIST_DIR}/./inc
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/include
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/devices
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/encoders/opus
+  ${CMAKE_CURRENT_LIST_DIR}/./streamer/encoders/cei
+)
+
+if(CONFIG_USE_COMPONENT_CONFIGURATION)
+  message("===>Import configuration from ${CMAKE_CURRENT_LIST_FILE}")
+
+  target_compile_definitions(${MCUX_SDK_PROJECT_NAME} PUBLIC
+    -DCASCFG_PLATFORM_FREERTOS
+    -DFSL_OS_SELECTED=SDK_OS_FREERTOS
+    -DFSL_OSA_TASK_ENABLE=1
+  )
+
+endif()
+
+else()
+
+message(SEND_ERROR "middleware_maestro_framework dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
+
+endif()
+
+endif()
+
+
 if (CONFIG_USE_middleware_maestro_framework_opus)
 # Add set(CONFIG_USE_middleware_maestro_framework_opus true) in config.cmake to use this component
 
 message("middleware_maestro_framework_opus component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+
+if(CONFIG_USE_middleware_maestro_framework)
 
 target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/opus/celt/bands.c
@@ -153,6 +286,11 @@ if(CONFIG_USE_COMPONENT_CONFIGURATION)
 
 endif()
 
+else()
+
+message(SEND_ERROR "middleware_maestro_framework_opus dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
+
+endif()
 
 endif()
 
@@ -161,6 +299,8 @@ if (CONFIG_USE_middleware_maestro_framework_opusfile)
 # Add set(CONFIG_USE_middleware_maestro_framework_opusfile true) in config.cmake to use this component
 
 message("middleware_maestro_framework_opusfile component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+
+if(CONFIG_USE_component_osa_free_rtos AND CONFIG_USE_middleware_maestro_framework_opus)
 
 target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/opusfile/src/info.c
@@ -183,6 +323,11 @@ if(CONFIG_USE_COMPONENT_CONFIGURATION)
 
 endif()
 
+else()
+
+message(SEND_ERROR "middleware_maestro_framework_opusfile dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
+
+endif()
 
 endif()
 
@@ -191,6 +336,8 @@ if (CONFIG_USE_middleware_maestro_framework_ogg)
 # Add set(CONFIG_USE_middleware_maestro_framework_ogg true) in config.cmake to use this component
 
 message("middleware_maestro_framework_ogg component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+
+if(CONFIG_USE_component_osa_free_rtos AND CONFIG_USE_middleware_maestro_framework_opus)
 
 target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/ogg/src/framing.c
@@ -211,156 +358,44 @@ if(CONFIG_USE_COMPONENT_CONFIGURATION)
 
 endif()
 
+else()
+
+message(SEND_ERROR "middleware_maestro_framework_ogg dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
+
+endif()
 
 endif()
 
 
-if (CONFIG_USE_middleware_maestro_framework_doc)
-# Add set(CONFIG_USE_middleware_maestro_framework_doc true) in config.cmake to use this component
+if (CONFIG_USE_middleware_maestro_framework_asrc)
+# Add set(CONFIG_USE_middleware_maestro_framework_asrc true) in config.cmake to use this component
 
-message("middleware_maestro_framework_doc component is included from ${CMAKE_CURRENT_LIST_FILE}.")
+message("middleware_maestro_framework_asrc component is included from ${CMAKE_CURRENT_LIST_FILE}.")
 
+if(CONFIG_USE_CMSIS_DSP_Include)
 
-endif()
+target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/src/PL_InstAlloc.c
+  ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/src/PL_MEM_Copy.c
+  ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/src/PL_Mat_Utils.c
+)
 
-
-if (CONFIG_USE_middleware_maestro_framework_codecs)
-# Add set(CONFIG_USE_middleware_maestro_framework_codecs true) in config.cmake to use this component
-
-message("middleware_maestro_framework_codecs component is included from ${CMAKE_CURRENT_LIST_FILE}.")
-
-if(CONFIG_USE_middleware_maestro_framework)
-
-if(CONFIG_CORE STREQUAL cm7f AND (CONFIG_TOOLCHAIN STREQUAL armgcc OR CONFIG_TOOLCHAIN STREQUAL mcux))
-  target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
-    -Wl,--start-group
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libmp3.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libwav.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libaac.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libflac.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm7f/armgcc/release/libssrc.a
-      -Wl,--end-group
-  )
-endif()
+target_include_directories(${MCUX_SDK_PROJECT_NAME} PUBLIC
+  ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/include
+  ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/src
+)
 
 if(CONFIG_CORE STREQUAL cm33 AND (CONFIG_TOOLCHAIN STREQUAL armgcc OR CONFIG_TOOLCHAIN STREQUAL mcux))
   target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
     -Wl,--start-group
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libmp3.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libwav.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libaac.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libflac.a
-      ${CMAKE_CURRENT_LIST_DIR}/./libs/cm33f/armgcc/release/libssrc.a
+      ${CMAKE_CURRENT_LIST_DIR}/mcu-audio/asrc/../../libs/cm33f/armgcc/release/libasrc.a
       -Wl,--end-group
   )
 endif()
 
 else()
 
-message(SEND_ERROR "middleware_maestro_framework_codecs dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
-
-endif()
-
-endif()
-
-
-if (CONFIG_USE_middleware_maestro_framework)
-# Add set(CONFIG_USE_middleware_maestro_framework true) in config.cmake to use this component
-
-message("middleware_maestro_framework component is included from ${CMAKE_CURRENT_LIST_FILE}.")
-
-if(CONFIG_USE_middleware_maestro_framework_doc)
-
-target_sources(${MCUX_SDK_PROJECT_NAME} PRIVATE
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/pad.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/pipeline.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/streamer.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/streamer_element.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core/streamer_msg.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec/ccidec.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec/codec_interface.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec/codecextractmetadata.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/devices/audio_sink_pcmrtos.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/devices/audio_src_pcmrtos.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/audio_proc.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/audio_sink.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/audio_src.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/decoder.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/decoder_pads.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/file_sink.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/file_src_freertos.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/mem_sink.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/vit_sink.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/mem_src.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/netbuf_src.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/parsers/cci/cci_codec_type_conversion.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_audiosrc.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_fs.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_mic2file.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_opusmem2mem.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_pcm_speaker.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_pcm_speaker_mem.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_testeapfile2file.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_vit.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines/streamer_vit_filesink.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements/encoder.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/encoders/opus/opusenc_cei.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/mp3/mp3_extractmetadata.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/mp3/mp3_id3v2.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/mp3/mp3_vbr.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/adpcm/adpcm_extractmetadata.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/adpcm/wav_common.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/opus/opus_extractmetadata.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/aac/aac_extractmetadata.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/metadata/src/flac/flac_extractmetadata.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/file_utils.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/general_utils.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/maestro_logging.c
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/utils/ringbuffer.c
-)
-
-target_include_directories(${MCUX_SDK_PROJECT_NAME} PUBLIC
-  ${CMAKE_CURRENT_LIST_DIR}/./config
-  ${CMAKE_CURRENT_LIST_DIR}/./inc
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/cci/include
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/core
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/decoders/cci_dec
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/devices
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/elements
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/encoders/opus
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/encoders/cei
-  ${CMAKE_CURRENT_LIST_DIR}/./streamer/pipelines
-)
-
-if(CONFIG_USE_COMPONENT_CONFIGURATION)
-  message("===>Import configuration from ${CMAKE_CURRENT_LIST_FILE}")
-
-  target_compile_definitions(${MCUX_SDK_PROJECT_NAME} PUBLIC
-    -DCASCFG_PLATFORM_FREERTOS
-    -DFSL_OS_SELECTED=SDK_OS_FREERTOS
-    -DFSL_OSA_TASK_ENABLE=1
-  )
-
-  if(CONFIG_TOOLCHAIN STREQUAL iar)
-    target_compile_options(${MCUX_SDK_PROJECT_NAME} PUBLIC
-      --vla
-      --align_sp_on_irq
-      --macro_positions_in_diagnostics
-      --header_context
-      --no_unroll
-      --no_inline
-      --no_tbaa
-      --no_unaligned_access
-      --dlib_config full
-      --diag_suppress Pa050,Pa082,Pe186,Pe815
-    )
-  endif()
-
-endif()
-
-else()
-
-message(SEND_ERROR "middleware_maestro_framework dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
+message(SEND_ERROR "middleware_maestro_framework_asrc dependency does not meet, please check ${CMAKE_CURRENT_LIST_FILE}.")
 
 endif()
 

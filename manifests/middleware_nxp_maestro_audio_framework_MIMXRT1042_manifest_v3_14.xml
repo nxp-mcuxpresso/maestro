@@ -10,7 +10,7 @@
     <definition extID="middleware.fatfs.MIMXRT1042"/>
     <definition extID="CMSIS_DSP_Include.MIMXRT1042"/>
   </externalDefinitions>
-  <ksdk id="MCUXpressoSDK2150_middleware_nxp_maestro_audio_framework_MIMXRT1042_manifest_v3_14" name="MCUXpressoSDK2150_middleware_nxp_maestro_audio_framework_MIMXRT1042_manifest_v3_14" version="2.15.0" revision="2.15.0"/>
+  <ksdk id="MCUXpressoSDK216000_middleware_nxp_maestro_audio_framework_MIMXRT1042_manifest_v3_14" name="MCUXpressoSDK216000_middleware_nxp_maestro_audio_framework_MIMXRT1042_manifest_v3_14" version="2.16.000" revision="2.16.000"/>
   <components>
     <component id="middleware.maestro_framework.template.MIMXRT1042" name="maestro_framework_template" brief="maestro_framework template" version="1.0.0" full_name="maestro_framework template configuration" category="Audio/Framework" user_visible="false" type="project_template" package_base_path=".././" project_base_path="maestro">
       <dependencies>
@@ -66,7 +66,7 @@
         <files mask="audio__src__pcmrtos_8h.html" hidden="true"/>
         <files mask="audio__src__pcmrtos_8h.js" hidden="true"/>
         <files mask="bc_s.png" hidden="true"/>
-        <files mask="bdwn.png" hidden="true"/>
+        <files mask="bc_sd.png" hidden="true"/>
         <files mask="cci__codec__type__conversion_8c.html" hidden="true"/>
         <files mask="cci__codec__type__conversion_8c.js" hidden="true"/>
         <files mask="cci__metadata_8h.html" hidden="true"/>
@@ -82,6 +82,7 @@
         <files mask="cei__table_8h.html" hidden="true"/>
         <files mask="cei__table_8h.js" hidden="true"/>
         <files mask="classes.html" hidden="true"/>
+        <files mask="clipboard.js" hidden="true"/>
         <files mask="closed.png" hidden="true"/>
         <files mask="codec__interface_8c.html" hidden="true"/>
         <files mask="codec__interface_8c.js" hidden="true"/>
@@ -92,6 +93,8 @@
         <files mask="codec_flow.png" hidden="true"/>
         <files mask="codecextractmetadata_8c.html" hidden="true"/>
         <files mask="codecextractmetadata_8c.js" hidden="true"/>
+        <files mask="communication.svg" hidden="true"/>
+        <files mask="cookie.js" hidden="true"/>
         <files mask="customdoxygen.css" hidden="true"/>
         <files mask="decoder_8c.html" hidden="true"/>
         <files mask="decoder_8c.js" hidden="true"/>
@@ -102,28 +105,43 @@
         <files mask="decoder__pads_8h.html" hidden="true"/>
         <files mask="decoder__pads_8h.js" hidden="true"/>
         <files mask="dir_09c368f94a4ceb2a0ab51c686fa3f34a.html" hidden="true"/>
+        <files mask="dir_09c368f94a4ceb2a0ab51c686fa3f34a.js" hidden="true"/>
         <files mask="dir_27572bb7135b2aed50a12b695ac102f7.html" hidden="true"/>
         <files mask="dir_3011f417f47a2f1757a119bb2b6678f7.html" hidden="true"/>
         <files mask="dir_31b2f1d6653e3410a2de348edc054f4b.html" hidden="true"/>
         <files mask="dir_6343cdd224fb18bab339c25e250c0ab5.html" hidden="true"/>
+        <files mask="dir_6343cdd224fb18bab339c25e250c0ab5.js" hidden="true"/>
         <files mask="dir_72ccead873c9c44a43b71eb584d84baf.html" hidden="true"/>
         <files mask="dir_7d4bffc30d6bb72c004c672b0b15a03f.html" hidden="true"/>
+        <files mask="dir_7d4bffc30d6bb72c004c672b0b15a03f.js" hidden="true"/>
         <files mask="dir_7f27e557e2b5ccf3e7af2c250dae6925.html" hidden="true"/>
         <files mask="dir_8da1243e135ad2073cfde7cf1f60b0f9.html" hidden="true"/>
+        <files mask="dir_8da1243e135ad2073cfde7cf1f60b0f9.js" hidden="true"/>
         <files mask="dir_a0ca4d96eaffbbc747c3e40a45a7dda3.html" hidden="true"/>
+        <files mask="dir_a0ca4d96eaffbbc747c3e40a45a7dda3.js" hidden="true"/>
         <files mask="dir_ac63662da0d688fa8bd4f66397a3bf04.html" hidden="true"/>
+        <files mask="dir_ac63662da0d688fa8bd4f66397a3bf04.js" hidden="true"/>
         <files mask="dir_b80bfe80509f7be30c69d6b8307c8ce5.html" hidden="true"/>
+        <files mask="dir_b80bfe80509f7be30c69d6b8307c8ce5.js" hidden="true"/>
         <files mask="dir_bb14acadcc9c6e0b0efab3b339a130cb.html" hidden="true"/>
+        <files mask="dir_bb14acadcc9c6e0b0efab3b339a130cb.js" hidden="true"/>
         <files mask="dir_be7de2811e7b2903a1c63c530e2329f8.html" hidden="true"/>
+        <files mask="dir_be7de2811e7b2903a1c63c530e2329f8.js" hidden="true"/>
         <files mask="dir_bf14883e86cd277860239a84004d696e.html" hidden="true"/>
+        <files mask="dir_bf14883e86cd277860239a84004d696e.js" hidden="true"/>
         <files mask="dir_bfccd401955b95cf8c75461437045ac0.html" hidden="true"/>
+        <files mask="dir_bfccd401955b95cf8c75461437045ac0.js" hidden="true"/>
         <files mask="dir_c10f813485221bef8c5a72414f9e2bee.html" hidden="true"/>
         <files mask="dir_cdad1f4fa813539d4a2cca747b2f86bd.html" hidden="true"/>
+        <files mask="dir_cdad1f4fa813539d4a2cca747b2f86bd.js" hidden="true"/>
         <files mask="dir_e4fd4aec6719dce5076d59c812fc0a62.html" hidden="true"/>
+        <files mask="dir_e4fd4aec6719dce5076d59c812fc0a62.js" hidden="true"/>
         <files mask="dir_f5879de724d6c7af5db22be3d4d2d409.html" hidden="true"/>
-        <files mask="doc.png" hidden="true"/>
-        <files mask="doxygen.css" hidden="true"/>
+        <files mask="dir_f5879de724d6c7af5db22be3d4d2d409.js" hidden="true"/>
+        <files mask="doc.svg" hidden="true"/>
+        <files mask="docd.svg" hidden="true"/>
         <files mask="doxygen.svg" hidden="true"/>
+        <files mask="doxygen_crawl.html" hidden="true"/>
         <files mask="dynsections.js" hidden="true"/>
         <files mask="elements.svg" hidden="true"/>
         <files mask="error_8h.html" hidden="true"/>
@@ -145,9 +163,11 @@
         <files mask="files.html" hidden="true"/>
         <files mask="files_dup.js" hidden="true"/>
         <files mask="flacdec_start.html" hidden="true"/>
-        <files mask="folderclosed.png" hidden="true"/>
-        <files mask="folderopen.png" hidden="true"/>
-        <files mask="fs_logo.gif" hidden="true"/>
+        <files mask="folderclosed.svg" hidden="true"/>
+        <files mask="folderclosedd.svg" hidden="true"/>
+        <files mask="folderopen.svg" hidden="true"/>
+        <files mask="folderopend.svg" hidden="true"/>
+        <files mask="fs_logo.svg" hidden="true"/>
         <files mask="functions.html" hidden="true"/>
         <files mask="functions_b.html" hidden="true"/>
         <files mask="functions_c.html" hidden="true"/>
@@ -287,6 +307,7 @@
         <files mask="group__asi__dffi.html" hidden="true"/>
         <files mask="group__asi__dffi.js" hidden="true"/>
         <files mask="index.html" hidden="true"/>
+        <files mask="index.js" hidden="true"/>
         <files mask="jquery.js" hidden="true"/>
         <files mask="maestro.svg" hidden="true"/>
         <files mask="maestroApp.svg" hidden="true"/>
@@ -294,6 +315,13 @@
         <files mask="maestro__logging_8h.js" hidden="true"/>
         <files mask="md_CeiEncoder.html" hidden="true"/>
         <files mask="md_ProgrammersGuide.html" hidden="true"/>
+        <files mask="md_maestro__playback.html" hidden="true"/>
+        <files mask="md_maestro__record.html" hidden="true"/>
+        <files mask="md_maestro__sync.html" hidden="true"/>
+        <files mask="md_maestro__usb__mic.html" hidden="true"/>
+        <files mask="md_maestro__usb__speaker.html" hidden="true"/>
+        <files mask="md_processing__time.html" hidden="true"/>
+        <files mask="md_supported__features.html" hidden="true"/>
         <files mask="md_wavdec.html" hidden="true"/>
         <files mask="mem__sink_8c.html" hidden="true"/>
         <files mask="mem__sink_8c.js" hidden="true"/>
@@ -305,12 +333,22 @@
         <files mask="mem__src_8h.js" hidden="true"/>
         <files mask="menu.js" hidden="true"/>
         <files mask="menudata.js" hidden="true"/>
-        <files mask="modules.html" hidden="true"/>
-        <files mask="modules.js" hidden="true"/>
+        <files mask="mic_speaker_1ch_elements_without_fileread.svg" hidden="true"/>
+        <files mask="mic_speaker_2ch_elements_without_fileread.svg" hidden="true"/>
+        <files mask="mic_vit_elements.svg" hidden="true"/>
+        <files mask="mic_vs_vit_elements.svg" hidden="true"/>
+        <files mask="minus.svg" hidden="true"/>
+        <files mask="minusd.svg" hidden="true"/>
+        <files mask="mp3_44kHz_with_fileread.svg" hidden="true"/>
+        <files mask="mp3_44kHz_without_fileread.svg" hidden="true"/>
+        <files mask="mp3_48kHz_with_fileread.svg" hidden="true"/>
+        <files mask="mp3_48kHz_without_fileread.svg" hidden="true"/>
         <files mask="mp3dec_start.html" hidden="true"/>
         <files mask="nav_f.png" hidden="true"/>
+        <files mask="nav_fd.png" hidden="true"/>
         <files mask="nav_g.png" hidden="true"/>
         <files mask="nav_h.png" hidden="true"/>
+        <files mask="nav_hd.png" hidden="true"/>
         <files mask="navtree.css" hidden="true"/>
         <files mask="navtree.js" hidden="true"/>
         <files mask="navtreedata.js" hidden="true"/>
@@ -323,11 +361,11 @@
         <files mask="navtreeindex6.js" hidden="true"/>
         <files mask="navtreeindex7.js" hidden="true"/>
         <files mask="navtreeindex8.js" hidden="true"/>
-        <files mask="navtreeindex9.js" hidden="true"/>
         <files mask="netbuf__src_8c.html" hidden="true"/>
         <files mask="netbuf__src_8c.js" hidden="true"/>
         <files mask="netbuf__src_8h.html" hidden="true"/>
         <files mask="netbuf__src_8h.js" hidden="true"/>
+        <files mask="new_stylesheet.css" hidden="true"/>
         <files mask="open.png" hidden="true"/>
         <files mask="pad_8c.html" hidden="true"/>
         <files mask="pad_8c.js" hidden="true"/>
@@ -338,12 +376,19 @@
         <files mask="pipeline_8c.js" hidden="true"/>
         <files mask="pipeline_8h.html" hidden="true"/>
         <files mask="pipeline_8h.js" hidden="true"/>
+        <files mask="playback.svg" hidden="true"/>
+        <files mask="playback_streamer2.svg" hidden="true"/>
+        <files mask="plus.svg" hidden="true"/>
+        <files mask="plusd.svg" hidden="true"/>
+        <files mask="record.svg" hidden="true"/>
+        <files mask="record_streamer2.svg" hidden="true"/>
         <files mask="resize.js" hidden="true"/>
         <files mask="ringbuffer_8c.html" hidden="true"/>
         <files mask="ringbuffer_8c.js" hidden="true"/>
         <files mask="ringbuffer_8h.html" hidden="true"/>
         <files mask="ringbuffer_8h.js" hidden="true"/>
         <files mask="splitbar.png" hidden="true"/>
+        <files mask="splitbard.png" hidden="true"/>
         <files mask="streamer_8c.html" hidden="true"/>
         <files mask="streamer_8c.js" hidden="true"/>
         <files mask="streamer_8h.html" hidden="true"/>
@@ -371,7 +416,6 @@
         <files mask="structAudioSinkPadDeviceIOFuncType.html" hidden="true"/>
         <files mask="structAudioSinkPadDeviceIOFuncType.js" hidden="true"/>
         <files mask="structAudioSrcBufferQueue__t.html" hidden="true"/>
-        <files mask="structAudioSrcBufferQueue__t.js" hidden="true"/>
         <files mask="structBufferInfo.html" hidden="true"/>
         <files mask="structBufferInfo.js" hidden="true"/>
         <files mask="structCCIDecInfo.html" hidden="true"/>
@@ -425,7 +469,6 @@
         <files mask="structPacketHeader.html" hidden="true"/>
         <files mask="structPacketHeader.js" hidden="true"/>
         <files mask="structPipelineElements.html" hidden="true"/>
-        <files mask="structPipelineElements.js" hidden="true"/>
         <files mask="structQUEUE__SET__BUFFER__T.html" hidden="true"/>
         <files mask="structQUEUE__SET__BUFFER__T.js" hidden="true"/>
         <files mask="structRawPacketHeader.html" hidden="true"/>
@@ -433,9 +476,7 @@
         <files mask="structSET__BUFFER__DESC__T.html" hidden="true"/>
         <files mask="structSET__BUFFER__DESC__T.js" hidden="true"/>
         <files mask="structSSRC__Instance__t.html" hidden="true"/>
-        <files mask="structSSRC__Instance__t.js" hidden="true"/>
         <files mask="structSSRC__Params__t.html" hidden="true"/>
-        <files mask="structSSRC__Params__t.js" hidden="true"/>
         <files mask="structSTREAMER__CREATE__PARAM.html" hidden="true"/>
         <files mask="structSTREAMER__CREATE__PARAM.js" hidden="true"/>
         <files mask="structSTREAMER__MSG__HANDLER__T.html" hidden="true"/>
@@ -503,326 +544,191 @@
         <files mask="sync_off.png" hidden="true"/>
         <files mask="sync_on.png" hidden="true"/>
         <files mask="tab_a.png" hidden="true"/>
+        <files mask="tab_ad.png" hidden="true"/>
         <files mask="tab_b.png" hidden="true"/>
+        <files mask="tab_bd.png" hidden="true"/>
         <files mask="tab_h.png" hidden="true"/>
+        <files mask="tab_hd.png" hidden="true"/>
         <files mask="tab_s.png" hidden="true"/>
+        <files mask="tab_sd.png" hidden="true"/>
         <files mask="tabs.css" hidden="true"/>
+        <files mask="test_48khz_16bit_2ch.wav" hidden="true"/>
+        <files mask="topics.html" hidden="true"/>
+        <files mask="topics.js" hidden="true"/>
         <files mask="unionStreamData.html" hidden="true"/>
         <files mask="unionStreamData.js" hidden="true"/>
         <files mask="vit__sink_8c.html" hidden="true"/>
         <files mask="vit__sink_8c.js" hidden="true"/>
         <files mask="vit__sink_8h.html" hidden="true"/>
         <files mask="vit__sink_8h.js" hidden="true"/>
+        <files mask="wav_44kHz.svg" hidden="true"/>
+        <files mask="wav_48kHz.svg" hidden="true"/>
       </source>
       <source exclude="true" relative_path="./docs/src/search" project_relative_path="docs/src/search" type="doc">
-        <files mask="all_0.html" hidden="true"/>
         <files mask="all_0.js" hidden="true"/>
-        <files mask="all_1.html" hidden="true"/>
         <files mask="all_1.js" hidden="true"/>
-        <files mask="all_10.html" hidden="true"/>
         <files mask="all_10.js" hidden="true"/>
-        <files mask="all_11.html" hidden="true"/>
         <files mask="all_11.js" hidden="true"/>
-        <files mask="all_12.html" hidden="true"/>
         <files mask="all_12.js" hidden="true"/>
-        <files mask="all_13.html" hidden="true"/>
         <files mask="all_13.js" hidden="true"/>
-        <files mask="all_14.html" hidden="true"/>
         <files mask="all_14.js" hidden="true"/>
-        <files mask="all_15.html" hidden="true"/>
         <files mask="all_15.js" hidden="true"/>
-        <files mask="all_16.html" hidden="true"/>
         <files mask="all_16.js" hidden="true"/>
-        <files mask="all_17.html" hidden="true"/>
         <files mask="all_17.js" hidden="true"/>
-        <files mask="all_18.html" hidden="true"/>
         <files mask="all_18.js" hidden="true"/>
-        <files mask="all_2.html" hidden="true"/>
         <files mask="all_2.js" hidden="true"/>
-        <files mask="all_3.html" hidden="true"/>
         <files mask="all_3.js" hidden="true"/>
-        <files mask="all_4.html" hidden="true"/>
         <files mask="all_4.js" hidden="true"/>
-        <files mask="all_5.html" hidden="true"/>
         <files mask="all_5.js" hidden="true"/>
-        <files mask="all_6.html" hidden="true"/>
         <files mask="all_6.js" hidden="true"/>
-        <files mask="all_7.html" hidden="true"/>
         <files mask="all_7.js" hidden="true"/>
-        <files mask="all_8.html" hidden="true"/>
         <files mask="all_8.js" hidden="true"/>
-        <files mask="all_9.html" hidden="true"/>
         <files mask="all_9.js" hidden="true"/>
-        <files mask="all_a.html" hidden="true"/>
         <files mask="all_a.js" hidden="true"/>
-        <files mask="all_b.html" hidden="true"/>
         <files mask="all_b.js" hidden="true"/>
-        <files mask="all_c.html" hidden="true"/>
         <files mask="all_c.js" hidden="true"/>
-        <files mask="all_d.html" hidden="true"/>
         <files mask="all_d.js" hidden="true"/>
-        <files mask="all_e.html" hidden="true"/>
         <files mask="all_e.js" hidden="true"/>
-        <files mask="all_f.html" hidden="true"/>
         <files mask="all_f.js" hidden="true"/>
-        <files mask="classes_0.html" hidden="true"/>
         <files mask="classes_0.js" hidden="true"/>
-        <files mask="classes_1.html" hidden="true"/>
         <files mask="classes_1.js" hidden="true"/>
-        <files mask="classes_2.html" hidden="true"/>
         <files mask="classes_2.js" hidden="true"/>
-        <files mask="classes_3.html" hidden="true"/>
         <files mask="classes_3.js" hidden="true"/>
-        <files mask="classes_4.html" hidden="true"/>
         <files mask="classes_4.js" hidden="true"/>
-        <files mask="classes_5.html" hidden="true"/>
         <files mask="classes_5.js" hidden="true"/>
-        <files mask="classes_6.html" hidden="true"/>
         <files mask="classes_6.js" hidden="true"/>
-        <files mask="classes_7.html" hidden="true"/>
         <files mask="classes_7.js" hidden="true"/>
-        <files mask="classes_8.html" hidden="true"/>
         <files mask="classes_8.js" hidden="true"/>
-        <files mask="classes_9.html" hidden="true"/>
         <files mask="classes_9.js" hidden="true"/>
-        <files mask="classes_a.html" hidden="true"/>
         <files mask="classes_a.js" hidden="true"/>
-        <files mask="classes_b.html" hidden="true"/>
         <files mask="classes_b.js" hidden="true"/>
-        <files mask="classes_c.html" hidden="true"/>
         <files mask="classes_c.js" hidden="true"/>
-        <files mask="classes_d.html" hidden="true"/>
         <files mask="classes_d.js" hidden="true"/>
         <files mask="close.svg" hidden="true"/>
-        <files mask="defines_0.html" hidden="true"/>
         <files mask="defines_0.js" hidden="true"/>
-        <files mask="defines_1.html" hidden="true"/>
         <files mask="defines_1.js" hidden="true"/>
-        <files mask="defines_10.html" hidden="true"/>
         <files mask="defines_10.js" hidden="true"/>
-        <files mask="defines_11.html" hidden="true"/>
         <files mask="defines_11.js" hidden="true"/>
-        <files mask="defines_12.html" hidden="true"/>
         <files mask="defines_12.js" hidden="true"/>
-        <files mask="defines_13.html" hidden="true"/>
         <files mask="defines_13.js" hidden="true"/>
-        <files mask="defines_14.html" hidden="true"/>
         <files mask="defines_14.js" hidden="true"/>
-        <files mask="defines_2.html" hidden="true"/>
         <files mask="defines_2.js" hidden="true"/>
-        <files mask="defines_3.html" hidden="true"/>
         <files mask="defines_3.js" hidden="true"/>
-        <files mask="defines_4.html" hidden="true"/>
         <files mask="defines_4.js" hidden="true"/>
-        <files mask="defines_5.html" hidden="true"/>
         <files mask="defines_5.js" hidden="true"/>
-        <files mask="defines_6.html" hidden="true"/>
         <files mask="defines_6.js" hidden="true"/>
-        <files mask="defines_7.html" hidden="true"/>
         <files mask="defines_7.js" hidden="true"/>
-        <files mask="defines_8.html" hidden="true"/>
         <files mask="defines_8.js" hidden="true"/>
-        <files mask="defines_9.html" hidden="true"/>
         <files mask="defines_9.js" hidden="true"/>
-        <files mask="defines_a.html" hidden="true"/>
         <files mask="defines_a.js" hidden="true"/>
-        <files mask="defines_b.html" hidden="true"/>
         <files mask="defines_b.js" hidden="true"/>
-        <files mask="defines_c.html" hidden="true"/>
         <files mask="defines_c.js" hidden="true"/>
-        <files mask="defines_d.html" hidden="true"/>
         <files mask="defines_d.js" hidden="true"/>
-        <files mask="defines_e.html" hidden="true"/>
         <files mask="defines_e.js" hidden="true"/>
-        <files mask="defines_f.html" hidden="true"/>
         <files mask="defines_f.js" hidden="true"/>
-        <files mask="enums_0.html" hidden="true"/>
         <files mask="enums_0.js" hidden="true"/>
-        <files mask="enums_1.html" hidden="true"/>
         <files mask="enums_1.js" hidden="true"/>
-        <files mask="enums_2.html" hidden="true"/>
         <files mask="enums_2.js" hidden="true"/>
-        <files mask="enums_3.html" hidden="true"/>
         <files mask="enums_3.js" hidden="true"/>
-        <files mask="enums_4.html" hidden="true"/>
         <files mask="enums_4.js" hidden="true"/>
-        <files mask="enums_5.html" hidden="true"/>
         <files mask="enums_5.js" hidden="true"/>
-        <files mask="enums_6.html" hidden="true"/>
         <files mask="enums_6.js" hidden="true"/>
-        <files mask="enums_7.html" hidden="true"/>
         <files mask="enums_7.js" hidden="true"/>
-        <files mask="enums_8.html" hidden="true"/>
         <files mask="enums_8.js" hidden="true"/>
-        <files mask="enumvalues_0.html" hidden="true"/>
         <files mask="enumvalues_0.js" hidden="true"/>
-        <files mask="enumvalues_1.html" hidden="true"/>
         <files mask="enumvalues_1.js" hidden="true"/>
-        <files mask="enumvalues_2.html" hidden="true"/>
         <files mask="enumvalues_2.js" hidden="true"/>
-        <files mask="enumvalues_3.html" hidden="true"/>
         <files mask="enumvalues_3.js" hidden="true"/>
-        <files mask="enumvalues_4.html" hidden="true"/>
         <files mask="enumvalues_4.js" hidden="true"/>
-        <files mask="enumvalues_5.html" hidden="true"/>
         <files mask="enumvalues_5.js" hidden="true"/>
-        <files mask="enumvalues_6.html" hidden="true"/>
         <files mask="enumvalues_6.js" hidden="true"/>
-        <files mask="enumvalues_7.html" hidden="true"/>
         <files mask="enumvalues_7.js" hidden="true"/>
-        <files mask="enumvalues_8.html" hidden="true"/>
         <files mask="enumvalues_8.js" hidden="true"/>
-        <files mask="enumvalues_9.html" hidden="true"/>
         <files mask="enumvalues_9.js" hidden="true"/>
-        <files mask="enumvalues_a.html" hidden="true"/>
         <files mask="enumvalues_a.js" hidden="true"/>
-        <files mask="enumvalues_b.html" hidden="true"/>
         <files mask="enumvalues_b.js" hidden="true"/>
-        <files mask="enumvalues_c.html" hidden="true"/>
         <files mask="enumvalues_c.js" hidden="true"/>
-        <files mask="files_0.html" hidden="true"/>
         <files mask="files_0.js" hidden="true"/>
-        <files mask="files_1.html" hidden="true"/>
         <files mask="files_1.js" hidden="true"/>
-        <files mask="files_2.html" hidden="true"/>
         <files mask="files_2.js" hidden="true"/>
-        <files mask="files_3.html" hidden="true"/>
         <files mask="files_3.js" hidden="true"/>
-        <files mask="files_4.html" hidden="true"/>
         <files mask="files_4.js" hidden="true"/>
-        <files mask="files_5.html" hidden="true"/>
         <files mask="files_5.js" hidden="true"/>
-        <files mask="files_6.html" hidden="true"/>
         <files mask="files_6.js" hidden="true"/>
-        <files mask="files_7.html" hidden="true"/>
         <files mask="files_7.js" hidden="true"/>
-        <files mask="files_8.html" hidden="true"/>
         <files mask="files_8.js" hidden="true"/>
-        <files mask="files_9.html" hidden="true"/>
         <files mask="files_9.js" hidden="true"/>
-        <files mask="files_a.html" hidden="true"/>
         <files mask="files_a.js" hidden="true"/>
-        <files mask="files_b.html" hidden="true"/>
         <files mask="files_b.js" hidden="true"/>
-        <files mask="files_c.html" hidden="true"/>
         <files mask="files_c.js" hidden="true"/>
-        <files mask="functions_0.html" hidden="true"/>
         <files mask="functions_0.js" hidden="true"/>
-        <files mask="functions_1.html" hidden="true"/>
         <files mask="functions_1.js" hidden="true"/>
-        <files mask="functions_10.html" hidden="true"/>
         <files mask="functions_10.js" hidden="true"/>
-        <files mask="functions_11.html" hidden="true"/>
         <files mask="functions_11.js" hidden="true"/>
-        <files mask="functions_2.html" hidden="true"/>
         <files mask="functions_2.js" hidden="true"/>
-        <files mask="functions_3.html" hidden="true"/>
         <files mask="functions_3.js" hidden="true"/>
-        <files mask="functions_4.html" hidden="true"/>
         <files mask="functions_4.js" hidden="true"/>
-        <files mask="functions_5.html" hidden="true"/>
         <files mask="functions_5.js" hidden="true"/>
-        <files mask="functions_6.html" hidden="true"/>
         <files mask="functions_6.js" hidden="true"/>
-        <files mask="functions_7.html" hidden="true"/>
         <files mask="functions_7.js" hidden="true"/>
-        <files mask="functions_8.html" hidden="true"/>
         <files mask="functions_8.js" hidden="true"/>
-        <files mask="functions_9.html" hidden="true"/>
         <files mask="functions_9.js" hidden="true"/>
-        <files mask="functions_a.html" hidden="true"/>
         <files mask="functions_a.js" hidden="true"/>
-        <files mask="functions_b.html" hidden="true"/>
         <files mask="functions_b.js" hidden="true"/>
-        <files mask="functions_c.html" hidden="true"/>
         <files mask="functions_c.js" hidden="true"/>
-        <files mask="functions_d.html" hidden="true"/>
         <files mask="functions_d.js" hidden="true"/>
-        <files mask="functions_e.html" hidden="true"/>
         <files mask="functions_e.js" hidden="true"/>
-        <files mask="functions_f.html" hidden="true"/>
         <files mask="functions_f.js" hidden="true"/>
-        <files mask="groups_0.html" hidden="true"/>
         <files mask="groups_0.js" hidden="true"/>
+        <files mask="mag.svg" hidden="true"/>
+        <files mask="mag_d.svg" hidden="true"/>
         <files mask="mag_sel.svg" hidden="true"/>
-        <files mask="nomatches.html" hidden="true"/>
-        <files mask="pages_0.html" hidden="true"/>
+        <files mask="mag_seld.svg" hidden="true"/>
         <files mask="pages_0.js" hidden="true"/>
-        <files mask="pages_1.html" hidden="true"/>
         <files mask="pages_1.js" hidden="true"/>
-        <files mask="pages_2.html" hidden="true"/>
         <files mask="pages_2.js" hidden="true"/>
-        <files mask="pages_3.html" hidden="true"/>
         <files mask="pages_3.js" hidden="true"/>
-        <files mask="pages_4.html" hidden="true"/>
         <files mask="pages_4.js" hidden="true"/>
-        <files mask="pages_5.html" hidden="true"/>
         <files mask="pages_5.js" hidden="true"/>
+        <files mask="pages_6.js" hidden="true"/>
+        <files mask="pages_7.js" hidden="true"/>
+        <files mask="pages_8.js" hidden="true"/>
+        <files mask="pages_9.js" hidden="true"/>
+        <files mask="pages_a.js" hidden="true"/>
+        <files mask="pages_b.js" hidden="true"/>
+        <files mask="pages_c.js" hidden="true"/>
         <files mask="search.css" hidden="true"/>
         <files mask="search.js" hidden="true"/>
-        <files mask="search_l.png" hidden="true"/>
-        <files mask="search_m.png" hidden="true"/>
-        <files mask="search_r.png" hidden="true"/>
         <files mask="searchdata.js" hidden="true"/>
-        <files mask="typedefs_0.html" hidden="true"/>
         <files mask="typedefs_0.js" hidden="true"/>
-        <files mask="typedefs_1.html" hidden="true"/>
         <files mask="typedefs_1.js" hidden="true"/>
-        <files mask="typedefs_2.html" hidden="true"/>
         <files mask="typedefs_2.js" hidden="true"/>
-        <files mask="typedefs_3.html" hidden="true"/>
         <files mask="typedefs_3.js" hidden="true"/>
-        <files mask="typedefs_4.html" hidden="true"/>
         <files mask="typedefs_4.js" hidden="true"/>
-        <files mask="typedefs_5.html" hidden="true"/>
         <files mask="typedefs_5.js" hidden="true"/>
-        <files mask="typedefs_6.html" hidden="true"/>
         <files mask="typedefs_6.js" hidden="true"/>
-        <files mask="variables_0.html" hidden="true"/>
         <files mask="variables_0.js" hidden="true"/>
-        <files mask="variables_1.html" hidden="true"/>
         <files mask="variables_1.js" hidden="true"/>
-        <files mask="variables_10.html" hidden="true"/>
         <files mask="variables_10.js" hidden="true"/>
-        <files mask="variables_11.html" hidden="true"/>
         <files mask="variables_11.js" hidden="true"/>
-        <files mask="variables_12.html" hidden="true"/>
         <files mask="variables_12.js" hidden="true"/>
-        <files mask="variables_13.html" hidden="true"/>
         <files mask="variables_13.js" hidden="true"/>
-        <files mask="variables_14.html" hidden="true"/>
         <files mask="variables_14.js" hidden="true"/>
-        <files mask="variables_15.html" hidden="true"/>
         <files mask="variables_15.js" hidden="true"/>
-        <files mask="variables_16.html" hidden="true"/>
         <files mask="variables_16.js" hidden="true"/>
-        <files mask="variables_2.html" hidden="true"/>
         <files mask="variables_2.js" hidden="true"/>
-        <files mask="variables_3.html" hidden="true"/>
         <files mask="variables_3.js" hidden="true"/>
-        <files mask="variables_4.html" hidden="true"/>
         <files mask="variables_4.js" hidden="true"/>
-        <files mask="variables_5.html" hidden="true"/>
         <files mask="variables_5.js" hidden="true"/>
-        <files mask="variables_6.html" hidden="true"/>
         <files mask="variables_6.js" hidden="true"/>
-        <files mask="variables_7.html" hidden="true"/>
         <files mask="variables_7.js" hidden="true"/>
-        <files mask="variables_8.html" hidden="true"/>
         <files mask="variables_8.js" hidden="true"/>
-        <files mask="variables_9.html" hidden="true"/>
         <files mask="variables_9.js" hidden="true"/>
-        <files mask="variables_a.html" hidden="true"/>
         <files mask="variables_a.js" hidden="true"/>
-        <files mask="variables_b.html" hidden="true"/>
         <files mask="variables_b.js" hidden="true"/>
-        <files mask="variables_c.html" hidden="true"/>
         <files mask="variables_c.js" hidden="true"/>
-        <files mask="variables_d.html" hidden="true"/>
         <files mask="variables_d.js" hidden="true"/>
-        <files mask="variables_e.html" hidden="true"/>
         <files mask="variables_e.js" hidden="true"/>
-        <files mask="variables_f.html" hidden="true"/>
         <files mask="variables_f.js" hidden="true"/>
       </source>
       <source exclude="true" relative_path="./mcu-audio/ssrc/doc" project_relative_path="mcu-audio/ssrc/doc" type="doc">

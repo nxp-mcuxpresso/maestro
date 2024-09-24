@@ -9,5 +9,5 @@ var searchData=
   ['head_6',['head',['../structringbuf.html#ab3a9199fd04c54983d10c36af110ae97',1,'ringbuf']]],
   ['header_20files_7',['Header files',['../md_CeiEncoder.html#autotoc_md25',1,'']]],
   ['height_8',['height',['../structAlbumArt.html#a25388e726c530a0872a9a1d062ff0fcc',1,'AlbumArt::height'],['../structStreamImageType.html#af76f8ab3891e7061fd5634ed6b371371',1,'StreamImageType::height']]],
-  ['help_20version_9',['Help version',['../md_maestro__playback.html#maestro-playback-help-version',1,'help, version'],['../md_maestro__record.html#maestro-record-help-version',1,'help, version'],['../md_maestro__usb__mic.html#maestro-usb-mic-help-version',1,'help, version'],['../md_maestro__usb__speaker.html#maestro-usb-speaker-help-version',1,'help, version'],['../md_maestro__sync.html#maestro-sync-help-version',1,'help, version']]]
+  ['help_20version_9',['help version',['../md_maestro__playback.html#maestro-playback-help-version',1,'help, version'],['../md_maestro__record.html#maestro-record-help-version',1,'help, version'],['../md_maestro__usb__mic.html#maestro-usb-mic-help-version',1,'help, version'],['../md_maestro__usb__speaker.html#maestro-usb-speaker-help-version',1,'help, version'],['../md_maestro__sync.html#maestro-sync-help-version',1,'help, version']]]
 ];

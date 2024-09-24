@@ -1,0 +1,20 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    B((Idle)):::state --> M[Error: Play a track first]:::error
+    C((Running)):::state --> G{Volume
+    parameter
+    empty?}:::condition
+    D((Paused)):::state --> G
+    G -- Yes -->H[Error: Enter volume parameter]:::error
+    G -- No -->I{Volume
+    in range?}:::condition
+    I -- No -->J[Error: invalid value]:::error
+    I -- Yes -->K[Set volume]:::function
+    J --> L((No state
+    change)):::state
+    K --> L
+    H--> L

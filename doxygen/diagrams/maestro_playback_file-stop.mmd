@@ -1,0 +1,9 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    B((Idle)):::state --> B
+    C((Running)):::state -->E((Idle)):::state
+    D((Paused)):::state -->E

@@ -1,0 +1,20 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    A((Idle)):::state --> B[Error: First, start
+    the streamer task]:::error
+    C((Running)):::state --> D{Any
+    parameter?}:::condition
+    D -- Yes --> F{Started with
+    nosdcard
+    parameter?}:::condition
+    F -- No --> H[Set debugging]:::function
+    H --> C
+    F --Yes --> G[Error: Debugging cannot be used]:::error
+    G --> C
+    D -- No --> E[Error: Use the parameter
+    either on or off]:::error
+    E --> C

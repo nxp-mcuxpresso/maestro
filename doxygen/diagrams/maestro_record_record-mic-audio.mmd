@@ -1,0 +1,17 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    B((Idle)):::state --> D{time
+    > 0 ?}:::condition
+    D -- Yes --> F[recording]:::function
+    D -- No --> E[Error: Record length
+    must be greater than 0]:::error
+    E --> B
+    F --> C((Running)):::state
+    C -->G{time
+    expired?}:::condition
+    G -- No --> C
+    G -- Yes --> B

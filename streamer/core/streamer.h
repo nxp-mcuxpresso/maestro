@@ -139,7 +139,7 @@
 /*! Automatically report duration */
 #define STREAMER_DEFAULT_UPDATE_DURATION (1000)
 
-#define STREAMER_VERSION "1.7"
+#define STREAMER_VERSION "1.8"
 /*
  * STRUCTURES AND OTHER TYPEDEFS
  */

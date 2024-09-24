@@ -1,0 +1,33 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    C((Running)):::state --> Z[Error: First stop
+    current track]:::error
+    D((Paused)):::state --> Z
+    B((Idle)):::state --> E{SD Card
+    inserted?}:::condition
+    E -- No -->F[Error: Insert SD
+    card]:::error
+    E -- Yes -->G{File
+    name
+    empty?}:::condition
+    G -- Yes -->H[Error: Enter
+    file name]:::error
+    G -- No -->I{File exists?}:::condition
+    I -- No -->O[Error: File
+    doesn't exist]:::error
+    I -- Yes -->J{Supported
+    format?}:::condition
+    J -- Yes -->K[Play the track]:::function
+    J -- No -->L[Error: Unsupported
+    file]:::error
+    K -->M((Running)):::state
+    L --> W((No state
+    change)):::state
+    O --> W
+    H --> W
+    F --> W
+    Z --> W

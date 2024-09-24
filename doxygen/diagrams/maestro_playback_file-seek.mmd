@@ -1,0 +1,32 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    B((Idle)):::state --> E[Error: First select
+    an audio track to play]:::error
+    E-->B
+    C((Running)):::state --> F[Error: First
+    pause the track]:::error
+    F --> C
+    D((Paused)):::state --> G{Seek
+    parameter
+    empty?}:::condition
+    G --No --> H{AAC file?}:::condition
+    G --Yes --> I[Error: Enter
+    a seek time value]:::error
+    I-->N((Paused)):::state;
+    H --Yes -->J[Error: The AAC decoder
+    does not support
+    the seek command]:::error
+    J-->N
+    H --No -->K{Seek
+    parameter
+    positive?}:::condition
+    K --No -->L[Error: The seek
+    time must be
+    a positive value]:::error
+    L-->N
+    K --Yes -->M[Seek the file]:::function
+    M-->N

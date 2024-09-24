@@ -2,7 +2,14 @@
 @page middleware_log Middleware Change Log
 
 @section maestro Maestro Audio Framework for MCUXpresso SDK
-  The currently supported version is 1.7.0
+  The currently supported version is 1.8.0
+  - 1.8.0
+    - New platforms support: MCX-N5XX-EVK, FRDMMCXN236 and RD-RW612-BGA
+    - Fixed compilation warnings
+    - Documentation improvements and updates
+      - Added section with processing time information
+      - Added application state diagrams
+    - Various updates and fixes
   - 1.7.0
     - Removed EAP support for future SDK releases
     - Created new API for audio_sink and audio_src to support USB source, sink

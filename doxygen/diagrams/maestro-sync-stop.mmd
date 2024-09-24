@@ -1,0 +1,14 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    A((Idle)):::state --> A
+    B((Running)):::state --> C{Is debugging
+    enabled?}:::condition
+    C --Yes -->E[Copy reference and
+microphone data to
+the SD card]:::function
+    E --> G((Idle)):::state
+    C -- No --> G

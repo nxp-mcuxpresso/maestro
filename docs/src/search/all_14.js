@@ -5,7 +5,7 @@ var searchData=
   ['unaligned_5fpacked_5fbuffer_2',['unaligned_packed_buffer',['../structCCIDecInfo.html#a27545a9eecfc933c698204a569a61c3d',1,'CCIDecInfo']]],
   ['unicode_3',['unicode',['../structStreamStringType.html#ac86309984101ab8efe2c8b81f62b9705',1,'StreamStringType']]],
   ['unlink_5felements_4',['unlink_elements',['../streamer__element_8c.html#ae97238e0671a517802c0af67eaf01ecb',1,'unlink_elements(ElementHandle src_handle, int8_t src_pad_index, ElementHandle sink_handle, int8_t sink_pad_index):&#160;streamer_element.c'],['../streamer__element_8h.html#ae97238e0671a517802c0af67eaf01ecb',1,'unlink_elements(ElementHandle src_handle, int8_t src_pad_index, ElementHandle sink_handle, int8_t sink_pad_index):&#160;streamer_element.c']]],
-  ['usage_5',['Usage',['../md_ProgrammersGuide.html#autotoc_md21',1,'CPU usage'],['../aacdec_start.html#autotoc_md33',1,'CPU usage'],['../flacdec_start.html#autotoc_md40',1,'CPU usage'],['../mp3dec_start.html#autotoc_md45',1,'CPU usage'],['../md_wavdec.html#autotoc_md50',1,'CPU usage']]],
+  ['usage_5',['usage',['../md_ProgrammersGuide.html#autotoc_md21',1,'CPU usage'],['../aacdec_start.html#autotoc_md33',1,'CPU usage'],['../flacdec_start.html#autotoc_md40',1,'CPU usage'],['../mp3dec_start.html#autotoc_md45',1,'CPU usage'],['../md_wavdec.html#autotoc_md50',1,'CPU usage']]],
   ['usb_20microphone_20example_6',['Maestro USB microphone example',['../md_maestro__usb__mic.html',1,'']]],
   ['usb_20speaker_20example_7',['Maestro USB speaker example',['../md_maestro__usb__speaker.html',1,'']]],
   ['usb_5fmic_20seconds_8',['usb_mic \&lt;seconds\&gt;',['../md_maestro__usb__mic.html#maestro-usb-mic-usb-mic',1,'']]],

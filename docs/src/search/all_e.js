@@ -1,7 +1,7 @@
 var searchData=
 [
   ['occ_0',['occ',['../structringbuf.html#af43bcf56233301d218aa6042e5457623',1,'ringbuf']]],
-  ['of_20content_1',['Of content',['../md_maestro__playback.html#autotoc_md53',1,'Table of content'],['../md_maestro__record.html#autotoc_md55',1,'Table of content'],['../md_maestro__usb__mic.html#autotoc_md57',1,'Table of content'],['../md_maestro__usb__speaker.html#autotoc_md59',1,'Table of content'],['../md_maestro__sync.html#autotoc_md61',1,'Table of content'],['../md_processing__time.html#autotoc_md68',1,'Table of content']]],
+  ['of_20content_1',['of content',['../md_maestro__playback.html#autotoc_md53',1,'Table of content'],['../md_maestro__record.html#autotoc_md55',1,'Table of content'],['../md_maestro__usb__mic.html#autotoc_md57',1,'Table of content'],['../md_maestro__usb__speaker.html#autotoc_md59',1,'Table of content'],['../md_maestro__sync.html#autotoc_md61',1,'Table of content'],['../md_processing__time.html#autotoc_md68',1,'Table of content']]],
   ['off_2',['debug [on|off]',['../md_maestro__sync.html#maestro-sync-debug-on-off',1,'']]],
   ['official_20website_3',['Official website',['../flacdec_start.html#autotoc_md36',1,'']]],
   ['offset_4',['offset',['../structStreamBuffer.html#a8e772939e369d218e74f84ece932d21f',1,'StreamBuffer::offset'],['../structElementEncoder.html#ab6783e143535d08e4e68d02aa188bb53',1,'ElementEncoder::offset']]],
@@ -25,6 +25,7 @@ var searchData=
   ['output_5finterleaved_22',['output_interleaved',['../struct__ElementDecoder.html#ae121b77ac74041b6bb854349ea282b47',1,'_ElementDecoder']]],
   ['output_5fsigned_23',['output_signed',['../struct__ElementDecoder.html#a8cd4d70b7c7779e355ee05e855b22e65',1,'_ElementDecoder']]],
   ['output_5fwordlength_24',['output_wordlength',['../struct__ElementDecoder.html#af44ff300136f42ec3176fa17a845d624',1,'_ElementDecoder']]],
-  ['overview_25',['Overview',['../md_ProgrammersGuide.html#autotoc_md6',1,'Architecture overview'],['../index.html#autotoc_md2',1,'Example applications overview'],['../md_maestro__playback.html#maestro-playback-overview',1,'Overview'],['../md_maestro__record.html#maestro-record-overview',1,'Overview'],['../md_maestro__usb__mic.html#maestro-usb-mic-overview',1,'Overview'],['../md_maestro__usb__speaker.html#maestro-usb-speaker-overview',1,'Overview'],['../md_maestro__sync.html#maestro-sync-overview',1,'Overview']]],
-  ['own_20encoder_26',['CEI definition - implementing your own encoder',['../md_CeiEncoder.html#autotoc_md28',1,'']]]
+  ['overview_25',['Overview',['../md_maestro__playback.html#maestro-playback-overview',1,'Overview'],['../md_maestro__record.html#maestro-record-overview',1,'Overview'],['../md_maestro__usb__mic.html#maestro-usb-mic-overview',1,'Overview'],['../md_maestro__usb__speaker.html#maestro-usb-speaker-overview',1,'Overview'],['../md_maestro__sync.html#maestro-sync-overview',1,'Overview']]],
+  ['overview_26',['overview',['../md_ProgrammersGuide.html#autotoc_md6',1,'Architecture overview'],['../index.html#autotoc_md2',1,'Example applications overview']]],
+  ['own_20encoder_27',['CEI definition - implementing your own encoder',['../md_CeiEncoder.html#autotoc_md28',1,'']]]
 ];

@@ -16,7 +16,7 @@ var searchData=
   ['vbr_5ftoc_5fsize_5fin_5fbytes_13',['VBR_TOC_SIZE_IN_BYTES',['../cci__metadata_8h.html#a6cf328ac0ac3b436e0ed19ed7fdcc8d2',1,'cci_metadata.h']]],
   ['vbr_5ftrue_14',['VBR_TRUE',['../cci__metadata_8h.html#a05af41d3ee9ab8b5180c5bea5794a80e',1,'cci_metadata.h']]],
   ['vbrconstraint_15',['vbrConstraint',['../structCeiOpusConfig.html#a530567b9c69188d3e1df7840a604325f',1,'CeiOpusConfig']]],
-  ['version_16',['Version',['../md_maestro__playback.html#maestro-playback-help-version',1,'help, version'],['../md_maestro__record.html#maestro-record-help-version',1,'help, version'],['../md_maestro__usb__mic.html#maestro-usb-mic-help-version',1,'help, version'],['../md_maestro__usb__speaker.html#maestro-usb-speaker-help-version',1,'help, version'],['../md_maestro__sync.html#maestro-sync-help-version',1,'help, version']]],
+  ['version_16',['version',['../md_maestro__playback.html#maestro-playback-help-version',1,'help, version'],['../md_maestro__record.html#maestro-record-help-version',1,'help, version'],['../md_maestro__usb__mic.html#maestro-usb-mic-help-version',1,'help, version'],['../md_maestro__usb__speaker.html#maestro-usb-speaker-help-version',1,'help, version'],['../md_maestro__sync.html#maestro-sync-help-version',1,'help, version']]],
   ['vit_17',['VIT',['../md_processing__time.html#autotoc_md71',1,'Pipeline Microphone -&gt; VIT'],['../md_processing__time.html#autotoc_md72',1,'Pipeline Microphone -&gt; Voice seeker -&gt; VIT']]],
   ['vit_20time_20language_18',['record_mic vit \&lt;time\&gt; \&lt;language\&gt;',['../md_maestro__record.html#maestro-record-record-mic-vit',1,'']]],
   ['vit_5fregister_5fext_5fprocessing_19',['vit_register_ext_processing',['../vit__sink_8c.html#a90dedce229e6bac80f086419fe01dbd4',1,'vit_register_ext_processing(ElementHandle element, VitSinkInitFunc init_func_ptr, VitSinkPostProcFunc proc_func_ptr, VitSinkDeinitFunc deinit_func_ptr, void *arg_ptr):&#160;vit_sink.c'],['../vit__sink_8h.html#a90dedce229e6bac80f086419fe01dbd4',1,'vit_register_ext_processing(ElementHandle element, VitSinkInitFunc init_func_ptr, VitSinkPostProcFunc proc_func_ptr, VitSinkDeinitFunc deinit_func_ptr, void *arg_ptr):&#160;vit_sink.c']]],
@@ -36,7 +36,7 @@ var searchData=
   ['vitsinkinitfunc_33',['VitSinkInitFunc',['../vit__sink_8h.html#a008842e9387f229b35ed6e233947d53b',1,'vit_sink.h']]],
   ['vitsinkpostprocfunc_34',['VitSinkPostProcFunc',['../vit__sink_8h.html#a67dd2d38924d6c6fbf985022318dc7e8',1,'vit_sink.h']]],
   ['voice_20seeker_20vit_35',['Pipeline Microphone -&gt; Voice seeker -&gt; VIT',['../md_processing__time.html#autotoc_md72',1,'']]],
-  ['volume_36',['volume',['../struct__ElementAudioSink.html#a3622dcf0f4b2636ae7b594082585280c',1,'_ElementAudioSink']]],
+  ['volume_36',['volume',['../md_maestro__playback.html#file-volume-volume',1,'file volume \&lt;volume\&gt;'],['../struct__ElementAudioSink.html#a3622dcf0f4b2636ae7b594082585280c',1,'_ElementAudioSink::volume']]],
   ['volume_20volume_37',['file volume \&lt;volume\&gt;',['../md_maestro__playback.html#file-volume-volume',1,'']]],
   ['volume_5ffunc_38',['volume_func',['../structEXT__AUDIOELEMENT__DESC__T.html#a8bf269f91de111ee70c15ac1ca08cfa3',1,'EXT_AUDIOELEMENT_DESC_T']]],
   ['vupdateaveragebitrate_39',['vUpdateAverageBitrate',['../decoder_8c.html#a982e03eac9c6e7a59d9ee350181094a7',1,'vUpdateAverageBitrate(ElementDecoder *element):&#160;decoder.c'],['../decoder_8h.html#a982e03eac9c6e7a59d9ee350181094a7',1,'vUpdateAverageBitrate(ElementDecoder *element):&#160;decoder.c']]]

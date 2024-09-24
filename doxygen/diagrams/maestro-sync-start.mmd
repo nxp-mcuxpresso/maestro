@@ -1,0 +1,28 @@
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    A((Idle)):::state --> B{nosdcard
+    parameter?}:::condition
+    B -- Yes --> CH[Playing to Line-out and
+    recording]:::function
+    CH --> L((Running)):::state
+    B -- No --> C{Is SD card
+    inserted?}:::condition
+    C -- Yes --> E[Playing to Line-out and
+    recording to SD card]:::function
+    E --> F((Running)):::state
+    F --> G{Debugging
+    is enabled?}:::condition
+    G -- No --> F
+    G -- Yes --> H[Save reference and
+    microphone data to SDRAM]:::function
+    H --> F
+    C -- No --> D[Error: Insert SD
+card first]:::error
+    D --> A
+    J((Running)):::state --> K[Error: The streamer task is
+    already running]:::error
+    K --> J

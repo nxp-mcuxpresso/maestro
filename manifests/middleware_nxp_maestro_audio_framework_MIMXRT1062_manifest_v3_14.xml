@@ -12,7 +12,7 @@
     <definition extID="middleware.fatfs.MIMXRT1062"/>
     <definition extID="CMSIS_DSP_Include.MIMXRT1062"/>
   </externalDefinitions>
-  <ksdk id="MCUXpressoSDK216000_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_14" name="MCUXpressoSDK216000_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_14" version="2.16.000" revision="2.16.000"/>
+  <ksdk id="MCUXpressoSDK216100_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_14" name="MCUXpressoSDK216100_middleware_nxp_maestro_audio_framework_MIMXRT1062_manifest_v3_14" version="2.16.100" revision="2.16.100"/>
   <components>
     <component id="middleware.maestro_framework.template.MIMXRT1062" name="maestro_framework_template" brief="maestro_framework template" version="1.0.0" full_name="maestro_framework template configuration" category="Audio/Framework" user_visible="false" type="project_template" package_base_path=".././" project_base_path="maestro">
       <dependencies>
@@ -34,7 +34,7 @@
         <include_path relative_path="./template" project_relative_path="template" type="c_include"/>
       </include_paths>
     </component>
-    <component id="middleware.maestro_framework.doc.MIMXRT1062" name="maestro_framework" brief="MCU Maestro Audio Framework Doc" version="1.7.0" full_name="Maestro Audio Framework Middleware Doc" category="Audio/Framework" user_visible="false" type="middleware" package_base_path=".././" project_base_path="maestro">
+    <component id="middleware.maestro_framework.doc.MIMXRT1062" name="maestro_framework" brief="MCU Maestro Audio Framework Doc" version="1.8.0" full_name="Maestro Audio Framework Middleware Doc" category="Audio/Framework" user_visible="false" type="middleware" package_base_path=".././" project_base_path="maestro">
       <dependencies>
         <any_of>
           <device_dependency value="MIMXRT1062xxxxA"/>
@@ -749,7 +749,7 @@
         <files mask="middleware_maestro_framework_doc.cmake" hidden="true"/>
       </source>
     </component>
-    <component id="middleware.maestro_framework.codecs.MIMXRT1062" name="maestro_framework_codecs" brief="MCU Maestro Audio Framework Codecs" version="1.7.0" full_name="Maestro Audio Framework Middleware Codecs" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
+    <component id="middleware.maestro_framework.codecs.MIMXRT1062" name="maestro_framework_codecs" brief="MCU Maestro Audio Framework Codecs" version="1.8.0" full_name="Maestro Audio Framework Middleware Codecs" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
       <dependencies>
         <all>
           <any_of>
@@ -778,7 +778,7 @@
         <files mask="middleware_maestro_framework_codecs.cmake" hidden="true"/>
       </source>
     </component>
-    <component id="middleware.maestro_framework.MIMXRT1062" name="maestro_framework_streamer_core" brief="MCU Maestro Audio Framework Streamer Core" version="1.7.0" full_name="Maestro Audio Framework Streamer Core" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
+    <component id="middleware.maestro_framework.MIMXRT1062" name="maestro_framework_streamer_core" brief="MCU Maestro Audio Framework Streamer Core" version="1.8.0" full_name="Maestro Audio Framework Streamer Core" category="Audio/Framework" user_visible="true" type="middleware" package_base_path=".././" project_base_path="maestro">
       <defines>
         <define name="CASCFG_PLATFORM_FREERTOS" value=""/>
         <define name="FSL_OS_SELECTED" value="SDK_OS_FREERTOS"/>

@@ -1,0 +1,80 @@
+# Freestanding Maestro west manifest
+#
+# Description:
+#   Used for setting up freestanding Maestro with its components and its
+#   own Zephyr and only necessary Zephyr components.
+#
+# How to set up:
+#   Maestro Initialization
+#     1. west init -m ssh://git@bitbucket.sw.nxp.com/aa/mcu-streamer --mr develop/ZEP-704-Port-Maestro-To-Zephyr --mf west-freestanding.yml [foldername]
+#     2. cd [foldername]
+#     3. west update
+#
+#   Example build&run
+#     4. west build ...
+#     5. west flash
+#
+
+manifest:
+  version: "1.2"
+
+  projects:
+    # Maestro components
+    - name: vit
+      description: |
+        VIT library making voice recognition.
+      url: ssh://git@bitbucket.sw.nxp.com/vatec/vit_release.git
+      path: maestro/components/vit
+      revision: VIT_v4.10.1_v4.10.0_zephyr_test
+
+    - name: voice_seeker
+      description: |
+        Library selecting between multiple channels for better voice source.
+      url: https://github.com/nxp-mcuxpresso/VoiceSeeker.git
+      path: maestro/components/voice_Seeker
+      revision: MCUX_2.16.000
+
+    # Zephyr original upstream
+    - name: zephyr
+      url: https://github.com/zephyrproject-rtos/zephyr.git
+      path: zephyr
+      revision: main
+
+    # NXP Upstream Github
+    # - name: zephyr
+    #   url: https://github.com/nxp-upstream/zephyr.git
+    #   path: zephyr
+    #   revision: main
+
+    # NXP ?Upstream? Bitbucket/for NPI dev
+    # - name: zephyr
+    #   url: ssh://git@bitbucket.sw.nxp.com/mcucore/zephyr.git
+    #   path: zephyr
+    #   revision: main
+
+    # NXP Downstream Github
+    # - name: zephyr
+    #   url: https://github.com/nxp-zephyr/zephyr.git
+    #   path: zephyr
+    #   revision: main
+
+    # NXP Downstream Bitbucket
+    # - name: zephyr
+    #   url: ssh://git@bitbucket.sw.nxp.com/mcucore/nxp-zephyr.git
+    #   path: zephyr
+    #   revision: main
+
+    # NXP ZSDK Bitbucket
+    # - name: zephyr
+    #   url: ssh://git@bitbucket.sw.nxp.com/mcucore/nxp-zsdk.git
+    #   path: zephyr
+    #   revision: main
+
+      import:
+        name-whitelist:
+          - hal_nxp
+          - cmsis
+          - cmsis-dsp
+          - segger
+  self:
+    path: maestro

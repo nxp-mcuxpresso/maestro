@@ -1,0 +1,10 @@
+name: maestro
+build:
+  cmake: ./zephyr/
+  kconfig: ./zephyr/Kconfig
+  # depends:
+  #   - hal_nxp
+samples:
+  - ./zephyr/samples
+tests:
+  - ./zephyr/tests

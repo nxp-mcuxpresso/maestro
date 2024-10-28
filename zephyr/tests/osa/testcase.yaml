@@ -1,0 +1,13 @@
+tests:
+  # section.subsection
+  maestro.ztest.osa:
+    build_only: false
+    # platform_allow:
+    #  - native_posix
+    #  - native_sim
+      # - mimxrt1170_evkb_cm7
+      # - rd_rw612_bga
+    # integration_platforms:
+    #   - native_sim
+    #   - rd_rw612_bga
+    tags: maestro

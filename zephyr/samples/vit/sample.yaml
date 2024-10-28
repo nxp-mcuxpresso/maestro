@@ -1,0 +1,15 @@
+sample:
+  description: Records data from microphone and detects voice commands in selected language using VIT library
+  name: Maestro voice recognition sample (VIT)
+common:
+  tags: audio maestro vit
+  platform_allow:
+    - rd_rw612_bga
+tests:
+  maestro.sample.record.vit:
+    harness: console
+    timeout: 1
+    harness_config:
+      type: one_line
+      regex:
+        - "Number of channels supported by VIT lib"

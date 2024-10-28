@@ -1,0 +1,15 @@
+common:
+  tags:
+    - audio
+    - maestro
+tests:
+  maestro.test.system.mem2mem:
+    tags:
+     - audio
+     - maestro
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "(.*)Result: OK(.*)"
+    timeout: 1

@@ -1,0 +1,147 @@
+menuconfig MCUX_COMPONENT_middleware.audio_voice.maestro
+    bool "Audio Maestro framework"
+    default n
+    help
+        This option enables the audio Maestro framework
+
+if MCUX_COMPONENT_middleware.audio_voice.maestro
+    menu "Elements"
+        config MAESTRO_ELEMENTS_ALL_ENABLE
+            bool "Enables all supported elements"
+            default n
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_sink.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_src.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_sink.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_src.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.mem_sink.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.mem_src.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.netbuf_src.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.process_sink.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.enable
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.enable
+
+        menuconfig MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.enable
+            bool "Audio process"
+            default n
+            if MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.enable
+                config MAESTRO_ELEMENT_AUDIO_PROC_VOICE_SEEKER_ENABLE
+                    bool "Enables VoiceSeeker processing element"
+                    select MCUX_PRJSEG_middleware.audio_voice.components.voice_seeker
+                    default n
+                config MCUX_COMPONENT_middleware.audio.voice.maestro.element.audio_proc.ssrc.enable
+                    bool "Enables Synchronous sample rate converter processing element"
+                    select MCUX_COMPONENT_middleware.audio_voice.components.ssrc
+                    default n
+                    depends on MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F
+                config MCUX_COMPONENT_middleware.audio.voice.maestro.element.audio_proc.asrc.enable
+                    bool "Enables Asynchronous sample rate converter processing element"
+                    select MCUX_COMPONENT_middleware.audio_voice.components.asrc
+                    default n
+                    depends on MCUX_HW_CORE_CM7F
+                config MAESTRO_ELEMENT_AUDIO_PROC_VIT_ENABLE
+                    bool "Enables VIT processing element"
+                    select MCUX_PRJSEG_middleware.audio_voice.components.vit
+                    default n
+            endif # MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.enable
+
+        config MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_sink.enable
+            bool "Audio sink"
+            default n
+
+        config MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_src.enable
+            bool "Audio source"
+            default n
+
+        config MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_sink.enable
+            bool "File sink"
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.file_utils.enable
+            default n
+
+
+        config MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_src.enable
+            bool "File source"
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.file_utils.enable
+            default n
+
+        config MCUX_COMPONENT_middleware.audio_voice.maestro.element.mem_sink.enable
+            bool "Memory sink"
+            default n
+
+        config MCUX_COMPONENT_middleware.audio_voice.maestro.element.mem_src.enable
+            bool "Memory source"
+            default n
+
+        config MCUX_COMPONENT_middleware.audio_voice.maestro.element.netbuf_src.enable
+            bool "Netbuf source"
+            default n
+
+        menuconfig MCUX_COMPONENT_middleware.audio_voice.maestro.element.process_sink.enable
+            bool "Process sink"
+            default n
+        if MCUX_COMPONENT_middleware.audio_voice.maestro.element.process_sink.enable
+            config MAESTRO_ELEMENT_PROCESS_SINK_VIT_ENABLE
+            bool "Enable VIT library"
+            select MCUX_PRJSEG_middleware.audio_voice.components.vit
+        endif # MCUX_COMPONENT_middleware.audio_voice.maestro.element.process_sink.enable
+
+        menuconfig MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.enable
+            bool "Decoder"
+            default n
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.cci.enable
+        if MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.enable
+            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.mp3.enable
+                bool "MP3 decoder"
+                select MCUX_COMPONENT_middleware.audio_voice.components.decoders.mp3
+                default n
+                depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
+            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.wav.enable
+                bool "WAV decoder"
+                select MCUX_COMPONENT_middleware.audio_voice.components.decoders.wav
+                default n
+                depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
+            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.flac.enable
+                bool "FLAC decoder"
+                select MCUX_COMPONENT_middleware.audio_voice.components.decoders.flac
+                default n
+                depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
+            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.aac.enable
+                bool "AAC decoder"
+                select MCUX_COMPONENT_middleware.audio_voice.components.decoders.aac
+                default n
+                depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
+            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.opus_ogg.enable
+                bool "OPUS decoder using OGG"
+                select MCUX_COMPONENT_middleware.audio_voice.components.opus
+                select MCUX_COMPONENT_middleware.audio_voice.components.ogg
+                select MCUX_COMPONENT_middleware.audio_voice.components.opusfile
+                default n
+        endif # MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.enable
+
+        menuconfig MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.enable
+            bool "Encoder"
+            default n
+            select MCUX_COMPONENT_middleware.audio_voice.maestro.cei.enable
+        if MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.enable
+            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.encoder.opus.enable
+                bool "OPUS encoder"
+                select MCUX_COMPONENT_middleware.audio_voice.components.opus
+                select MCUX_COMPONENT_middleware.audio_voice.maestro.cci.enable
+                select MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.enable
+                default n
+        endif # MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.enable
+    endmenu
+
+    config MCUX_COMPONENT_middleware.audio_voice.maestro.cci.enable
+        bool "Enables Common codec interface"
+        select MCUX_COMPONENT_middleware.audio_voice.maestro.cei.enable # dependency on common API
+        default n
+
+    config MCUX_COMPONENT_middleware.audio_voice.maestro.cei.enable
+        bool "Enables Common encoder interface"
+        default n
+
+    config MCUX_COMPONENT_middleware.audio_voice.maestro.file_utils.enable
+        bool "Enables File utils"
+        default n
+endif

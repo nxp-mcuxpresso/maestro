@@ -1,0 +1,2 @@
+west twister -p rd_rw612_bga --device-testing --device-serial COM6 --testsuite-root ../ --device-serial-baud 115200 --west-flash --verbose --test tests/memToMem/maestro.test.system.mem2mem --test tests/basic/maestro.test.basic --test samples/record/maestro.sample.record.ram --test samples/vit/maestro.sample.record.vit
+pause

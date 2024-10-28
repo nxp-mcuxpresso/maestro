@@ -1,0 +1,14 @@
+menu "Maestro Record RAM Example"
+	depends on MAESTRO_AUDIO_FRAMEWORK
+
+	config MAESTRO_EXAMPLE_MAESTRO_LOGGING_ON
+		bool "Turns on logging of Maestro library"
+		default n
+
+	config MAESTRO_EXAMPLE_RECORD_TIME_MS
+		int "Maestro Record example - Approximate record time [ms]"
+		default 2000
+
+endmenu
+
+source "Kconfig.zephyr"

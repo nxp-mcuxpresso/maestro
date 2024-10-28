@@ -1,0 +1,44 @@
+config MAESTRO_AUDIO_FRAMEWORK
+	bool "Maestro Audio Framework Support"
+	help
+	  This option enables the Maestro Framework
+
+if MAESTRO_AUDIO_FRAMEWORK
+
+	config MAESTRO_USE_ZEPHYR
+		bool "Enables Zephyr variants on NXP SDK based code"
+		depends on MAESTRO_AUDIO_FRAMEWORK
+		default y
+
+	config MAESTRO_ENABLE_ELEMENT_MEM_SRC
+		bool "Enables memory source element"
+		default n
+
+	config MAESTRO_ENABLE_ELEMENT_MEM_SINK
+		bool "Enables memory sink element"
+		default n
+
+	config MAESTRO_ENABLE_ELEMENT_AUDIO_SRC
+		bool "Enables audio source element"
+		default n
+
+	config MAESTRO_ENABLE_ELEMENT_VIT_SINK
+		bool "Enables VIT sink element"
+		default n
+
+	config MAESTRO_ENABLE_ELEMENT_AUDIO_PROC
+		bool "Enables Audio proc element"
+		default n
+
+	config MAESTRO_ENABLE_ELEMENT_VOICE_SEEKER
+		bool "Enables VoiceSeeker processing element"
+		select MAESTRO_ENABLE_ELEMENT_AUDIO_PROC
+		default n
+
+# TBD: Maestro configuration options
+
+endif # MAESTRO_AUDIO_FRAMEWORK
+
+rsource "osa/Kconfig"
+
+#source "osa.Kconfig"

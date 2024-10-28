@@ -1,0 +1,15 @@
+sample:
+  description: Records data from microphone and stores into RAM memory
+  name: Maestro record into RAM
+common:
+  tags: audio maestro
+  platform_allow:
+   - rd_rw612_bga
+tests:
+  maestro.sample.record.ram:
+    timeout: 3
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "OK"

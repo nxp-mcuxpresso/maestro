@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2022,2024 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -60,7 +60,7 @@ int32_t _get_file_data(
                        "required=%d stream no = %d\n",
                        __FUNCTION__, cci_dec->filesrc_size[stream_num], size_to_read, stream_num);
 
-    sink = ELEMENT_SINK_PAD(decoder, stream_num);
+    sink = ELEMENT_SINK_PAD(decoder, 0);
 
     if (size_to_read > 0)
     {
@@ -563,17 +563,20 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
 
         /* filesrc_buffer[] stores the data sent from filesrc and it is doubled
          * since the max bytes saved can be ((2 * frame size) - 1) */
-        cci_dec->unaligned_filesrc_buffer[0] =
-            OSA_MemoryAllocate(cci_dec->dec_frame_size + sizeof(uint32_t) + sizeof(RawPacketHeader));
-        STREAMER_LOG_DEBUG(DBG_CCID, "[CCID] CCI unaligned_filesrc_buffer[0]  %d\n",
-                           cci_dec->dec_frame_size + sizeof(uint32_t));
-        if (NULL == cci_dec->unaligned_filesrc_buffer[0])
+        for (uint8_t i = 0; i < FILESRC_BUFFER_NUM; i++)
         {
-            STREAMER_LOG_CATA(DBG_CCID, ERRCODE_OUT_OF_MEMORY, "[CCID]Out of memory: unaligned_filesrc_buffer[0]\n");
-            ret = false;
-            goto Error;
+            cci_dec->unaligned_filesrc_buffer[i] =
+                OSA_MemoryAllocate(cci_dec->dec_frame_size + sizeof(uint32_t) + sizeof(RawPacketHeader));
+            STREAMER_LOG_DEBUG(DBG_CCID, "[CCID] CCI unaligned_filesrc_buffer[%u]  %d\n", i,
+                               cci_dec->dec_frame_size + sizeof(uint32_t));
+            if (NULL == cci_dec->unaligned_filesrc_buffer[i])
+            {
+                STREAMER_LOG_CATA(DBG_CCID, ERRCODE_OUT_OF_MEMORY,
+                                  "[CCID]Out of memory: unaligned_filesrc_buffer[i]\n");
+                ret = false;
+                goto Error;
+            }
         }
-
         /* packed_buffer[] will store the data to be sent to audiosink */
         cci_dec->unaligned_packed_buffer = OSA_MemoryAllocate(
             (sizeof(AudioPacketHeader) + dec_out_frame_size + sizeof(uint32_t)) * NUM_OF_PING_PONG_BUFFER);
@@ -590,8 +593,11 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
         /* set memtype after all allocations are successful */
 
         /* align buffers to 4 byte boundary */
-        cci_dec->filesrc_buffer[0] =
-            (uint8_t *)MEM4_ALIGN((uintptr_t)cci_dec->unaligned_filesrc_buffer[0] + sizeof(RawPacketHeader));
+        for (uint8_t i = 0; i < FILESRC_BUFFER_NUM; i++)
+        {
+            cci_dec->filesrc_buffer[i] =
+                (uint8_t *)MEM4_ALIGN((uintptr_t)cci_dec->unaligned_filesrc_buffer[i] + sizeof(RawPacketHeader));
+        }
 
         for (i = 0; i < NUM_OF_PING_PONG_BUFFER; i++)
         {
@@ -602,14 +608,14 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
 
         /* Init input buffer usage variables */
         /* size of data available to send to the CCI */
-        cci_dec->filesrc_size[0] = 0;
-        cci_dec->filesrc_size[1] = 0;
+        for (uint8_t i = 0; i < FILESRC_BUFFER_NUM; i++)
+        {
+            cci_dec->filesrc_size[i]       = 0;
+            cci_dec->filesrc_offset[i]     = 0;
+            cci_dec->filesrc_buffer_idx[i] = 0;
+        }
         /* position of the srcfile based on data sent to CCI */
-        cci_dec->filesrc_offset[0]     = 0;
-        cci_dec->filesrc_buffer_idx[0] = 0;
-        cci_dec->filesrc_offset[1]     = 0;
-        cci_dec->filesrc_buffer_idx[1] = 0;
-        cci_dec->buffer_index          = 0;
+        cci_dec->buffer_index = 0;
 
         /* store the cci decoder info in the decoder element */
         element->dec_info = cci_dec;
@@ -653,11 +659,16 @@ Error:
             OSA_MemoryFree(cci_dec->metadata);
             cci_dec->metadata = NULL;
         }
-        if (cci_dec->unaligned_filesrc_buffer[0])
+
+        for (uint8_t i = 0; i < FILESRC_BUFFER_NUM; i++)
         {
-            OSA_MemoryFree(cci_dec->unaligned_filesrc_buffer[0]);
-            cci_dec->unaligned_filesrc_buffer[0] = NULL;
+            if (cci_dec->unaligned_filesrc_buffer[i])
+            {
+                OSA_MemoryFree(cci_dec->unaligned_filesrc_buffer[i]);
+                cci_dec->unaligned_filesrc_buffer[i] = NULL;
+            }
         }
+
         if (cci_dec->unaligned_packed_buffer)
         {
             OSA_MemoryFree(cci_dec->unaligned_packed_buffer);
@@ -732,9 +743,11 @@ uint8_t ccidec_sink_pad_event_handler(StreamPad *pad, StreamEvent *event)
 
         case EVENT_FLUSH_STOP:
             /* Clear the buffered data */
-            cci_dec->filesrc_size[0] = 0;
-            cci_dec->filesrc_size[1] = 0;
-            ret                      = false;
+            for (uint8_t i = 0; i < FILESRC_BUFFER_NUM; i++)
+            {
+                cci_dec->filesrc_size[i] = 0;
+            }
+            ret = false;
             break;
 
         case EVENT_FLUSH_START:
@@ -792,7 +805,9 @@ uint8_t ccidec_src_pad_event_handler(StreamPad *pad, StreamEvent *event)
                 STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Time: %d\n", time_in_msec);
                 STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Average bit rate: %d\n", cci_dec->metadata->avg_bit_rate);
 
-                if (cci_dec->stream_type != STREAM_TYPE_OGG_OPUS)
+                if ((cci_dec->stream_type != STREAM_TYPE_OGG_OPUS) &&
+                    (cci_dec->metadata->audio_sub_type != MEDIA_SUBTYPE_ADTS) &&
+                    (cci_dec->metadata->audio_sub_type != MEDIA_SUBTYPE_ADIF))
                 {
                     uint32_t time_in_sec = time_in_msec / 1000;
                     /* get fractional seconds */

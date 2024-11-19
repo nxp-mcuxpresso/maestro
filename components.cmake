@@ -4,8 +4,14 @@
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.aac.enable)
     mcux_add_source(
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/components/decoders/aac
-        SOURCES aac_extractmetadata.c
+        SOURCES *.c
+                *.h
         TOOLCHAINS armgcc mcux
+    )
+
+    mcux_add_include(
+        BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/components/decoders
+        INCLUDES aac
     )
 
     mcux_add_macro(

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2022,2024 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -666,7 +666,7 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
             strncpy(pipeline->track_info.codec_info, (char *)msg->data, CODEC_INFO_LEN - 1);
             break;
         case MSG_INFO_DURATION:
-            if (msg->data <= 0)
+            if (msg->data < 0)
             {
                 STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "[Pipeline] Duration is wrong %d\n", msg->data);
             }

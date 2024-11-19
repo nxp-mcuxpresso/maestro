@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2022,2024 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,7 +23,7 @@
  */
 
 #define NUM_OF_PING_PONG_BUFFER 2
-
+#define FILESRC_BUFFER_NUM      3
 /**
  * @brief Common codec interface information
  *
@@ -32,15 +32,15 @@ typedef struct
 {
     ElementDecoder *element;                         /*!< @brief used to access element structure */
     bool init_done;                                  /*!< @brief flag for multi-pass initialization */
-    uint8_t *filesrc_buffer[3];                      /*!< @brief internal buffer to hold data from
-                                                       StreamBuffer buffer until callback
-                                                       provides it to decoder */
-    int32_t filesrc_buffer_idx[3];                   /*!< @brief index used to track the current buffer position*/
-    int32_t filesrc_size[3];                         /*!< @brief size of unused buffer filled from
-                                                        StreamBuffer buffer -- read callback will
-                                                        decrement this as read from filesrc_buffer */
-    uint32_t filesrc_offset[3];                      /*!< @brief represents offset into the file
-                                                      (from StreamBuffer buffer.offset) */
+    uint8_t *filesrc_buffer[FILESRC_BUFFER_NUM];     /*!< @brief internal buffer to hold data from
+                                      StreamBuffer buffer until callback
+                                      provides it to decoder */
+    int32_t filesrc_buffer_idx[FILESRC_BUFFER_NUM];  /*!< @brief index used to track the current buffer position*/
+    int32_t filesrc_size[FILESRC_BUFFER_NUM];        /*!< @brief size of unused buffer filled from
+                                       StreamBuffer buffer -- read callback will
+                                       decrement this as read from filesrc_buffer */
+    uint32_t filesrc_offset[FILESRC_BUFFER_NUM];     /*!< @brief represents offset into the file
+                                     (from StreamBuffer buffer.offset) */
     uint8_t *packed_buffer[NUM_OF_PING_PONG_BUFFER]; /*!< @brief buffer used to create audio packet -
                                  used by StreamBuffer */
     int32_t dec_frame_size;                          /*!< @brief Used to keep the maximum buffer size
@@ -48,12 +48,12 @@ typedef struct
     /* Exact heap allocated unaligned addresses to free later
      * these buffers will be aligned before use via the uint8_t *ptr_buffer
      */
-    void *unaligned_filesrc_buffer[3]; /*!< @brief File source buffer pointers */
-    void *unaligned_packed_buffer;     /*!< @brief Output buffer pointer */
+    void *unaligned_filesrc_buffer[FILESRC_BUFFER_NUM]; /*!< @brief File source buffer pointers */
+    void *unaligned_packed_buffer;                      /*!< @brief Output buffer pointer */
 
-    int32_t *ccidec_memory;            /*!< @brief pointer to memory allocated for cci */
-    audio_stream_type_t stream_type;   /*!< @brief holds converted decoder_type, passed to cci */
-    file_meta_data_t *metadata;        /*!< @brief pointer to metadata structure */
+    int32_t *ccidec_memory;                             /*!< @brief pointer to memory allocated for cci */
+    audio_stream_type_t stream_type;                    /*!< @brief holds converted decoder_type, passed to cci */
+    file_meta_data_t *metadata;                         /*!< @brief pointer to metadata structure */
 
     /* any new member in this structure should be added here */
     bool eos_done;        /*!< @brief End of stream flag */

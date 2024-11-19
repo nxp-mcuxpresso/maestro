@@ -6,7 +6,7 @@
 + Sampling rate : 8 kHz, 11.025 kHz, 12 kHz, 16 kHz, 22.50 kHz, 24 kHz, 32 kHz, 44.1 kHz, 48 kHz
 + Channel :	stereo and mono
 + Bits per samples : 16 bit
-+ Container format : (MPEG-2 Style)AAC transport format - ADTS and ADIF.
++ Container format : (MPEG-2 Style)AAC transport format - ADTS and ADIF. (MPEG-4 Style)AAC transport format - MP4.
 
 ## Specification and reference
 

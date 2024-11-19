@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"name": "decoder",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"testwav.h": "c",
+			"testmp3.h": "c",
+			"fsl_os_abstraction.h": "c",
+			"fsl_os_abstraction_zephyr.h": "c"
+		}
+	}
+}

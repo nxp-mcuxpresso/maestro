@@ -5,35 +5,31 @@
 #
 # Append into the Zephyr's manifest, project part:
 #   - name: maestro
-#     url: ssh://git@bitbucket.sw.nxp.com/aa/mcu-streamer.git
+#     url: <this repository URL>
 #     path: modules/audio/maestro
-#     revision: develop/ZEP-704-Port-Maestro-To-Zephyr
+#     revision: <revision or branch>
 #     import: west.yml
 #
-# How to set up
-#   1. west init
-#   2. west update
-#   3. west build ...
-#   4. west flash
+# For more information, see zephyr/README.rst
 #
 
 manifest:
   version: "1.2"
 
   projects:
-    # Maestro components
+    # Audio libraries used by Maestro
     - name: vit
       description: |
         VIT library making voice recognition.
-      url: ssh://git@bitbucket.sw.nxp.com/vatec/vit_release.git
-      path: modules/audio/maestro/components/vit
-      revision: VIT_v4.10.1_v4.10.0_zephyr_test
+      url: https://github.com/nxp-mcuxpresso/VIT
+      path: modules/audio/vit
+      revision: 24.12.00-pvw2
 
-    - name: voice_seeker
+    - name: audio_voice_components
       description: |
-        Library selecting between multiple channels for better voice source.
-      url: https://github.com/nxp-mcuxpresso/VoiceSeeker.git
-      path: modules/audio/maestro/components/voice_Seeker
-      revision: MCUX_2.16.000
+        NXP audio libraries (encoders, decoders, libraries)
+      url: https://github.com/nxp-mcuxpresso/audio-voice-components
+      path: modules/audio/audio_voice_components
+      revision: 24.12.00-pvw2
   self:
     path: maestro

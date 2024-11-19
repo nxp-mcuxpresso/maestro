@@ -8,18 +8,19 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <inttypes.h>
 
 #include "maestro_logging.h"
 #include "error.h"
 
-#if (CONFIG_MAESTRO_USE_ZEPHYR == 1)
-// Mapping into ZephyrOs console library
+#if (CONFIG_MAESTRO_RTOS_ZEPHYR == 1)
+// Mapping into Zephyr○s console library
 #include <zephyr/sys/printk.h>
 #define PRINTF(...) printk(__VA_ARGS__)
 #else
 // Mapping into Console library managed by SDK
 #include "fsl_debug_console.h"
-#endif
+#endif /* CONFIG_MAESTRO_RTOS_ZEPHYR */
 
 #define COMMON_ENTER LOG_ENTER(LOGMDL_COMMON)
 #define COMMON_EXIT  LOG_EXIT(LOGMDL_COMMON)
@@ -210,7 +211,7 @@ void lprintf(const uint32_t module, const uint8_t level, const uint32_t error, c
 
         if (level < LOGLVL_INFO)
         {
-            snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s 0x%016x %s %s", module_name(module), level_name(level),
+            snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %016"PRIx32" %s %s", module_name(module), level_name(level),
                      error, error_name(error), buffer);
             logoutput[LOG_MAX_FULL_LINE_SIZE] = '\0';
         }

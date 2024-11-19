@@ -20,7 +20,7 @@ The application is controlled by commands from a shell interface using serial co
 Depending on target platform or development board there are different modes and features of the demo supported.
 
 - **Standard** - The mode demonstrates playback of encoded files from an SD card with up to 2 channels, up to 48 kHz sample rate and up to 16 bit width. This mode is enabled by default.
-- **Multi-channel** - The mode demonstrates playback of raw PCM files from an SD card with up to 8 channels, 96kHz sample rate and 32 bit width. The decoders and synchronous sample rate converter are not supported in this mode. The Multi-channel mode is only supported on selected platforms, see the table below. The [Example configuration](#maestro-playback-example-configuration) section contains information on how to enable it.
+- **Multi-channel** - The mode demonstrates playback of raw PCM files from an SD card with 2 or 8 channels, 96kHz sample rate and 32 bit width. The decoders and synchronous sample rate converter are not supported in this mode. The Multi-channel mode is only supported on selected platforms, see the table below. The [Example configuration](#maestro-playback-example-configuration) section contains information on how to enable it.
 
 As shown in the table below, the application is supported on several development boards and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#maestro-playback-HW-modifications) or [Example configuration](#maestro-playback-example-configuration) sections before running the demo.
 
@@ -61,7 +61,7 @@ As shown in the table below, the application is supported on several development
             <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
             <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
             <td colspan="1" class="audio_FW_spec_table_modification">1-2</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">1-8</td>
+            <td colspan="1" class="audio_FW_spec_table_modification">2 or 8</td>
         </tr>
         <tr>
             <td colspan="1">EVKB-MIMXRT1170</td>
@@ -133,7 +133,7 @@ As shown in the table below, the application is supported on several development
 **Limitations:**
 - Decoder:
     - **AAC:**
-        - The decoder is supported only in the MCUXpresso IDE and ARMGCC.
+        - The reference decoder is supported only in the MCUXpresso IDE and ARMGCC.
     - **FLAC:**
         - *LPCXpresso55s69* - When playing FLAC audio files with too small frame size (block size), the audio output may be distorted because the board is not fast enough.
     - **OPUS:**
@@ -145,7 +145,7 @@ As shown in the table below, the application is supported on several development
 **Known issues:**
 - Decoder:
     - **MP3:**
-        - The decoder has issues with some of the files. One of the channels can be sometimes distorted or missing parts of the signal.
+        - The reference decoder has issues with some of the files. One of the channels can be sometimes distorted or missing parts of the signal.
 
 More information about supported features can be found on the [Supported features](supported_features.md) page.
 

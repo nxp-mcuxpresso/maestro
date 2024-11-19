@@ -1,3 +1,6 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
 if(CONFIG_MAESTRO_OSA_USE)
 
   set(OSA_DIR ${ZEPHYR_CURRENT_MODULE_DIR}/zephyr/osa/)

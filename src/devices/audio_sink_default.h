@@ -13,7 +13,6 @@
  *          PCM manager Audio Sink Interface
  */
 
-#include "decoder.h"
 #include "audio_sink.h"
 
 #include "streamer_pcm.h"

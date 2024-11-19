@@ -31,7 +31,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="fs_logo.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 1.8</span>
+   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 2.0.0</span>
    </div>
    <div id="projectbrief">NXP Semiconductors</div>
   </td>
@@ -104,21 +104,21 @@ $(function(){initNavTree('md_CeiEncoder.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">CEI encoder</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md24"></a> The Maestro streamer contains an element adapting an extensible set of audio encoders in the form of functions conforming to the CEI (Common Encoder Interface). This element enables the user to choose and configure a suitable encoder at runtime.</p>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md25"></a> The Maestro streamer contains an element adapting an extensible set of audio encoders in the form of functions conforming to the CEI (Common Encoder Interface). This element enables the user to choose and configure a suitable encoder at runtime.</p>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Header files</h1>
 <p>CEI itself and the CEI encoders are using following header files, in which you may be interested:</p>
 <ul>
-<li><code><a class="el" href="cei_8h.html" title="Common encoder interface API prototypes.">cei.h</a></code> - contains types used by the element itself and an encoder implementing the CEI</li>
-<li><code><a class="el" href="cei__enctypes_8h.html" title="Basic common encoder interface types, information, configuration structures.">cei_enctypes.h</a></code> - contains a list of possible encoders and types used for interfacing with a CEI encoder</li>
-<li><code><a class="el" href="cei__table_8h.html" title="Static tables for encoder functions, sizes.">cei_table.h</a></code> - contains a table of functions implementing integrated CEI encoders</li>
+<li><code>cei.h</code> - contains types used by the element itself and an encoder implementing the CEI</li>
+<li><code>cei_enctypes.h</code> - contains a list of possible encoders and types used for interfacing with a CEI encoder</li>
+<li><code>cei_table.h</code> - contains a table of functions implementing integrated CEI encoders</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md26"></a>
-Instantiating the element</h1>
-<p>This element's index is <code>ELEMENT_ENCODER_INDEX</code> and its type is <code>TYPE_ELEMENT_ENCODER</code>, as defined in <code><a class="el" href="streamer__api_8h.html" title="Streamer API header. Public APIs for using the maestro streamer framework.">streamer_api.h</a></code>. It has one source pad (data input) and one sink pad (data output). It is initialized like any other element, meaning that it is instantiated and inserted into the pipeline using the <code>create_element</code>, <code>add_element_pipeline</code> and <code>link_elements</code> functions. Inversely, for destroying the element, the <code>unlink_elements</code>, <code>remove_element_pipeline</code> and <code>destroy_element</code> are used. This element alone does not depend on any additional software layers other than these required by the Maestro streamer itself, so no pre-initialization before this element instantiation is necessary.</p>
 <h1><a class="anchor" id="autotoc_md27"></a>
+Instantiating the element</h1>
+<p>This element's index is <code>ELEMENT_ENCODER_INDEX</code> and its type is <code>TYPE_ELEMENT_ENCODER</code>, as defined in <code>streamer_api.h</code>. It has one source pad (data input) and one sink pad (data output). It is initialized like any other element, meaning that it is instantiated and inserted into the pipeline using the <code>create_element</code>, <code>add_element_pipeline</code> and <code>link_elements</code> functions. Inversely, for destroying the element, the <code>unlink_elements</code>, <code>remove_element_pipeline</code> and <code>destroy_element</code> are used. This element alone does not depend on any additional software layers other than these required by the Maestro streamer itself, so no pre-initialization before this element instantiation is necessary.</p>
+<h1><a class="anchor" id="autotoc_md28"></a>
 Element properties</h1>
-<p>Use Maestro streamer property API (<code>streamer_set_property</code> and <code>streamer_get_property</code>) for setting or getting these. The constants are defined in <code><a class="el" href="streamer__element__properties_8h.html" title="Header for streamer element properties.">streamer_element_properties.h</a></code>.</p>
+<p>Use Maestro streamer property API (<code>streamer_set_property</code> and <code>streamer_get_property</code>) for setting or getting these. The constants are defined in <code>streamer_element_properties.h</code>.</p>
 <ul>
 <li><code>PROP_ENCODER_CHUNK_SIZE</code><ul>
 <li><b>Synopsis:</b> Determines the length of a chunk pulled from the sibling of the source pad and essentially influences the size of allocated buffers. If the actual amount of data pulled is smaller, the rest is zero-filled.</li>
@@ -133,7 +133,7 @@ Element properties</h1>
 </li>
 <li><code>PROP_ENCODER_TYPE</code><ul>
 <li><b>Synopsis:</b> Determines the exact encoder (CEI implementation) to be used.</li>
-<li><b>Type:</b> <code>CeiEncoderType</code> (<code><a class="el" href="cei__enctypes_8h.html" title="Basic common encoder interface types, information, configuration structures.">cei_enctypes.h</a></code>)</li>
+<li><b>Type:</b> <code>CeiEncoderType</code> (<code>cei_enctypes.h</code>)</li>
 <li><b>Default value:</b> <code>CEIENC_LAST</code></li>
 <li><b>Constraints:</b><ul>
 <li>Must not be equal to <code>CEIENC_LAST</code>, otherwise <code>STREAM_ERR_INVALID_ARGS</code> will be returned.</li>
@@ -157,17 +157,15 @@ Element properties</h1>
 </li>
 <li><code>PROP_ENCODER_BITSTREAMINFO</code><ul>
 <li><b>Synopsis:</b> Specifies information about the incoming bitstream (sample rate, sample depth, ...).</li>
-<li><b>Type:</b> Pointer to <code><a class="el" href="structCeiBitstreamInfo.html" title="Bitstream info.">CeiBitstreamInfo</a></code> (<code><a class="el" href="cei__enctypes_8h.html" title="Basic common encoder interface types, information, configuration structures.">cei_enctypes.h</a></code>).</li>
-<li><b>Default value:</b> <div class="fragment"><div class="line">(<a class="code hl_struct" href="structCeiBitstreamInfo.html">CeiBitstreamInfo</a>) {</div>
+<li><b>Type:</b> Pointer to <code>CeiBitstreamInfo</code> (<code>cei_enctypes.h</code>).</li>
+<li><b>Default value:</b> <div class="fragment"><div class="line">(CeiBitstreamInfo) {</div>
 <div class="line">    .sample_rate = 0,</div>
 <div class="line">    .num_channels = 0,</div>
-<div class="line">    .endian = <a class="code hl_define" href="streamer_8h.html#a7d84bdee09d6bfddd9e7fdd18ba9dbfb">AF_LITTLE_ENDIAN</a>,</div>
+<div class="line">    .endian = AF_LITTLE_ENDIAN,</div>
 <div class="line">    .sign = TRUE,</div>
 <div class="line">    .sample_size = 0,</div>
 <div class="line">    .interleaved = TRUE</div>
 <div class="line">}</div>
-<div class="ttc" id="astreamer_8h_html_a7d84bdee09d6bfddd9e7fdd18ba9dbfb"><div class="ttname"><a href="streamer_8h.html#a7d84bdee09d6bfddd9e7fdd18ba9dbfb">AF_LITTLE_ENDIAN</a></div><div class="ttdeci">#define AF_LITTLE_ENDIAN</div><div class="ttdoc">Little endiannes.</div><div class="ttdef"><b>Definition</b> streamer.h:122</div></div>
-<div class="ttc" id="astructCeiBitstreamInfo_html"><div class="ttname"><a href="structCeiBitstreamInfo.html">CeiBitstreamInfo</a></div><div class="ttdoc">Bitstream info.</div><div class="ttdef"><b>Definition</b> cei_enctypes.h:31</div></div>
 </div><!-- fragment --></li>
 <li><b>Constraints:</b><ul>
 <li>Cannot be changed if the actual encoder has been created. If done so, <code>STREAM_ERR_ELEMENT_BAD_STATUS</code> will be returned.</li>
@@ -175,14 +173,14 @@ Element properties</h1>
 </ul>
 </li>
 <li><b>Behaviour influenced:</b><ul>
-<li>Given the characteristics of some elements available, different packets of data (header and payload, referred to as "chunk" above) may be pulled by this element. Each packet can contain a different header, which may or may not contain useful information about the bitstream. If a packet with the <code><a class="el" href="structAudioPacketHeader.html">AudioPacketHeader</a></code> (<code>todofile.h</code>) is pulled at first and any other iteration of the streamer pipeline, the bitstream parameters configured by this property are implicitly available and are not expected to be specified by the user. Other packet header types (such as <code><a class="el" href="structRawPacketHeader.html" title="Raw packet header.">RawPacketHeader</a></code>) don't contain any bitstream parameters and require the user to specify the parameters manually using this property. Failure to do so will result in the element's process function returning <code>FLOW_ERROR</code>. Same situation will occur if a packet with the <code><a class="el" href="structAudioPacketHeader.html">AudioPacketHeader</a></code> is received and its contents differ from the already acquired bitstream parameters.</li>
+<li>Given the characteristics of some elements available, different packets of data (header and payload, referred to as "chunk" above) may be pulled by this element. Each packet can contain a different header, which may or may not contain useful information about the bitstream. If a packet with the <code>AudioPacketHeader</code> (<code>todofile.h</code>) is pulled at first and any other iteration of the streamer pipeline, the bitstream parameters configured by this property are implicitly available and are not expected to be specified by the user. Other packet header types (such as <code>RawPacketHeader</code>) don't contain any bitstream parameters and require the user to specify the parameters manually using this property. Failure to do so will result in the element's process function returning <code>FLOW_ERROR</code>. Same situation will occur if a packet with the <code>AudioPacketHeader</code> is received and its contents differ from the already acquired bitstream parameters.</li>
 <li>As of now, CEI is defined to work with 16-bit signed little-endian (s16le) samples, which are interleaved if the bitstream contains more than one channels. This element handles endianness and unsigned to signed conversion.</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 CEI definition - implementing your own encoder</h1>
 <p>The CEI defines following function pointer types:</p>
 <ul>
@@ -192,9 +190,9 @@ CEI definition - implementing your own encoder</h1>
 <li><code>CeiFnEncoderSetConfig</code>: Configure the encoder from a given structure pointer.</li>
 <li><code>CeiFnEncode</code>: Encode a given buffer to a given output buffer.</li>
 </ul>
-<p>Detailed descriptions of function behaviour, parameters and expected return values are available as docblocks in the <code><a class="el" href="cei_8h.html" title="Common encoder interface API prototypes.">cei.h</a></code> file.</p>
-<p>Each encoder is implemented as a set of pointers pointing to functions conforming to these types, grouped in the <code><a class="el" href="structCeiEncoderFunctions.html" title="Common encoder interface function pointers.">CeiEncoderFunctions</a></code> structure. Specifying the <code>CeiEncoderGetConfig fnGetConfig</code> and <code>CeiFnEncoderSetConfig fnSetConfig</code> members is optional, as an encoder does not have to be configurable. If so desired, specify <code>NULL</code>. Implementation of the remaining functions is mandatory, however. If at least one of these functions isn't implemented and <code>NULL</code> is specified instead, the encoder will be considered as not implemented.</p>
-<p>To register an implemented encoder with the element, add a new entry to the <code>CeiEncoderType</code> enum and add the <code><a class="el" href="structCeiEncoderFunctions.html" title="Common encoder interface function pointers.">CeiEncoderFunctions</a></code> struct value to the table <code><a class="el" href="structCeiEncoderFunctions.html" title="Common encoder interface function pointers.">CeiEncoderFunctions</a> ceiEncTable[]</code> located in the <code><a class="el" href="cei__table_8h.html" title="Static tables for encoder functions, sizes.">cei_table.h</a></code> header file. Note and match the order of items in that table, as a <code>CeiEncoderType</code> value is used as an index. Same goes for the <code>size_t ceiEncConfigSizeTable[]</code>. If configuration is not applicable, specify <code>0</code> at the appropriate index. If configuration is applicable, describe the configuration structure in the <code><a class="el" href="cei__enctypes_8h.html" title="Basic common encoder interface types, information, configuration structures.">cei_enctypes.h</a></code> header file and add its size to that table. </p>
+<p>Detailed descriptions of function behaviour, parameters and expected return values are available as docblocks in the <code>cei.h</code> file.</p>
+<p>Each encoder is implemented as a set of pointers pointing to functions conforming to these types, grouped in the <code>CeiEncoderFunctions</code> structure. Specifying the <code>CeiEncoderGetConfig fnGetConfig</code> and <code>CeiFnEncoderSetConfig fnSetConfig</code> members is optional, as an encoder does not have to be configurable. If so desired, specify <code>NULL</code>. Implementation of the remaining functions is mandatory, however. If at least one of these functions isn't implemented and <code>NULL</code> is specified instead, the encoder will be considered as not implemented.</p>
+<p>To register an implemented encoder with the element, add a new entry to the <code>CeiEncoderType</code> enum and add the <code>CeiEncoderFunctions</code> struct value to the table <code>CeiEncoderFunctions ceiEncTable[]</code> located in the <code>cei_table.h</code> header file. Note and match the order of items in that table, as a <code>CeiEncoderType</code> value is used as an index. Same goes for the <code>size_t ceiEncConfigSizeTable[]</code>. If configuration is not applicable, specify <code>0</code> at the appropriate index. If configuration is applicable, describe the configuration structure in the <code>cei_enctypes.h</code> header file and add its size to that table. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

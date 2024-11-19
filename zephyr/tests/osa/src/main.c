@@ -1,7 +1,8 @@
 /**
- *  Copyright 2023-2024 NXP
+ * Copyright 2024 NXP
+ * All rights reserved.
  *
- *  SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: BSD-3-Clause
  *
  *  @file  main.c
  *  @brief Suite of tests written for ZTEST, testing Thread mode of OSA API for Zephyr.

@@ -1,0 +1,16 @@
+
+*.d
+*.o
+*.swp
+.DS_Store
+*.xml
+*.json
+
+twister-out*/
+components/
+armgcc
+iar
+
+__repo__
+.vscode
+build

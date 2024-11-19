@@ -31,7 +31,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="fs_logo.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 1.8</span>
+   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 2.0.0</span>
    </div>
    <div id="projectbrief">NXP Semiconductors</div>
   </td>
@@ -104,8 +104,8 @@ $(function(){initNavTree('md_processing__time.html',''); initResizable(true); })
   <div class="headertitle"><div class="title">Processing Time</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md67"></a> </p>
-<h1><a class="anchor" id="autotoc_md68"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md45"></a> </p>
+<h1><a class="anchor" id="autotoc_md46"></a>
 Table of content</h1>
 <ul>
 <li><a class="el" href="#maestro-playback-times">Maestro playback example</a></li>
@@ -118,8 +118,8 @@ Maestro playback example</h1>
 <div class="image">
 <object type="image/svg+xml" data="playback.svg" style="pointer-events: none;"></object>
 </div>
-    <p>The measurement of streamer pipeline run started at the beginning of <code><a class="el" href="streamer_8c.html#ad66e6eff9e2db74dc4534d4eef780005" title="Streamer Process Pipelines.">streamer_process_pipelines()</a></code>: <code><a class="el" href="streamer_8c.html" title="Af Streamer implementation.">streamer.c</a></code> and ended in the function <code>streamer_pcm_write()</code>: <code>streamer_pcm.c</code> just before the output buffer.</p>
-<p>In the scenario involving the WAV codec, the audio file was accessed in every iteration of the streamer pipeline. Meaning, during each run, the file was read directly from the SD card. However, in the case of the MP3 codec, where data processing necessitates complete MP3 frames, the file wasn't read during every run. Rather, it was accessed periodically, triggered when the codec buffer lacked a complete MP3 frame of data. The total time spent on codec processing varies significantly depending on the type and implementation of the codec. For certain types of codecs, like FLAC, there may be multiple file accesses during a single pipeline run. The provided values are specific to the reference implementation. For details about the codecs please see <a class="el" href="mp3dec_start.html#md_mp3dec">MP3 decoder</a> and <a class="el" href="md_wavdec.html">WAV decoder</a> documents.</p>
+    <p>The measurement of streamer pipeline run started at the beginning of <code>streamer_process_pipelines()</code>: <code>streamer.c</code> and ended in the function <code>streamer_pcm_write()</code>: <code>streamer_pcm.c</code> just before the output buffer.</p>
+<p>In the scenario involving the WAV codec, the audio file was accessed in every iteration of the streamer pipeline. Meaning, during each run, the file was read directly from the SD card. However, in the case of the MP3 codec, where data processing necessitates complete MP3 frames, the file wasn't read during every run. Rather, it was accessed periodically, triggered when the codec buffer lacked a complete MP3 frame of data. The total time spent on codec processing varies significantly depending on the type and implementation of the codec. For certain types of codecs, like FLAC, there may be multiple file accesses during a single pipeline run. The provided values are specific to the reference implementation. For details about the codecs please see see audio-voice-components documentation <code>middleware\audio_voice\components\</code>.</p>
 <p>The duration of the streamer pipeline illustrates that with a sampling frequency of 48 kHz, there is no resampling occurring at the SSRC element. Consequently, the overall pipeline time is lower than in the case of 44.1 kHz audio, where resampling takes place.</p>
 <p>To enhance comprehension of the system's behavior, histograms of the pipeline run times and its elements are included. The greater time variance with the MP3 codec is precisely due to the absence of file reads in every run. In clusters with shorter times, there are no file accesses, while in clusters with longer times, file reads occur. This indicates that the majority of runs do not involve file access.</p>
 <p><br  />
@@ -141,7 +141,7 @@ Maestro playback example</h1>
 </div>
     <p><br  />
 </p>
-<h2><a class="anchor" id="autotoc_md69"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Time on each element</h2>
 <p>In the tables and histograms below, the timings for individual elements and their connections are provided. Given that the file reading function was invoked during the codec's operation, the tables for individual elements display the total time on the codec element, the time on the codec element before the file read, and the time on the codec element after the file read. The individual blocks in the tables are as follows:</p>
 <ul>
@@ -157,13 +157,13 @@ Time on each element</h2>
 </ul>
 <p>The start times of the time intervals for individual blocks and their respective links were measured by altering the GPIO pin level in the following functions:</p>
 <ul>
-<li><b>streamer</b> - <code><a class="el" href="streamer_8c.html#ad66e6eff9e2db74dc4534d4eef780005" title="Streamer Process Pipelines.">streamer_process_pipelines()</a></code>:<code><a class="el" href="streamer_8c.html" title="Af Streamer implementation.">streamer.c</a></code></li>
-<li><b>codec</b> - <code><a class="el" href="decoder__pads_8c.html#a157b06f13d9b90241c9ce5a0d6c05ba4" title="decoder_sink_pad_process_handler">decoder_sink_pad_process_handler()</a></code>:<code><a class="el" href="decoder__pads_8c.html" title="This file contains the pad functions used in the decoder element. These functions are wrappers that c...">decoder_pads.c</a></code></li>
-<li><b>file_src</b> - <code><a class="el" href="file__src__freertos_8c.html#a4928ae0fbcf3dcb8e0ff19ae32e6e310" title="Function reads the data from the file specified by the element. NOTE: Function may or may not be able...">filesrc_read()</a></code>:<code>file_src_rtos.c</code></li>
+<li><b>streamer</b> - <code>streamer_process_pipelines()</code>:<code>streamer.c</code></li>
+<li><b>codec</b> - <code>decoder_sink_pad_process_handler()</code>:<code>decoder_pads.c</code></li>
+<li><b>file_src</b> - <code>filesrc_read()</code>:<code>file_src_rtos.c</code></li>
 <li><b>SSRC_proc</b> - <code>SSRC_Proc_Execute()</code>:<code>ssrc_proc.c</code></li>
-<li><b>audio_sink</b> - <code><a class="el" href="audio__sink_8c.html#a23917902e681056411525dbf8451620d" title="This pad function accumulates data from the decoder and pushes it onto the selected audio driver....">audiosink_sink_pad_chain_handler()</a></code>:<code><a class="el" href="audio__sink_8c.html" title="This file contains the audio sink element implementation.">audio_sink.c</a></code></li>
+<li><b>audio_sink</b> - <code>audiosink_sink_pad_chain_handler()</code>:<code>audio_sink.c</code></li>
 <li><b>pcm_write</b> - <code>streamer_pcm_write()</code>:<code>streamer_pcm.c</code></li>
-<li><b>link</b> - <code><a class="el" href="pad_8c.html#a82a7214418489f587607e71c957ff341" title="Push the data buffer to the peer pad.">pad_push()</a></code>:<code><a class="el" href="pad_8c.html" title="This file contains the streamer element pad implementation.">pad.c</a></code></li>
+<li><b>link</b> - <code>pad_push()</code>:<code>pad.c</code></li>
 </ul>
 <p><br  />
 </p>
@@ -251,7 +251,7 @@ Time on each element</h2>
 <p><img src="mp3_44kHz_without_fileread.svg" alt="" style="pointer-events: none;" class="inline"/>    </p>
 <h1><a class="anchor" id="maestro-record-times"></a>
 Maestro record example</h1>
-<p>Typical execution times of the streamer pipeline and its individual elements for the EVKC-MIMXRT1060 development board are detailed in the following tables. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines are depicted in the figure below. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone, voice seeker, and VIT blocks. The measurement of streamer pipeline run started at the beginning of <code><a class="el" href="streamer_8c.html#ad66e6eff9e2db74dc4534d4eef780005" title="Streamer Process Pipelines.">streamer_process_pipelines()</a></code>:<code><a class="el" href="streamer_8c.html" title="Af Streamer implementation.">streamer.c</a></code> and ended in the function <code>streamer_pcm_write()</code>: <code>streamer_pcm.c</code> just before the output buffer.</p>
+<p>Typical execution times of the streamer pipeline and its individual elements for the EVKC-MIMXRT1060 development board are detailed in the following tables. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines are depicted in the figure below. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone, voice seeker, and VIT blocks. The measurement of streamer pipeline run started at the beginning of <code>streamer_process_pipelines()</code>:<code>streamer.c</code> and ended in the function <code>streamer_pcm_write()</code>: <code>streamer_pcm.c</code> just before the output buffer.</p>
 <div class="image">
 <object type="image/svg+xml" data="record.svg" style="pointer-events: none;"></object>
 </div>
@@ -274,16 +274,16 @@ Maestro record example</h1>
 </ul>
 <p>The start times of the time intervals for individual blocks and their respective links were measured by altering the GPIO pin level in the following functions:</p>
 <ul>
-<li><b>streamer</b> - <code><a class="el" href="streamer_8c.html#ad66e6eff9e2db74dc4534d4eef780005" title="Streamer Process Pipelines.">streamer_process_pipelines()</a></code>:<code><a class="el" href="streamer_8c.html" title="Af Streamer implementation.">streamer.c</a></code></li>
-<li><b>audio_src</b> - <code><a class="el" href="audio__src_8c.html#aa07d4d9104141fe28711628147054dcc" title="Function is the loop function of the audiosrc source pad which runs in the task thread....">audiosrc_src_process()</a></code>:<code><a class="el" href="audio__src_8c.html" title="This file implement audio source.">audio_src.c</a></code></li>
+<li><b>streamer</b> - <code>streamer_process_pipelines()</code>:<code>streamer.c</code></li>
+<li><b>audio_src</b> - <code>audiosrc_src_process()</code>:<code>audio_src.c</code></li>
 <li><b>pcm_read</b> - <code>streamer_pcm_read()</code>:<code>streamer_pcm.c</code></li>
-<li><b>voiceseeker</b> - <code><a class="el" href="audio__proc_8c.html#a45ae88cef2424da539d70364b532fe24" title="This pad function takes data from the source element and pushes it onto the AUDIO_PROC library.">audio_proc_sink_pad_chain_handler()</a></code>:<code><a class="el" href="audio__proc_8c.html" title="This file contains the implementation for the AudioProc integration.">audio_proc.c</a></code></li>
-<li><b>vit</b> - <code><a class="el" href="vit__sink_8c.html#ab86f5934a4b4bac5d4b0f968e56efdeb" title="This pad function takes data from the source element and pushes it onto the VIT library....">vitsink_sink_pad_chain_handler()</a></code>:<code><a class="el" href="vit__sink_8c.html" title="This file contains the implementation for the Vit Sink.">vit_sink.c</a></code></li>
-<li><b>audio_sink</b> - <code><a class="el" href="audio__sink_8c.html#a23917902e681056411525dbf8451620d" title="This pad function accumulates data from the decoder and pushes it onto the selected audio driver....">audiosink_sink_pad_chain_handler()</a></code>:<code><a class="el" href="audio__sink_8c.html" title="This file contains the audio sink element implementation.">audio_sink.c</a></code></li>
+<li><b>voiceseeker</b> - <code>audio_proc_sink_pad_chain_handler()</code>:<code>audio_proc.c</code></li>
+<li><b>vit</b> - <code>vitsink_sink_pad_chain_handler()</code>:<code>vit_sink.c</code></li>
+<li><b>audio_sink</b> - <code>audiosink_sink_pad_chain_handler()</code>:<code>audio_sink.c</code></li>
 <li><b>pcm_write</b> - <code>streamer_pcm_write()</code>:<code>streamer_pcm.c</code></li>
-<li><b>link</b> - <code><a class="el" href="pad_8c.html#a82a7214418489f587607e71c957ff341" title="Push the data buffer to the peer pad.">pad_push()</a></code>:<code><a class="el" href="pad_8c.html" title="This file contains the streamer element pad implementation.">pad.c</a></code></li>
+<li><b>link</b> - <code>pad_push()</code>:<code>pad.c</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md70"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 Pipeline Microphone -&gt; Speaker</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -311,7 +311,7 @@ Pipeline Microphone -&gt; Speaker</h2>
 </p>
 <p><img src="mic_speaker_1ch_elements_without_fileread.svg" alt="" style="pointer-events: none;" class="inline"/>    </p>
 <p><img src="mic_speaker_2ch_elements_without_fileread.svg" alt="" style="pointer-events: none;" class="inline"/>    </p>
-<h2><a class="anchor" id="autotoc_md71"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Pipeline Microphone -&gt; VIT</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -328,7 +328,7 @@ Pipeline Microphone -&gt; VIT</h2>
 <div class="image">
 <object type="image/svg+xml" data="mic_vit_elements.svg" style="pointer-events: none;"></object>
 </div>
-    <h2><a class="anchor" id="autotoc_md72"></a>
+    <h2><a class="anchor" id="autotoc_md50"></a>
 Pipeline Microphone -&gt; Voice seeker -&gt; VIT</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">

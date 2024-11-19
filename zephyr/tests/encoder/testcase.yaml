@@ -1,0 +1,23 @@
+common:
+  tags:
+    - audio
+    - maestro
+  harness: console
+  harness_config:
+    type: one_line
+    regex:
+      - "(.*)Result: OK(.*)"
+  timeout: 1
+  integration_platforms:
+    - rd_rw612_bga
+  platform_allow:
+    - rd_rw612_bga
+  arch_allow: arm
+tests:
+  maestro.test.encoder.opus:
+    build_only: true
+    extra_configs:
+      - CONFIG_MAESTRO_EXAMPLE_ENCODER_SELECTED_OPUS=y
+  # maestro.test.encoder.opus_ogg:
+  #   extra_configs:
+  #     - CONFIG_MAESTRO_EXAMPLE_ENCODER_SELECTED_OPUS_OGG=y

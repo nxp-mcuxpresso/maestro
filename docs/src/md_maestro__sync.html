@@ -31,7 +31,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="fs_logo.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 1.8</span>
+   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 2.0.0</span>
    </div>
    <div id="projectbrief">NXP Semiconductors</div>
   </td>
@@ -104,8 +104,8 @@ $(function(){initNavTree('md_maestro__sync.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">Maestro sync example</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md60"></a> </p>
-<h1><a class="anchor" id="autotoc_md61"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md38"></a> </p>
+<h1><a class="anchor" id="autotoc_md39"></a>
 Table of content</h1>
 <ul>
 <li><a class="el" href="#maestro-sync-overview">Overview</a></li>
@@ -122,7 +122,7 @@ Table of content</h1>
 Overview</h1>
 <p>The Maestro sync example demonstrates the use of synchronous pipelines (Tx and Rx in this case) processing in a single streamer task on the ARM cortex core utilizing the Maestro Audio Framework library.</p>
 <p>The application is controlled by commands from a shell interface using serial console.</p>
-<p>The feature is useful for testing the latency of the pipeline or implementing algorithms requiring reference signals such as echo cancellation. The VoiceSeeker library available in this example is not featuring AEC (Acoustic Echo Cancellation), but NXP is offering it in the premium version of the library. More information about the premium version can be found at <a href="https:\\www.nxp.com\voiceseeker">VoiceSeeker</a> page. The demo uses two pipelines running synchronously in a single streamer task:</p><ol type="1">
+<p>The feature is useful for testing the latency of the pipeline or implementing algorithms requiring reference signals such as echo cancellation. The VoiceSeeker library available in this example is not featuring AEC (Acoustic Echo Cancellation), but NXP is offering it in the premium version of the library. More information about the premium version can be found at <a href="https://nxp.com/voiceseeker">VoiceSeeker</a>. page. The demo uses two pipelines running synchronously in a single streamer task:</p><ol type="1">
 <li>Playback (Tx) pipeline:<ul>
 <li>Playback of audio data in PCM format stored in flash memory to the audio Line-Out connector (speaker).</li>
 </ul>
@@ -252,7 +252,7 @@ Running the demo</h1>
 <div class="line">                - Starts / stops saving VoiceSeeker input data (reference and microphone data)</div>
 <div class="line">                  to SDRAM.</div>
 <div class="line">                - After the stop command, this data is transferred to the SD card.</div>
-</div><!-- fragment --><p> Details of commands can be found here.</p>
+</div><!-- fragment --><p> Details of commands can be found <a class="el" href="#maestro-sync-commands-in-detail">here</a>.</p>
 <h1><a class="anchor" id="maestro-sync-example-configuration"></a>
 Example configuration</h1>
 <p>The example can be configured by user. Before configuration, please check the <a class="el" href="#maestro-sync-overview">table</a> to see if the feature is supported on the development board.</p><ul>
@@ -288,43 +288,34 @@ Functionality</h1>
 </li>
 </ul>
 <p>Processing itself can be started with the <code>STREAMER_Start</code> function.</p>
-<p>Each of the elements has several properties that can be accessed using the <code>streamer_get_property</code> or <code>streamer_set_property</code> function. These properties allow a user to change the values of the appropriate elements. The list of properties can be found in <code><a class="el" href="streamer__element__properties_8h.html" title="Header for streamer element properties.">streamer_element_properties.h</a></code>. See the example of setting property value in the following piece of code from the <code>app_streamer.c</code> file:</p>
-<div class="fragment"><div class="line"><a class="code hl_struct" href="structELEMENT__PROPERTY__T.html">ELEMENT_PROPERTY_T</a> prop;</div>
+<p>Each of the elements has several properties that can be accessed using the <code>streamer_get_property</code> or <code>streamer_set_property</code> function. These properties allow a user to change the values of the appropriate elements. The list of properties can be found in <code>streamer_element_properties.h</code>. See the example of setting property value in the following piece of code from the <code>app_streamer.c</code> file:</p>
+<div class="fragment"><div class="line">ELEMENT_PROPERTY_T prop;</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_struct" href="structMEMSRC__SET__BUFFER__T.html">MEMSRC_SET_BUFFER_T</a> buf;</div>
-<div class="line">buf.<a class="code hl_variable" href="structMEMSRC__SET__BUFFER__T.html#af5034b95498a50997d51725187f1ea32">location</a> = (int8_t *)TESTAUDIO_DATA;</div>
-<div class="line">buf.<a class="code hl_variable" href="structMEMSRC__SET__BUFFER__T.html#a511ef464553b30a72af8f056929597b9">size</a>     = TESTAUDIO_LEN;</div>
+<div class="line">MEMSRC_SET_BUFFER_T buf;</div>
+<div class="line">buf.location = (int8_t *)TESTAUDIO_DATA;</div>
+<div class="line">buf.size     = TESTAUDIO_LEN;</div>
 <div class="line"> </div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">prop</a> = PROP_MEMSRC_SET_BUFF;</div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">val</a>  = (uintptr_t)&amp;buf;</div>
-<div class="line"><span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="streamer__api_8h.html#a74945267775b0a00cf3a7b9d1ab93896a0e92107b1794810ee28eee41ed635924">STREAM_OK</a> != <a class="code hl_function" href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a>(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>))</div>
+<div class="line">prop.prop = PROP_MEMSRC_SET_BUFF;</div>
+<div class="line">prop.val  = (uintptr_t)&amp;buf;</div>
+<div class="line"><span class="keywordflow">if</span> (STREAM_OK != streamer_set_property(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>))</div>
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">return</span> kStatus_Fail;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">prop</a> = PROP_MEMSRC_SET_MEM_TYPE;</div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">val</a>  = <a class="code hl_define" href="streamer__api_8h.html#ac139bede02cf10a641fa8a11fcb5b120">AUDIO_DATA</a>;</div>
-<div class="line"><span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="streamer__api_8h.html#a74945267775b0a00cf3a7b9d1ab93896a0e92107b1794810ee28eee41ed635924">STREAM_OK</a> != <a class="code hl_function" href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a>(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>))</div>
+<div class="line">prop.prop = PROP_MEMSRC_SET_MEM_TYPE;</div>
+<div class="line">prop.val  = AUDIO_DATA;</div>
+<div class="line"><span class="keywordflow">if</span> (STREAM_OK != streamer_set_property(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>))</div>
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">return</span> kStatus_Fail;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">prop</a> = PROP_MEMSRC_SET_SAMPLE_RATE;</div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">val</a>  = DEMO_SAMPLE_RATE;</div>
-<div class="line"><span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="streamer__api_8h.html#a74945267775b0a00cf3a7b9d1ab93896a0e92107b1794810ee28eee41ed635924">STREAM_OK</a> != <a class="code hl_function" href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a>(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>))</div>
+<div class="line">prop.prop = PROP_MEMSRC_SET_SAMPLE_RATE;</div>
+<div class="line">prop.val  = DEMO_SAMPLE_RATE;</div>
+<div class="line"><span class="keywordflow">if</span> (STREAM_OK != streamer_set_property(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>))</div>
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">return</span> kStatus_Fail;</div>
 <div class="line">}</div>
-<div class="ttc" id="astreamer__api_8h_html_a74945267775b0a00cf3a7b9d1ab93896a0e92107b1794810ee28eee41ed635924"><div class="ttname"><a href="streamer__api_8h.html#a74945267775b0a00cf3a7b9d1ab93896a0e92107b1794810ee28eee41ed635924">STREAM_OK</a></div><div class="ttdeci">@ STREAM_OK</div><div class="ttdoc">General success.</div><div class="ttdef"><b>Definition</b> streamer_api.h:150</div></div>
-<div class="ttc" id="astreamer__api_8h_html_ac139bede02cf10a641fa8a11fcb5b120"><div class="ttname"><a href="streamer__api_8h.html#ac139bede02cf10a641fa8a11fcb5b120">AUDIO_DATA</a></div><div class="ttdeci">#define AUDIO_DATA</div><div class="ttdoc">Audio data.</div><div class="ttdef"><b>Definition</b> streamer_api.h:127</div></div>
-<div class="ttc" id="astreamer__api_8h_html_af0f2ba1e35082e033d66b106438b51e8"><div class="ttname"><a href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a></div><div class="ttdeci">int32_t streamer_set_property(STREAMER_T *streamer, int8_t pipeline_id, ELEMENT_PROPERTY_T prop, bool block)</div><div class="ttdoc">Set element property.</div><div class="ttdef"><b>Definition</b> streamer.c:785</div></div>
-<div class="ttc" id="astructELEMENT__PROPERTY__T_html"><div class="ttname"><a href="structELEMENT__PROPERTY__T.html">ELEMENT_PROPERTY_T</a></div><div class="ttdoc">Element Property structure.</div><div class="ttdef"><b>Definition</b> streamer_api.h:570</div></div>
-<div class="ttc" id="astructELEMENT__PROPERTY__T_html_a40dc39f13a8d25b45d19d63498082e10"><div class="ttname"><a href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">ELEMENT_PROPERTY_T::prop</a></div><div class="ttdeci">uint16_t prop</div><div class="ttdoc">property type</div><div class="ttdef"><b>Definition</b> streamer_api.h:571</div></div>
-<div class="ttc" id="astructELEMENT__PROPERTY__T_html_ab1013a8983adf70b4cffba4637ad1df8"><div class="ttname"><a href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">ELEMENT_PROPERTY_T::val</a></div><div class="ttdeci">uintptr_t val</div><div class="ttdoc">property value</div><div class="ttdef"><b>Definition</b> streamer_api.h:572</div></div>
-<div class="ttc" id="astructMEMSRC__SET__BUFFER__T_html"><div class="ttname"><a href="structMEMSRC__SET__BUFFER__T.html">MEMSRC_SET_BUFFER_T</a></div><div class="ttdef"><b>Definition</b> streamer_element_properties.h:182</div></div>
-<div class="ttc" id="astructMEMSRC__SET__BUFFER__T_html_a511ef464553b30a72af8f056929597b9"><div class="ttname"><a href="structMEMSRC__SET__BUFFER__T.html#a511ef464553b30a72af8f056929597b9">MEMSRC_SET_BUFFER_T::size</a></div><div class="ttdeci">uint32_t size</div><div class="ttdoc">Buffer size.</div><div class="ttdef"><b>Definition</b> streamer_element_properties.h:184</div></div>
-<div class="ttc" id="astructMEMSRC__SET__BUFFER__T_html_af5034b95498a50997d51725187f1ea32"><div class="ttname"><a href="structMEMSRC__SET__BUFFER__T.html#af5034b95498a50997d51725187f1ea32">MEMSRC_SET_BUFFER_T::location</a></div><div class="ttdeci">int8_t * location</div><div class="ttdoc">Buffer pointer.</div><div class="ttdef"><b>Definition</b> streamer_element_properties.h:183</div></div>
-</div><!-- fragment --><p> Some of the predefined values can be found in the <code><a class="el" href="streamer__api_8h.html" title="Streamer API header. Public APIs for using the maestro streamer framework.">streamer_api.h</a></code>.</p>
+</div><!-- fragment --><p> Some of the predefined values can be found in the <code>streamer_api.h</code>.</p>
 <h1><a class="anchor" id="maestro-sync-states"></a>
 States</h1>
 <p>The application can be in 2 different states:</p><ul>

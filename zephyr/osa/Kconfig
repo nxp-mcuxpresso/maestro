@@ -1,3 +1,6 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
 config MAESTRO_OSA_USE
     bool "Adds NXP OSA layer into build."
     default y

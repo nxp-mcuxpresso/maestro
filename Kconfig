@@ -1,3 +1,6 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
 menuconfig MCUX_COMPONENT_middleware.audio_voice.maestro
     bool "Audio Maestro framework"
     default n
@@ -29,12 +32,12 @@ if MCUX_COMPONENT_middleware.audio_voice.maestro
                     bool "Enables VoiceSeeker processing element"
                     select MCUX_PRJSEG_middleware.audio_voice.components.voice_seeker
                     default n
-                config MCUX_COMPONENT_middleware.audio.voice.maestro.element.audio_proc.ssrc.enable
+                config MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.ssrc.enable
                     bool "Enables Synchronous sample rate converter processing element"
                     select MCUX_COMPONENT_middleware.audio_voice.components.ssrc
                     default n
                     depends on MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F
-                config MCUX_COMPONENT_middleware.audio.voice.maestro.element.audio_proc.asrc.enable
+                config MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.asrc.enable
                     bool "Enables Asynchronous sample rate converter processing element"
                     select MCUX_COMPONENT_middleware.audio_voice.components.asrc
                     default n
@@ -90,27 +93,27 @@ if MCUX_COMPONENT_middleware.audio_voice.maestro
             default n
             select MCUX_COMPONENT_middleware.audio_voice.maestro.cci.enable
         if MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.enable
-            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.mp3.enable
+            config MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.mp3.enable
                 bool "MP3 decoder"
                 select MCUX_COMPONENT_middleware.audio_voice.components.decoders.mp3
                 default n
                 depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
-            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.wav.enable
+            config MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.wav.enable
                 bool "WAV decoder"
                 select MCUX_COMPONENT_middleware.audio_voice.components.decoders.wav
                 default n
                 depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
-            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.flac.enable
+            config MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.flac.enable
                 bool "FLAC decoder"
                 select MCUX_COMPONENT_middleware.audio_voice.components.decoders.flac
                 default n
                 depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
-            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.aac.enable
+            config MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.aac.enable
                 bool "AAC decoder"
                 select MCUX_COMPONENT_middleware.audio_voice.components.decoders.aac
                 default n
                 depends on (MCUX_HW_CORE_CM7F || MCUX_HW_CORE_CM33 || MCUX_HW_CORE_CM33F)
-            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.decoder.opus_ogg.enable
+            config MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.opus_ogg.enable
                 bool "OPUS decoder using OGG"
                 select MCUX_COMPONENT_middleware.audio_voice.components.opus
                 select MCUX_COMPONENT_middleware.audio_voice.components.ogg
@@ -123,7 +126,7 @@ if MCUX_COMPONENT_middleware.audio_voice.maestro
             default n
             select MCUX_COMPONENT_middleware.audio_voice.maestro.cei.enable
         if MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.enable
-            config MCUX_COMPONENT_middleware.audio.voice.maestro.element.encoder.opus.enable
+            config MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.opus.enable
                 bool "OPUS encoder"
                 select MCUX_COMPONENT_middleware.audio_voice.components.opus
                 select MCUX_COMPONENT_middleware.audio_voice.maestro.cci.enable

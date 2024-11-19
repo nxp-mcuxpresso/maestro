@@ -31,7 +31,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="fs_logo.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 1.8</span>
+   <div id="projectname">Maestro Audio Framework<span id="projectnumber">&#160;v 2.0.0</span>
    </div>
    <div id="projectbrief">NXP Semiconductors</div>
   </td>
@@ -104,8 +104,8 @@ $(function(){initNavTree('md_maestro__record.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">Maestro record example</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md54"></a> </p>
-<h1><a class="anchor" id="autotoc_md55"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md32"></a> </p>
+<h1><a class="anchor" id="autotoc_md33"></a>
 Table of content</h1>
 <ul>
 <li><a class="el" href="#maestro-record-overview">Overview</a></li>
@@ -125,10 +125,10 @@ Overview</h1>
 <p>The application is controlled by commands from a shell interface using serial console.</p>
 <p>Depending on target platform or development board there are different modes and features of the demo supported.</p>
 <ul>
-<li><b>Loopback</b> - The application demonstrates a loopback from the microphone to the speaker without any audio processing.</li>
+<li><b>Loopback</b> - The application demonstrates a loopback from the microphone to the speaker without any audio processing. Mono, stereo or multichannel mode can be used, depending on the hardware, see <a class="el" href="#maestro-record-overview">table</a> below.</li>
 <li><b>File recording</b> - The application takes audio samples from the microphone inputs and stores them to an SD card as an PCM file. The PCM file has following parameters:<ul>
 <li>Mono and stereo : 2 channels, 16kHz, 16bit width</li>
-<li>Multi-channel (AUD-EXP-42448): 8 channels, 16kHz, 32bit width</li>
+<li>Multi-channel (AUD-EXP-42448): 6 channels, 16kHz, 32bit width</li>
 </ul>
 </li>
 <li><b>Voice control</b> - The application takes audio samples from the microphone input and uses the VIT library to recognize wake words and voice commands. If a wake word or a voice command is recognized, the application write it to the serial terminal.</li>
@@ -143,7 +143,7 @@ Overview</h1>
 <tr>
 <td colspan="1">On board codec </td><td colspan="1">DMICs </td><td colspan="1">aud-exp-42448 </td><td colspan="1">On board codec </td><td colspan="1">DMICs </td><td colspan="1">aud-exp-42448 </td><td colspan="1">On board codec </td><td colspan="1">DMICs </td><td colspan="1">aud-exp-42448 </td><td colspan="1">VIT </td><td colspan="1">VoiceSeeker </td><td colspan="1">OPUS  </td></tr>
 <tr>
-<td colspan="1">EVKC-MIMXRT1060 </td><td colspan="1" class="audio_FW_spec_table_supported">1 / 1 </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_modification">1-6 / 1-6 </td><td colspan="1" class="audio_FW_spec_table_supported">1 </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_modification">1-6 </td><td colspan="1" class="audio_FW_spec_table_supported">1 </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_modification">1-2 </td><td colspan="1" class="audio_FW_spec_table_limited">OK </td><td colspan="1" class="audio_FW_spec_table_limited">OK </td><td colspan="1" class="audio_FW_spec_table_supported">OK  </td></tr>
+<td colspan="1">EVKC-MIMXRT1060 </td><td colspan="1" class="audio_FW_spec_table_supported">1 / 1 </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_modification">1-6 / 1-6 </td><td colspan="1" class="audio_FW_spec_table_supported">1 </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_modification">1-6 </td><td colspan="1" class="audio_FW_spec_table_supported">1 </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_modification">1-2 </td><td colspan="1" class="audio_FW_spec_table_limited">OK </td><td colspan="1" class="audio_FW_spec_table_modification">OK </td><td colspan="1" class="audio_FW_spec_table_supported">OK  </td></tr>
 <tr>
 <td colspan="1">EVKB-MIMXRT1170 </td><td colspan="1" class="audio_FW_spec_table_supported">0 / 1-2 </td><td colspan="1" class="audio_FW_spec_table_supported">1-2 </td><td colspan="1">X </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_supported">1-2 </td><td colspan="1">X </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_supported">1-2 </td><td colspan="1">X </td><td colspan="1" class="audio_FW_spec_table_limited">OK </td><td colspan="1" class="audio_FW_spec_table_limited">OK </td><td colspan="1" class="audio_FW_spec_table_supported">OK  </td></tr>
 <tr>
@@ -164,12 +164,12 @@ Overview</h1>
 <p><b>Limitations:</b></p><ul>
 <li>Addition labraries<ul>
 <li><b>VIT:</b><ul>
-<li>The VIT is supported only in the MCUXpresso IDE.</li>
+<li>The VIT is supported only in the MCUXpresso IDE and ARMGCC.</li>
 <li><em>LPCXpresso55s69</em> - The VIT is disabled by default due to insufficient memory. To enable it, see the <a class="el" href="#maestro-record-example-configuration">Example configuration</a> section.</li>
 </ul>
 </li>
 <li><b>VoiceSeeker:</b><ul>
-<li>The VoiceSeeker is supported only in the MCUXpresso IDE.</li>
+<li>The VoiceSeeker is supported only in the MCUXpresso IDE and ARMGCC.</li>
 </ul>
 </li>
 </ul>
@@ -296,13 +296,14 @@ Example configuration</h1>
 <li>Uninstall J99.</li>
 <li>Set the <code>DEMO_CODEC_WM8962</code> macro to <code>0</code> in the <code>app_definitions.h</code> file</li>
 <li>Set the <code>DEMO_CODEC_CS42448</code> macro to <code>1</code> in the <code>app_definitions.h</code> file.</li>
+<li>Enable VoiceSeeker, see point bellow.</li>
 </ol>
 </li>
 <li><em>Note:</em><ul>
 <li>The audio stream is as follows:<ul>
 <li>Stereo INPUT 1 (J12) -&gt; LINE 1&amp;2 OUTPUT (J6)</li>
 <li>Stereo INPUT 2 (J15) -&gt; LINE 3&amp;4 OUTPUT (J7)</li>
-<li>MIC1 &amp; MIC2 (P1, P2) -&gt; LINE 5&amp;6 OUTPUT (J8)</li>
+<li>Microphone (P1) &amp; Microphone (P2) -&gt; LINE 5&amp;6 OUTPUT (J8)</li>
 <li>Insert the headphones into the different line outputs to hear the inputs.</li>
 <li>To use the Stereo INPUT 1, 2, connect an audio source LINE IN jack.</li>
 </ul>
@@ -365,29 +366,25 @@ Functionality</h1>
 </li>
 </ul>
 <p>Recording itself can be started with the <code>STREAMER_Start</code> function.</p>
-<p>Each of the elements has several properties that can be accessed using the <code>streamer_get_property</code> or <code>streamer_set_property</code> function. These properties allow a user to change the values of the appropriate elements. The list of properties can be found in <code><a class="el" href="streamer__element__properties_8h.html" title="Header for streamer element properties.">streamer_element_properties.h</a></code>. See the example of setting property value in the following piece of code from the <code>app_streamer.c</code> file:</p>
-<div class="fragment"><div class="line"><a class="code hl_struct" href="structELEMENT__PROPERTY__T.html">ELEMENT_PROPERTY_T</a> prop;</div>
+<p>Each of the elements has several properties that can be accessed using the <code>streamer_get_property</code> or <code>streamer_set_property</code> function. These properties allow a user to change the values of the appropriate elements. The list of properties can be found in <code>streamer_element_properties.h</code>. See the example of setting property value in the following piece of code from the <code>app_streamer.c</code> file:</p>
+<div class="fragment"><div class="line">ELEMENT_PROPERTY_T prop;</div>
 <div class="line"> </div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">prop</a> = PROP_MICROPHONE_SET_NUM_CHANNELS;</div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">val</a>  = DEMO_MIC_CHANNEL_NUM;</div>
-<div class="line"><a class="code hl_function" href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a>(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
+<div class="line">prop.prop = PROP_MICROPHONE_SET_NUM_CHANNELS;</div>
+<div class="line">prop.val  = DEMO_MIC_CHANNEL_NUM;</div>
+<div class="line">streamer_set_property(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
 <div class="line"> </div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">prop</a> = PROP_MICROPHONE_SET_BITS_PER_SAMPLE;</div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">val</a>  = DEMO_AUDIO_BIT_WIDTH;</div>
-<div class="line"><a class="code hl_function" href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a>(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
+<div class="line">prop.prop = PROP_MICROPHONE_SET_BITS_PER_SAMPLE;</div>
+<div class="line">prop.val  = DEMO_AUDIO_BIT_WIDTH;</div>
+<div class="line">streamer_set_property(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
 <div class="line"> </div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">prop</a> = PROP_MICROPHONE_SET_FRAME_MS;</div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">val</a>  = DEMO_MIC_FRAME_SIZE;</div>
-<div class="line"><a class="code hl_function" href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a>(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
+<div class="line">prop.prop = PROP_MICROPHONE_SET_FRAME_MS;</div>
+<div class="line">prop.val  = DEMO_MIC_FRAME_SIZE;</div>
+<div class="line">streamer_set_property(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
 <div class="line"> </div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">prop</a> = PROP_MICROPHONE_SET_SAMPLE_RATE;</div>
-<div class="line">prop.<a class="code hl_variable" href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">val</a>  = DEMO_AUDIO_SAMPLE_RATE;</div>
-<div class="line"><a class="code hl_function" href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a>(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
-<div class="ttc" id="astreamer__api_8h_html_af0f2ba1e35082e033d66b106438b51e8"><div class="ttname"><a href="streamer__api_8h.html#af0f2ba1e35082e033d66b106438b51e8">streamer_set_property</a></div><div class="ttdeci">int32_t streamer_set_property(STREAMER_T *streamer, int8_t pipeline_id, ELEMENT_PROPERTY_T prop, bool block)</div><div class="ttdoc">Set element property.</div><div class="ttdef"><b>Definition</b> streamer.c:785</div></div>
-<div class="ttc" id="astructELEMENT__PROPERTY__T_html"><div class="ttname"><a href="structELEMENT__PROPERTY__T.html">ELEMENT_PROPERTY_T</a></div><div class="ttdoc">Element Property structure.</div><div class="ttdef"><b>Definition</b> streamer_api.h:570</div></div>
-<div class="ttc" id="astructELEMENT__PROPERTY__T_html_a40dc39f13a8d25b45d19d63498082e10"><div class="ttname"><a href="structELEMENT__PROPERTY__T.html#a40dc39f13a8d25b45d19d63498082e10">ELEMENT_PROPERTY_T::prop</a></div><div class="ttdeci">uint16_t prop</div><div class="ttdoc">property type</div><div class="ttdef"><b>Definition</b> streamer_api.h:571</div></div>
-<div class="ttc" id="astructELEMENT__PROPERTY__T_html_ab1013a8983adf70b4cffba4637ad1df8"><div class="ttname"><a href="structELEMENT__PROPERTY__T.html#ab1013a8983adf70b4cffba4637ad1df8">ELEMENT_PROPERTY_T::val</a></div><div class="ttdeci">uintptr_t val</div><div class="ttdoc">property value</div><div class="ttdef"><b>Definition</b> streamer_api.h:572</div></div>
-</div><!-- fragment --><p> Some of the predefined values can be found in the <code><a class="el" href="streamer__api_8h.html" title="Streamer API header. Public APIs for using the maestro streamer framework.">streamer_api.h</a></code>.</p>
+<div class="line">prop.prop = PROP_MICROPHONE_SET_SAMPLE_RATE;</div>
+<div class="line">prop.val  = DEMO_AUDIO_SAMPLE_RATE;</div>
+<div class="line">streamer_set_property(handle-&gt;streamer, 0, prop, <span class="keyword">true</span>);</div>
+</div><!-- fragment --><p> Some of the predefined values can be found in the <code>streamer_api.h</code>.</p>
 <h1><a class="anchor" id="maestro-record-states"></a>
 States</h1>
 <p>The application can be in 2 different states:</p><ul>

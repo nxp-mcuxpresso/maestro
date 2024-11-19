@@ -1,0 +1,35 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Maestro Encoder Test"
+	depends on MAESTRO_AUDIO_FRAMEWORK
+
+	config MAESTRO_EXAMPLE_MAESTRO_LOGGING_ON
+		bool "Turns on Maestro library logging"
+		default n
+
+	config MAESTRO_EXAMPLE_STREAMER_TASK_STACK_SIZE_B
+		int "Stack size of streamer task running the pipeline."
+		default 128000
+
+	config MAESTRO_EXAMPLE_ENCODER_SELECTED
+		bool
+		default n
+		help
+			True if any encoder is enabled.
+
+	choice MAESTRO_EXAMPLE_ENCODER_SELECTED
+		prompt "Encoder to test"
+		default MAESTRO_EXAMPLE_ENCODER_SELECTED_OPUS
+
+		config MAESTRO_EXAMPLE_ENCODER_SELECTED_OPUS
+			select MAESTRO_ELEMENT_ENCODER_OPUS_ENABLE
+			bool "OPUS encoder"
+		# config MAESTRO_EXAMPLE_ENCODER_SELECTED_OPUS_OGG
+		# 	select MAESTRO_ELEMENT_ENCODER_OPUS_OGG_ENABLE
+		# 	bool "OPUS OGG encoder"
+	endchoice # "Encoder to test"
+
+endmenu # "Maestro Encoder Test"
+
+source "Kconfig.zephyr"

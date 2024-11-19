@@ -11,7 +11,6 @@
 #include <string.h>
 #include "audio_cfg.h"
 #include "streamer.h"
-#include "decoder.h"
 #include "audio_sink.h"
 #include "pipeline.h"
 #include "streamer_element_properties.h"

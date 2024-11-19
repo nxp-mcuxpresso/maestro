@@ -1,44 +1,140 @@
-config MAESTRO_AUDIO_FRAMEWORK
-	bool "Maestro Audio Framework Support"
-	help
-	  This option enables the Maestro Framework
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+menuconfig MAESTRO_AUDIO_FRAMEWORK
+    bool "Audio Maestro framework support"
+    select EVENTS # Maestro uses Events API for signaling. It is not enabled in Zephyr by default
+    help
+      This option enables the audio Maestro framework
 
 if MAESTRO_AUDIO_FRAMEWORK
 
-	config MAESTRO_USE_ZEPHYR
-		bool "Enables Zephyr variants on NXP SDK based code"
-		depends on MAESTRO_AUDIO_FRAMEWORK
-		default y
+    menu "Elements"
+        config MAESTRO_ELEMENTS_ALL_ENABLE
+            bool "Enables all supported elements"
+            default n
+            select MAESTRO_ELEMENT_MEM_SRC_ENABLE
+            select MAESTRO_ELEMENT_MEM_SINK_ENABLE
+            select MAESTRO_ELEMENT_AUDIO_SRC_ENABLE
+            select MAESTRO_ELEMENT_AUDIO_SINK_ENABLE
+            select MAESTRO_ELEMENT_PROCESS_SINK_ENABLE
+            select MAESTRO_ELEMENT_DECODER_ENABLE
+            select MAESTRO_ELEMENT_ENCODER_ENABLE
 
-	config MAESTRO_ENABLE_ELEMENT_MEM_SRC
-		bool "Enables memory source element"
-		default n
+        config MAESTRO_ELEMENT_MEM_SRC_ENABLE
+            bool "Memory source"
+            default n
 
-	config MAESTRO_ENABLE_ELEMENT_MEM_SINK
-		bool "Enables memory sink element"
-		default n
+        config MAESTRO_ELEMENT_MEM_SINK_ENABLE
+            bool "Memory sink"
+            default n
 
-	config MAESTRO_ENABLE_ELEMENT_AUDIO_SRC
-		bool "Enables audio source element"
-		default n
+        config MAESTRO_ELEMENT_AUDIO_SRC_ENABLE
+            bool "Audio source"
+            default n
 
-	config MAESTRO_ENABLE_ELEMENT_VIT_SINK
-		bool "Enables VIT sink element"
-		default n
+        config MAESTRO_ELEMENT_AUDIO_SINK_ENABLE
+            bool "Audio sink"
+            default n
 
-	config MAESTRO_ENABLE_ELEMENT_AUDIO_PROC
-		bool "Enables Audio proc element"
-		default n
+        menuconfig MAESTRO_ELEMENT_PROCESS_SINK_ENABLE
+            bool "Process sink"
+            default n
+        if MAESTRO_ELEMENT_PROCESS_SINK_ENABLE
+            config MAESTRO_ELEMENT_PROCESS_SINK_VIT_ENABLE
+                bool "Enable VIT library"
+                select NXP_VIT
+        endif # MAESTRO_ELEMENT_PROCESS_SINK_ENABLE
 
-	config MAESTRO_ENABLE_ELEMENT_VOICE_SEEKER
-		bool "Enables VoiceSeeker processing element"
-		select MAESTRO_ENABLE_ELEMENT_AUDIO_PROC
-		default n
+        menuconfig MAESTRO_ELEMENT_DECODER_ENABLE
+            bool "Decoder"
+            default n
+            select MAESTRO_CCI_ENABLE
+        if MAESTRO_ELEMENT_DECODER_ENABLE
+            config MAESTRO_ELEMENT_DECODER_MP3_ENABLE
+                bool "MP3 decoder"
+                select NXP_AUDIO_VOICE_COMPONENTS_DECODER_MP3
+                default n
+            config MAESTRO_ELEMENT_DECODER_WAV_ENABLE
+                bool "WAV decoder"
+                select NXP_AUDIO_VOICE_COMPONENTS_DECODER_WAV
+                default n
+            config MAESTRO_ELEMENT_DECODER_FLAC_ENABLE
+                bool "FLAC decoder"
+                select NXP_AUDIO_VOICE_COMPONENTS_DECODER_FLAC
+                default n
+            config MAESTRO_ELEMENT_DECODER_AAC_ENABLE
+                bool "AAC decoder"
+                select NXP_AUDIO_VOICE_COMPONENTS_DECODER_AAC
+                default n
+            config MAESTRO_ELEMENT_DECODER_OPUS_OGG_ENABLE
+                bool "OPUS decoder using OGG"
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUS
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUS_OGG
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUSFILE
+                default n
+            config MAESTRO_ELEMENT_DECODER_OPUS_ENABLE
+                bool "OPUS decoder"
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUS
+                default n
+        endif # MAESTRO_ELEMENT_DECODER_ENABLE
 
-# TBD: Maestro configuration options
+        menuconfig MAESTRO_ELEMENT_ENCODER_ENABLE
+            bool "Encoder"
+            default n
+            select MAESTRO_CEI_ENABLE
+            select MAESTRO_CCI_ENABLE
+        if MAESTRO_ELEMENT_ENCODER_ENABLE
+            config MAESTRO_ELEMENT_ENCODER_OPUS_OGG_ENABLE
+                bool "OPUS encoder using OGG"
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUS
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUS_OGG
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUSFILE
+                default n
+            config MAESTRO_ELEMENT_ENCODER_OPUS_ENABLE
+                bool "OPUS encoder"
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUS
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUS_OGG
+                select NXP_AUDIO_VOICE_COMPONENTS_OPUSFILE
+        endif # MAESTRO_ELEMENT_ENCODER_ENABLE
 
-endif # MAESTRO_AUDIO_FRAMEWORK
+        # config MAESTRO_ELEMENT_AUDIO_PROC_ENABLE
+        #     bool "Audio process"
+        #     default n
+
+        # config MAESTRO_ELEMENT_VOICE_SEEKER_ENABLE
+        #     bool "Enables VoiceSeeker processing element"
+        #     select MAESTRO_ENABLE_ELEMENT_AUDIO_PROC
+        #     default n
+
+        # config MAESTRO_ELEMENT_FILE_SINK_ENABLE
+        #     bool "File sink"
+        #     default n
+
+        # config MAESTRO_ELEMENT_FILE_SRC_ENABLE
+        #     bool "File source"
+        #     default n
+
+        # config MAESTRO_ELEMENT_NETBUF_SRC_ENABLE
+        #     bool "Netbuf source"
+        #     default n
+
+    endmenu # Elements
+
+    config MAESTRO_CCI_ENABLE
+        bool "Enables Common codec interface"
+        select MAESTRO_CEI_ENABLE # dependency on common API
+        default n
+
+    config MAESTRO_CEI_ENABLE
+        bool "Enables Common encoder interface"
+        default n
+
+    config MAESTRO_RTOS_ZEPHYR
+        bool
+        default y
 
 rsource "osa/Kconfig"
 
-#source "osa.Kconfig"
+endif # MAESTRO_AUDIO_FRAMEWORK
+

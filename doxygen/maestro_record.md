@@ -19,10 +19,10 @@ The application is controlled by commands from a shell interface using serial co
 
 Depending on target platform or development board there are different modes and features of the demo supported.
 
-- **Loopback** - The application demonstrates a loopback from the microphone to the speaker without any audio processing.
+- **Loopback** - The application demonstrates a loopback from the microphone to the speaker without any audio processing. Mono, stereo or multichannel mode can be used, depending on the hardware, see [table](#maestro-record-overview) below.
 - **File recording** - The application takes audio samples from the microphone inputs and stores them to an SD card as an PCM file. The PCM file has following parameters:
     - Mono and stereo : 2 channels, 16kHz, 16bit width
-    - Multi-channel (AUD-EXP-42448): 8 channels, 16kHz, 32bit width
+    - Multi-channel (AUD-EXP-42448): 6 channels, 16kHz, 32bit width
 - **Voice control** - The application takes audio samples from the microphone input and uses the VIT library to recognize wake words and voice commands. If a wake word or a voice command is recognized, the application write it to the serial terminal.
 - **Encoding** - The application takes PCM samples from memory and sends them to the Opus encoder. The encoded data is stored in memory and compared to a reference. The result of the comparison is finally written into the serial terminal.
 
@@ -73,7 +73,7 @@ As shown in the table below, the application is supported on several development
             <td colspan="1" >X</td>
             <td colspan="1" class="audio_FW_spec_table_modification">1-2</td>
             <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+            <td colspan="1" class="audio_FW_spec_table_modification">OK</td>
             <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
         </tr>
         <tr>
@@ -161,10 +161,10 @@ As shown in the table below, the application is supported on several development
 **Limitations:**
 - Addition labraries
     - **VIT:**
-        - The VIT is supported only in the MCUXpresso IDE.
+        - The VIT is supported only in the MCUXpresso IDE and ARMGCC.
         - *LPCXpresso55s69* - The VIT is disabled by default due to insufficient memory. To enable it, see the [Example configuration](#maestro-record-example-configuration) section.
     - **VoiceSeeker:**
-        - The VoiceSeeker is supported only in the MCUXpresso IDE.
+        - The VoiceSeeker is supported only in the MCUXpresso IDE and ARMGCC.
 - Encoder
     - **OPUS:**
         - *LPCXpresso55s69* - The encoder is not supported due to insufficient memory.
@@ -269,11 +269,12 @@ The example can be configured by user. Before configuration, please check the [t
         3. Uninstall J99.
         4. Set the `DEMO_CODEC_WM8962` macro to `0` in the `app_definitions.h` file
         5. Set the `DEMO_CODEC_CS42448` macro to `1` in the `app_definitions.h` file.
+        6. Enable VoiceSeeker, see point bellow.
     - *Note:*
         - The audio stream is as follows:
             - Stereo INPUT 1 (J12) -> LINE 1&2 OUTPUT (J6)
             - Stereo INPUT 2 (J15) -> LINE 3&4 OUTPUT (J7)
-            - MIC1 & MIC2 (P1, P2) -> LINE 5&6 OUTPUT (J8)
+            - Microphone (P1) & Microphone (P2) -> LINE 5&6 OUTPUT (J8)
             - Insert the headphones into the different line outputs to hear the inputs.
             - To use the Stereo INPUT 1, 2, connect an audio source LINE IN jack.
 - **Enable VoiceSeeker:**

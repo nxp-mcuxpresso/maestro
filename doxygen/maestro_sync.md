@@ -16,7 +16,7 @@ The Maestro sync example demonstrates the use of synchronous pipelines (Tx and R
 
 The application is controlled by commands from a shell interface using serial console.
 
-The feature is useful for testing the latency of the pipeline or implementing algorithms requiring reference signals such as echo cancellation. The VoiceSeeker library available in this example is not featuring AEC (Acoustic Echo Cancellation), but NXP is offering it in the premium version of the library. More information about the premium version can be found at [VoiceSeeker](https:\\www.nxp.com\voiceseeker) page.
+The feature is useful for testing the latency of the pipeline or implementing algorithms requiring reference signals such as echo cancellation. The VoiceSeeker library available in this example is not featuring AEC (Acoustic Echo Cancellation), but NXP is offering it in the premium version of the library. More information about the premium version can be found at [VoiceSeeker](https://nxp.com/voiceseeker). page.
 The demo uses two pipelines running synchronously in a single streamer task:
 1. Playback (Tx) pipeline:
     - Playback of audio data in PCM format stored in flash memory to the audio Line-Out connector (speaker).
@@ -196,7 +196,7 @@ Type `help` to see the command list. Similar description will be displayed on se
                       to SDRAM.
                     - After the stop command, this data is transferred to the SD card.
 ```
-Details of commands can be found [here](#maestro-syn-commands-in-detail).
+Details of commands can be found [here](#maestro-sync-commands-in-detail).
 
 ## Example configuration {#maestro-sync-example-configuration}
 The example can be configured by user. Before configuration, please check the [table](#maestro-sync-overview) to see if the feature is supported on the development board.

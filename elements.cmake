@@ -1,8 +1,15 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.enable)
     mcux_add_source(
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/src/elements
         SOURCES audio_proc.c
                 audio_proc.h
+    )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_AUDIO_PROC"
     )
 endif()
 
@@ -18,6 +25,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_sink.enab
         SOURCES audio_sink_default.c
                 audio_sink_default.h
     )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_AUDIO_SINK"
+    )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_src.enable)
@@ -31,6 +42,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_src.enabl
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/src/devices
         SOURCES audio_src_default.c
                 audio_src_default.h
+    )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_AUDIO_SRC"
     )
 endif()
 
@@ -48,6 +63,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_sink.enabl
         SOURCES file_sink.c
                 file_sink.h
     )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_FILE_SINK"
+    )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_src.enable)
@@ -55,6 +74,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_src.enable
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/src/elements
         SOURCES file_src.c
                 file_src.h
+    )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_FILESRC"
     )
 endif()
 
@@ -64,6 +87,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.mem_sink.enable
         SOURCES mem_sink.c
                 mem_sink.h
     )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_MEM_SINK"
+    )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.mem_src.enable)
@@ -71,6 +98,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.mem_src.enable)
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/src/elements
         SOURCES mem_src.c
                 mem_src.h
+    )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_MEM_SRC"
     )
 endif()
 
@@ -80,6 +111,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.netbuf_src.enab
         SOURCES netbuf_src.c
                 netbuf_src.h
     )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_NETBUFSRC"
+    )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.process_sink.enable)
@@ -87,6 +122,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.process_sink.en
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/src/elements
         SOURCES process_sink.c
                 process_sink.h
+    )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_PROCESS_SINK"
     )
 endif()
 
@@ -125,6 +164,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.enable)
                 decoder_pads.c
                 decoder_pads.h
     )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_DECODER"
+    )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.enable)
@@ -132,5 +175,9 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.enable)
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/src/elements
         SOURCES encoder.c
                 encoder.h
+    )
+
+    mcux_add_macro(
+        CC "-DSTREAMER_ENABLE_ENCODER"
     )
 endif()

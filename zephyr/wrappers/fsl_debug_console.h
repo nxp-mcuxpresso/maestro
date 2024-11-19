@@ -1,15 +1,19 @@
 /*
- * Header TBD.
+ * Copyright 2024 NXP
+ * All rights reserved.
  *
- * Replaces fsl_Debug_console.h used in NXP's SDK.
+ * SPDX-License-Identifier: BSD-3-Clause
  *
- * Purpose of this file is to provide simple interface for text I/O
+ *  @file  app_Streamer_element_pcm.c
+ *  @brief Replaces fsl_Debug_console.h used in NXP's SDK.
+ *
+ *  Purpose of this file is to provide simple interface for text I/O.
  */
 
 #ifndef _FSL_DEBUGCONSOLE_H_
 #define _FSL_DEBUGCONSOLE_H_
 
-#if (CONFIG_MAESTRO_USE_ZEPHYR == 1)
+#if (CONFIG_MAESTRO_RTOS_ZEPHYR == 1)
 
 // #include <zephyr/toolchain.h>
 #include "zephyr/sys/printk.h"

@@ -1,0 +1,21 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Maestro Record RAM Example"
+	depends on MAESTRO_AUDIO_FRAMEWORK
+
+	config MAESTRO_EXAMPLE_MAESTRO_LOGGING_ON
+		bool "Turns on logging of Maestro library"
+		default n
+
+	config MAESTRO_EXAMPLE_STREAMER_TASK_STACK_SIZE_B
+		int "Stack size of streamer task running the pipeline."
+		default 4096
+
+	config MAESTRO_EXAMPLE_RECORD_TIME_MS
+		int "Maestro Record example - Approximate record time [ms]"
+		default 2000
+
+endmenu
+
+source "Kconfig.zephyr"

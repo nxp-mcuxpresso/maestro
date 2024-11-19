@@ -1,0 +1,47 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Maestro Decoder Test"
+	depends on MAESTRO_AUDIO_FRAMEWORK
+
+	config MAESTRO_EXAMPLE_MAESTRO_LOGGING_ON
+		bool "Turns on Maestro library logging"
+		default n
+
+	config MAESTRO_EXAMPLE_STREAMER_TASK_STACK_SIZE_B
+		int "Stack size of streamer task running the pipeline."
+		default 160000
+
+	config MAESTRO_EXAMPLE_DECODER_SELECTED
+		bool
+		default n
+		help
+			True if any decoder is enabled.
+
+	choice MAESTRO_EXAMPLE_DECODER_SELECTION
+		prompt "Decoder library selection"
+		default MAESTRO_EXAMPLE_DECODER_SELECTED_WAV
+
+		config MAESTRO_EXAMPLE_DECODER_SELECTED_MP3
+			bool "MP3 decoder"
+			select MAESTRO_ELEMENT_DECODER_MP3_ENABLE
+		config MAESTRO_EXAMPLE_DECODER_SELECTED_OPUS
+			bool "OPUS decoder"
+			select MAESTRO_ELEMENT_DECODER_OPUS_ENABLE
+		config MAESTRO_EXAMPLE_DECODER_SELECTED_OPUS_OGG
+			bool "OPUS OGG decoder"
+			select MAESTRO_ELEMENT_DECODER_OPUS_OGG_ENABLE
+		config MAESTRO_EXAMPLE_DECODER_SELECTED_WAV
+			bool "WAV decoder"
+			select MAESTRO_ELEMENT_DECODER_WAV_ENABLE
+		config MAESTRO_EXAMPLE_DECODER_SELECTED_FLAC
+			bool "FLAC decoder"
+			select MAESTRO_ELEMENT_DECODER_FLAC_ENABLE
+		config MAESTRO_EXAMPLE_DECODER_SELECTED_AAC
+			bool "AAC decoder"
+			select MAESTRO_ELEMENT_DECODER_AAC_ENABLE
+	endchoice # "Decoder library selection"
+
+endmenu # "Maestro Decoder Test"
+
+source "Kconfig.zephyr"

@@ -20,7 +20,7 @@
 #include "fsl_os_abstraction.h"
 #endif // FILE_ENABLE_SEMI
 
-#if (CONFIG_MAESTRO_USE_ZEPHYR == 1)
+#if (CONFIG_MAESTRO_RTOS_ZEPHYR == 1)
 // TODO: FATFS must be implemented!
 
 #ifdef FILE_ENABLE_FATFS
@@ -67,7 +67,7 @@ bool dir_exists(const char *dirname)
     return false;
 }
 
-#else // (CONFIG_MAESTRO_USE_ZEPHYR != 1)
+#else // (CONFIG_MAESTRO_RTOS_ZEPHYR != 1)
 
 #ifdef FILE_ENABLE_FATFS
 #include "ff.h"

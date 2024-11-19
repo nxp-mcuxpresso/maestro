@@ -6,70 +6,37 @@
 #
 # How to set up:
 #   Maestro Initialization
-#     1. west init -m ssh://git@bitbucket.sw.nxp.com/aa/mcu-streamer --mr develop/ZEP-704-Port-Maestro-To-Zephyr --mf west-freestanding.yml [foldername]
-#     2. cd [foldername]
+#     1. west init -m <repository URL> --mr <revision or branch> --mf west-freestanding.yml <foldername>
+#     2. cd <foldername>
 #     3. west update
 #
-#   Example build&run
-#     4. west build ...
-#     5. west flash
+# For more information, see zephyr/README.rst
 #
 
 manifest:
   version: "1.2"
 
   projects:
-    # Maestro components
+    # Audio libraries used by Maestro
     - name: vit
       description: |
-        VIT library making voice recognition.
-      url: ssh://git@bitbucket.sw.nxp.com/vatec/vit_release.git
-      path: maestro/components/vit
-      revision: VIT_v4.10.1_v4.10.0_zephyr_test
+        VIT library making voice command recognition.
+      url: https://github.com/nxp-mcuxpresso/VIT.git
+      path: vit
+      revision: 24.12.00-pvw2
 
-    - name: voice_seeker
+    - name: audio_voice_components
       description: |
-        Library selecting between multiple channels for better voice source.
-      url: https://github.com/nxp-mcuxpresso/VoiceSeeker.git
-      path: maestro/components/voice_Seeker
-      revision: MCUX_2.16.000
+        NXP audio libraries (encoders, decoders, libraries)
+      url: https://github.com/nxp-mcuxpresso/audio-voice-components
+      path: audio_voice_components
+      revision: 24.12.00-pvw2
 
-    # Zephyr original upstream
+    # Zephyr project
     - name: zephyr
       url: https://github.com/zephyrproject-rtos/zephyr.git
       path: zephyr
-      revision: main
-
-    # NXP Upstream Github
-    # - name: zephyr
-    #   url: https://github.com/nxp-upstream/zephyr.git
-    #   path: zephyr
-    #   revision: main
-
-    # NXP ?Upstream? Bitbucket/for NPI dev
-    # - name: zephyr
-    #   url: ssh://git@bitbucket.sw.nxp.com/mcucore/zephyr.git
-    #   path: zephyr
-    #   revision: main
-
-    # NXP Downstream Github
-    # - name: zephyr
-    #   url: https://github.com/nxp-zephyr/zephyr.git
-    #   path: zephyr
-    #   revision: main
-
-    # NXP Downstream Bitbucket
-    # - name: zephyr
-    #   url: ssh://git@bitbucket.sw.nxp.com/mcucore/nxp-zephyr.git
-    #   path: zephyr
-    #   revision: main
-
-    # NXP ZSDK Bitbucket
-    # - name: zephyr
-    #   url: ssh://git@bitbucket.sw.nxp.com/mcucore/nxp-zsdk.git
-    #   path: zephyr
-    #   revision: main
-
+      revision: v4.0.0
       import:
         name-whitelist:
           - hal_nxp

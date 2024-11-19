@@ -1,0 +1,13 @@
+config/.*
+coverity/.*
+docs/.*
+doxygen/.*
+libs/.*
+mcu-audio/.*
+mk/.*
+
+FreeRTOSConfig.h
+FreeRTOSConfigBoard.h
+ffconf.h
+pin_mux.c
+pin_mux.h

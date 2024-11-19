@@ -2,7 +2,9 @@
 //! \addtogroup cci_type CCI Types and Definitions
 //! @{
 //
-// Copyright (c) 2013-2014 Freescale, Inc.
+// Copyright 2013-2014 Freescale, Inc.
+//
+// SPDX-License-Identifier: BSD-3-Clause
 //
 //! \file types.h
 //! \brief Contains standard data types.

@@ -1,19 +1,33 @@
-# Getting started with Maestro framework
+# Maestro audio framework
 
 ## Introduction
 
-This document describes the basic usage of the Maestro Audio Framework. This framework intends to enable the chaining of basic audio processing blocks (called "elements"). These blocks then form stream processing objects ("pipeline").
+Maestro audio framework intends to enable chaining of basic audio processing blocks, called *elements*. These blocks then form stream processing objects, called *pipeline*.
 This pipeline can be used for multiple audio processing use cases.
-The processing blocks can include (but are not limited to) different audio sources (for example file or microphone), decoders or encoders, filters or effects, and audio sinks.
-For detailed description of the Maestro framework, please refer to the [programmer's guide](doxygen/ProgrammersGuide.md).
 
-Framework overview is depicted in the following picture:
+The processing blocks can include (but are not limited to) different audio sources (for example file or microphone), decoders or encoders, filters or effects, and audio sinks. Framework overview is depicted in the following picture:
 
 ![maestro overview](doxygen/common/maestroApp.svg)
 
-## Supported examples {#supported-examples}
+\*not all elements and libraries are supported in Zephyr port. For more information, see [Maestro on Zephyr](zephyr/README.rst)
 
-The current version of the Maestro audio framework supports several optional [features](doxygen/supported_features.md), some of which are used in these examples:
+The Maestro audio framework is an open-source component developed by NXP Semiconductors and released under the BSD-compatible license. It is running on RTOS (Zephyr or FreeRTOS), abstracted by OSA layer.
+
+For detailed description of the audio Maestro framework, please refer to the [programmer's guide](doxygen/ProgrammersGuide.md).
+
+To see what is new, see [changelog](CHANGELOG.md).
+
+## Maestro on Zephyr
+
+Getting started guide and further information for Maestro on Zephyr may be found [here](zephyr/README.rst).
+
+## Maestro on FreeRTOS
+
+Maestro on FreeRTOS is supported in NXP's SDK. To get started, see [mcux-sdk repository](https://github.com/nxp-mcuxpresso/mcux-sdk).
+
+### Supported examples {#supported-examples}
+
+The current version of the Maestro audio framework supports several optional [features](supported_features.md), some of which are used in these examples:
 
 - [maestro_playback](doxygen/maestro_playback.md)
 - [maestro_record](doxygen/maestro_record.md)
@@ -23,7 +37,7 @@ The current version of the Maestro audio framework supports several optional [fe
 
 The examples can be found in the **audio_examples** folder of the desired board. The demo applications are based on FreeRTOS and use multiple tasks to form the application functionality.
 
-## Example applications overview
+### Example applications overview
 
 To set up the audio framework properly, it is necessary to create a streamer with `streamer_create` API. It is also essential to set up the desired hardware peripherals using the functions described in `streamer_pcm.h`.
 The Maestro example projects consist of several files regarding the audio framework. The initial file is `main.c` with code to create multiple tasks.
@@ -43,6 +57,31 @@ The message thread is placed in the `app_streamer.c` file, reads the streamer me
 - STREAM_MSG_UPDATE_POSITION - prints info about current stream position
 - STREAM_MSG_CLOSE_TASK - exits the message thread
 
-## Configuration options
+## File structure
 
-Users can change the pipeline type when creating the streamer object, please see the [programmer's guide](doxygen/ProgrammersGuide.md).
+| Folder | Description |
+|:---|:---|
+| src | Maestro audio framework sources |
+| src/inc | Maestro include files |
+| src/core | Maestro core sources |
+| src/cci | Common decoder interface sources |
+| src/cei | Common encoder interface  sources |
+| src/elements | Maestro elements sources |
+| src/devices | External audio devices implementation (audio source & audio sink elements) |
+| src/utils | Helper utilities utilized by Maestro |
+| docs | Generated documentation |
+| doxygen | Documentation sources |
+| components | Glue for audio libraries, so they can be used in elements |
+| tests | Maestro tests |
+| zephyr/ | Zephyr related files |
+| zephyr/samples/ | Zephyr samples |
+| zephyr/tests/ | Zephyr tests |
+| zephyr/audioTracks/ | Audio tracks for testing |
+| zephyr/wrappers/ | Zephyr NXP SDK Wrappers |
+| zephyr/doc/ | Zephyr documentation configuration for Sphinx |
+| zephyr/scripts/ | Zephyr helper scripts, mostly for testing |
+
+## Contribution to the Maestro project
+
+We welcome and encourage the community to submit patches directly to the Maestro project placed on github.
+Contributing can be managed via pull-requests.

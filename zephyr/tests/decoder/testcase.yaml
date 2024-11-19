@@ -1,0 +1,45 @@
+common:
+  tags:
+    - audio
+    - maestro
+  harness: console
+  harness_config:
+    type: one_line
+    regex:
+      - "(.*)Result: OK(.*)"
+  timeout: 1
+  integration_platforms:
+    - rd_rw612_bga
+  arch_allow: arm
+tests:
+  maestro.test.decoder.mp3:
+    extra_configs:
+      - CONFIG_MAESTRO_EXAMPLE_DECODER_SELECTED_MP3=y
+    filter: (CONFIG_CPU_CORTEX_M33 or CONFIG_CPU_CORTEX_M7) and CONFIG_DSP
+  # maestro.test.decoder.opus:
+  #   extra_configs:
+  #     - CONFIG_MAESTRO_EXAMPLE_DECODER_SELECTED_OPUS=y
+  maestro.test.decoder.opus_ogg:
+    extra_configs:
+      - CONFIG_MAESTRO_EXAMPLE_DECODER_SELECTED_OPUS_OGG=y
+    # Flash and RAM usage depend on track files sizes
+    min_flash: 275
+    min_ram: 336
+  maestro.test.decoder.wav:
+    extra_configs:
+      - CONFIG_MAESTRO_EXAMPLE_DECODER_SELECTED_WAV=y
+    # Flash and RAM usage depend on track files sizes
+    min_flash: 265
+    min_ram: 336
+    filter: CONFIG_CPU_CORTEX_M33 or CONFIG_CPU_CORTEX_M7
+  maestro.test.decoder.flac:
+    extra_configs:
+      - CONFIG_MAESTRO_EXAMPLE_DECODER_SELECTED_FLAC=y
+    # Flash and RAM usage depend on track files sizes
+    min_flash: 217
+    min_ram: 336
+    filter: CONFIG_CPU_CORTEX_M33 or CONFIG_CPU_CORTEX_M7
+  maestro.test.decoder.aac:
+    extra_configs:
+      - CONFIG_MAESTRO_EXAMPLE_DECODER_SELECTED_AAC=y
+    filter: (CONFIG_CPU_CORTEX_M33 or CONFIG_CPU_CORTEX_M7) and CONFIG_DSP

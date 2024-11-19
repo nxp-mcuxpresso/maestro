@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['key_0',['key',['../struct__StreamElement.html#a11b7aa2ed897a2add19862c031919ce1',1,'_StreamElement::key'],['../struct__ElementAudioProc.html#aeae07a53a6a05690ecf5058b5fae7d04',1,'_ElementAudioProc::key'],['../struct__ElementAudioSink.html#a9cdfb0678fae132ff680623b0b94fbd3',1,'_ElementAudioSink::key'],['../struct__ElementAudioSrc.html#a6ddadb20fd9efab175b29d1b17941bb6',1,'_ElementAudioSrc::key'],['../struct__ElementDecoder.html#a6fa137960ff8cb98ce625d9cde687456',1,'_ElementDecoder::key'],['../structElementEncoder.html#a9d8d543d884d3bf4039f293d6a228070',1,'ElementEncoder::key'],['../struct__ElementFileSink.html#ab412fe53a7ac6c054ec8ccc018d5c6d9',1,'_ElementFileSink::key'],['../struct__ElementFileSrc.html#a6b1d2261717d7d07765c69d36fd18450',1,'_ElementFileSrc::key'],['../struct__ElementMemSink.html#a84c8ea58a98a85e43e588e90847c11ea',1,'_ElementMemSink::key'],['../struct__ElementMemSrc.html#a2023b10f62dcc00b6784c50757369e5c',1,'_ElementMemSrc::key'],['../structElementNetbufSrc.html#a7d027dc31269d4da5fcde18d52eeefc0',1,'ElementNetbufSrc::key'],['../struct__ElementVitSink.html#a4d293f0a85e97c7819ade9b212cc9fa4',1,'_ElementVitSink::key']]]
+  ['new_20decoders_20to_20the_20cci_0',['Adding new decoders to the CCI',['../md_ProgrammersGuide.html#autotoc_md20',1,'']]],
+  ['new_20element_20index_1',['Add a new element index',['../md_ProgrammersGuide.html#autotoc_md13',1,'']]],
+  ['new_20element_20type_2',['Add a new element type',['../md_ProgrammersGuide.html#autotoc_md12',1,'']]],
+  ['nosdcard_3',['start [nosdcard]',['../md_maestro__sync.html#maestro-sync-start',1,'']]]
 ];

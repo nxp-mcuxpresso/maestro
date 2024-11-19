@@ -1,3 +1,6 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
 if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro)
     mcux_add_include(
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/src
@@ -23,3 +26,4 @@ endif()
 include(${SdkRootDirPath}/middleware/audio_voice/maestro/components.cmake OPTIONAL)
 include(${SdkRootDirPath}/middleware/audio_voice/maestro/configs.cmake OPTIONAL)
 include(${SdkRootDirPath}/middleware/audio_voice/maestro/elements.cmake OPTIONAL)
+include(${SdkRootDirPath}/middleware/audio_voice/maestro/audio_examples.cmake OPTIONAL)

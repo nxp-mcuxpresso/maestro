@@ -666,19 +666,12 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
             strncpy(pipeline->track_info.codec_info, (char *)msg->data, CODEC_INFO_LEN - 1);
             break;
         case MSG_INFO_DURATION:
-            if (msg->data < 0)
+            pipeline->track_info.duration = msg->data;
+            if (pipeline->message_channel_out->is_mq_created)
             {
-                STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "[Pipeline] Duration is wrong %d\n", msg->data);
-            }
-            else
-            {
-                pipeline->track_info.duration = msg->data;
-                if (pipeline->message_channel_out->is_mq_created)
-                {
-                    streamer_msg.id         = STREAM_MSG_UPDATE_DURATION;
-                    streamer_msg.event_data = msg->data;
-                    ret                     = OSA_MsgQPut(pipeline->message_channel_out->mq, (char *)&streamer_msg);
-                }
+                streamer_msg.id = STREAM_MSG_UPDATE_DURATION;
+                streamer_msg.event_data = msg->data;
+                ret = OSA_MsgQPut(pipeline->message_channel_out->mq, (char *)&streamer_msg);
             }
             break;
         case MSG_INFO_ALBUM:

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2022, 2024 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -480,7 +480,10 @@ int streamer_msg_handler(STREAMER_T *task_data, STREAMER_MSG_T *msg)
         *(msg->ret) = ret;
 
     *(msg->processed) = true;
-    OSA_EventSet(msg->cond, EVENT_WAIT_BIT);
+    if(msg->cond != NULL)
+    {
+        OSA_EventSet(msg->cond, EVENT_WAIT_BIT);
+    }
 
     STREAMER_FUNC_EXIT(DBG_CORE);
     return ret;

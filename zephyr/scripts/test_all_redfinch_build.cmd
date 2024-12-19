@@ -1,2 +1,0 @@
-west twister --integration --verbose -b -p rd_rw612_bga --testsuite-root ../ --test tests/memToMem/maestro.test.system.mem2mem --test samples/record_ram/maestro.sample.record.ram --test samples/record_vit/maestro.sample.record.vit --test tests/decoder/maestro.test.decoder.aac --test tests/decoder/maestro.test.decoder.flac --test tests/decoder/maestro.test.decoder.mp3 --test tests/decoder/maestro.test.decoder.opus --test tests/decoder/maestro.test.decoder.opus_ogg --test tests/decoder/maestro.test.decoder.wav --test tests/encoder/maestro.test.encoder.opus
-pause

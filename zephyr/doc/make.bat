@@ -8,7 +8,7 @@ if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
 set SOURCEDIR=../
-set BUILDDIR=build/
+set BUILDDIR=doc/
 set CONFIGDIR=./
 
 %SPHINXBUILD% >NUL 2>NUL
@@ -30,7 +30,7 @@ if "%1" == "" goto help
 goto end
 
 :help
-%SPHINXBUILD% --conf-dir %CONFIGDIR% -M help %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+%SPHINXBUILD% --conf-dir %CONFIGDIR% %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 
 :end
 popd

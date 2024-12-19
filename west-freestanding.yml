@@ -23,14 +23,14 @@ manifest:
         VIT library making voice command recognition.
       url: https://github.com/nxp-mcuxpresso/VIT.git
       path: vit
-      revision: 24.12.00-pvw2
+      revision: 24.12.00
 
     - name: audio_voice_components
       description: |
         NXP audio libraries (encoders, decoders, libraries)
       url: https://github.com/nxp-mcuxpresso/audio-voice-components
       path: audio_voice_components
-      revision: 24.12.00-pvw2
+      revision: 24.12.00
 
     # Zephyr project
     - name: zephyr

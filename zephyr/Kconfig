@@ -134,7 +134,5 @@ if MAESTRO_AUDIO_FRAMEWORK
         bool
         default y
 
-rsource "osa/Kconfig"
-
 endif # MAESTRO_AUDIO_FRAMEWORK
 

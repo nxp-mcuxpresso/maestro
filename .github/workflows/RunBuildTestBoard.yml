@@ -1,0 +1,46 @@
+# Simple build test in docker environment
+name: Build test for specific board
+run-name: Build test for a board run by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to run tests for'
+        required: true
+        default: 'rd_rw612_bga'
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/radimli/maestro_test:main
+      volumes: 
+        # TODO: Copy into the container instead?
+        - ${{ github.workspace }}:/app/maestro
+        #username: ${{ github.actor }}
+        #password: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Initialize west
+      run: |
+        cd /app/maestro
+        west init -l . --mf west-freestanding.yml
+        west update
+
+    - name: Execute build tests
+      run: |
+        cd /app/maestro/zephyr
+        west twister --verbose --verbose --verbose --platform ${{ inputs.platform }} --build-only --testsuite-root ../ | tee /app/buildLog.txt
+
+    - name: Upload artefacts
+      uses: actions/upload-artifact@v4.4.3
+      with: 
+        path: |
+          /app/maestro/zephyr/twister-out/*.json
+          /app/maestro/zephyr/twister-out/*.xml
+          /app/buildLog.txt

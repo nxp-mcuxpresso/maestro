@@ -23,7 +23,7 @@ Getting started guide and further information for Maestro on Zephyr may be found
 
 ## Maestro on FreeRTOS
 
-Maestro on FreeRTOS is supported in NXP's SDK. To get started, see [mcux-sdk repository](https://github.com/nxp-mcuxpresso/mcux-sdk).
+Maestro on FreeRTOS is supported in NXP's SDK. To get started, see [mcuxsdk repository](https://github.com/nxp-mcuxpresso/mcuxsdk-manifests).
 
 ### Supported examples {#supported-examples}
 

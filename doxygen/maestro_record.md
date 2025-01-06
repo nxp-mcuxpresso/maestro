@@ -1,33 +1,34 @@
 # Maestro record example
 
 ## Table of content
-- [Overview](#maestro-record-overview)
-- [Hardware requirements](#maestro-record-HW-requirements)
-- [Hardware modifications](#maestro-record-HW-modifications)
-- [Preparation](#maestro-record-preparation)
-- [Running the demo](#maestro-record-running-the-demo)
-- [Example configuration](#maestro-record-example-configuration)
-- [Functionality](#maestro-record-functionality)
-- [States](#maestro-record-states)
-- [Commands in detail](#maestro-record-commands-in-detail)
-- [Processing Time](#maestro-record-processing-time)
+- [Overview](#overview)
+- [Hardware requirements](#hardware-requirements)
+- [Hardware modifications](#hardware-modifications)
+- [Preparation](#preparation)
+- [Running the demo](#running-the-demo)
+- [Example configuration](#example-configuration)
+- [Functionality](#functionality)
+- [States](#states)
+- [Commands in detail](#commands-in-detail)
+- [Processing Time](#processing-time)
 
-## Overview {#maestro-record-overview}
+## Overview
 The Maestro record example demonstrates audio processing on the ARM cortex core utilizing the Maestro Audio Framework library.
 
 The application is controlled by commands from a shell interface using serial console.
 
 Depending on target platform or development board there are different modes and features of the demo supported.
 
-- **Loopback** - The application demonstrates a loopback from the microphone to the speaker without any audio processing. Mono, stereo or multichannel mode can be used, depending on the hardware, see [table](#maestro-record-overview) below.
+- **Loopback** - The application demonstrates a loopback from the microphone to the speaker without any audio processing. Mono, stereo or multichannel mode can be used, depending on the hardware, see [table](#overview) below.
 - **File recording** - The application takes audio samples from the microphone inputs and stores them to an SD card as an PCM file. The PCM file has following parameters:
     - Mono and stereo : 2 channels, 16kHz, 16bit width
     - Multi-channel (AUD-EXP-42448): 6 channels, 16kHz, 32bit width
 - **Voice control** - The application takes audio samples from the microphone input and uses the VIT library to recognize wake words and voice commands. If a wake word or a voice command is recognized, the application write it to the serial terminal.
 - **Encoding** - The application takes PCM samples from memory and sends them to the Opus encoder. The encoded data is stored in memory and compared to a reference. The result of the comparison is finally written into the serial terminal.
 
-As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#maestro-record-HW-modifications) or [Example configuration](#maestro-record-example-configuration) sections before running the demo.
+As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
+<div class="wy-table-responsive">
 <table class="audio_FW_spec_table">
     <thead>
         <tr >
@@ -153,16 +154,17 @@ As shown in the table below, the application is supported on several development
         </tr>
     </tbody>
 </table>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#maestro-record-example-configuration) section.</div>
-- <div style="font-size:.8em"> <span>X</span> - Not supported.</div>
+</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#example-configuration) section.</div>
+<div style="font-size:.8em"> - <span>X</span> - Not supported.</div>
 
 **Limitations:**
 - Addition labraries
     - **VIT:**
         - The VIT is supported only in the MCUXpresso IDE and ARMGCC.
-        - *LPCXpresso55s69* - The VIT is disabled by default due to insufficient memory. To enable it, see the [Example configuration](#maestro-record-example-configuration) section.
+        - *LPCXpresso55s69* - The VIT is disabled by default due to insufficient memory. To enable it, see the [Example configuration](#example-configuration) section.
     - **VoiceSeeker:**
         - The VoiceSeeker is supported only in the MCUXpresso IDE and ARMGCC.
 - Encoder
@@ -175,7 +177,7 @@ As shown in the table below, the application is supported on several development
 
 More information about supported features can be found on the [Supported features](supported_features.md) page.
 
-## Hardware requirements {#maestro-record-HW-requirements}
+## Hardware requirements
 - Desired development board
 - Micro USB cable
 - Headphones with 3.5 mm stereo jack
@@ -186,7 +188,7 @@ More information about supported features can be found on the [Supported feature
 - *LPCXpresso55s69:*
     - Source of sound with 3.5 mm stereo jack connector
 
-## Hardware modifications {#maestro-record-HW-modifications}
+## Hardware modifications
 Some development boards need some hardware modifications to run the application. If the development board is not listed here, its default setting is required.
 - *EVKB-MIMXRT1170:*
     1. Please remove below resistors if on board wifi chip is not DNP:
@@ -197,7 +199,7 @@ Some development boards need some hardware modifications to run the application.
 - *RW612BGA and RW612QFN:*
     - Connect: JP50; Disconnect JP9, JP11
 
-## Preparation {#maestro-record-preparation}
+## Preparation
 1. Connect a micro USB cable between the PC host and the debug USB port on the development board
 2. Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -211,7 +213,7 @@ Some development boards need some hardware modifications to run the application.
     - Insert source of sound to audio Line-In connector (headphone jack) on the development board.
 6. Either press the reset button on your development board or launch the debugger in your IDE to begin running the demo.
 
-## Running the demo {#maestro-record-running-the-demo}
+## Running the demo
 When the example runs successfully, you should see similar output on the serial terminal as below:
 ```
     *******************************
@@ -258,10 +260,10 @@ Type `help` to see the command list. Similar description will be displayed on se
     "opus_encode": Initializes the streamer with the Opus memory-to-memory pipeline and
     encodes a hardcoded buffer.
 ```
-Details of commands can be found [here](#maestro-record-commands-in-detail).
+Details of commands can be found [here](#commands-in-detail).
 
-## Example configuration {#maestro-record-example-configuration}
-The example can be configured by user. Before configuration, please check the [table](#maestro-record-overview) to see if the feature is supported on the development board.
+## Example configuration
+The example can be configured by user. Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
 - **Connect AUD-EXP-42448:**
     - *EVKC-MIMXRT1060:*
         1. Disconnect the power supply for safety reasons.
@@ -278,7 +280,7 @@ The example can be configured by user. Before configuration, please check the [t
             - Insert the headphones into the different line outputs to hear the inputs.
             - To use the Stereo INPUT 1, 2, connect an audio source LINE IN jack.
 - **Enable VoiceSeeker:**
-    - On some development boards the VoiceSeeker is enabled by default, see the [table](#maestro-record-overview) above.
+    - On some development boards the VoiceSeeker is enabled by default, see the [table](#overview) above.
     - If more than one channel is used and VIT is enabled, the VoiceSeeker that combines multiple channels into one must be used, as VIT can only work with mono signal.
     - It is necessary to add `VOICE_SEEKER_PROC` symbol to preprocessor defines on project level:
         - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
@@ -291,7 +293,7 @@ The example can be configured by user. Before configuration, please check the [t
 - **VIT model generation:**
     - For custom VIT model generation (defining own wake words and voice commands) please use https://vit.nxp.com/
 
-## Functionality {#maestro-record-functionality}
+## Functionality
 
 The `record_mic` or `opus_encode` command calls the `STREAMER_mic_Create` or `STREAMER_opusmem2mem_Create` function from the `app_streamer.c` file depending on the selected mode.
 
@@ -335,42 +337,154 @@ Each of the elements has several properties that can be accessed using the `stre
 ```
 Some of the predefined values can be found in the `streamer_api.h`.
 
-## States {#maestro-record-states}
+## States
 The application can be in 2 different states:
 - Idle
 - Running
 
-## Commands in detail {#maestro-record-commands-in-detail}
-- [help, version](#maestro-record-help-version)
-- [record_mic audio \<time\>](#maestro-record-record-mic-audio)
-- [record_mic file \<time\>](#maestro-record-record-mic-file)
-- [record_mic \<file_name\> \<time\>](#maestro-record-record-mic-file)
-- [record_mic vit \<time\> \<language\>](#maestro-record-record-mic-vit)
-- [opus_encode](#maestro-record-opus_encode)
+## Commands in detail
+- [help, version](#help-version)
+- [record_mic audio \<time\>](#record_mic-audio-time)
+- [record_mic file \<time\>](#record_mic-file-timerecord_mic-file_name-time)
+- [record_mic \<file_name\> \<time\>](#record_mic-file-timerecord_mic-file_name-time)
+- [record_mic vit \<time\> \<language\>](#record_mic-vit-time-language)
+- [opus_encode](#opus_encode)
 
 Legend for diagrams:
-@mermaid{legend}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### help, version {#maestro-record-help-version}
+    A((State)):::state
+    B{Condition}:::condition
+    C[Error message]:::error
+    D[Process function]:::function
+```
 
-@mermaid{help_version2}
+### help, version
 
-### record_mic audio \<time\> {#maestro-record-record-mic-audio}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-@mermaid{maestro_record_record-mic-audio}
+    A((Idle)):::state --> C[Write help or version]:::function
+    B((Running)):::state --> C
+    C --> E((No state
+    change)):::state
+```
 
-### record_mic file \<time\> ; record_mic \<file_name\> \<time\> {#maestro-record-record-mic-file}
+### record_mic audio \<time\>
 
-@mermaid{maestro_record_record-mic-file}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### record_mic vit \<time\> \<language\> {#maestro-record-record-mic-vit}
+    B((Idle)):::state --> D{time
+    > 0 ?}:::condition
+    D -- Yes --> F[recording]:::function
+    D -- No --> E[Error: Record length
+    must be greater than 0]:::error
+    E --> B
+    F --> C((Running)):::state
+    C -->G{time
+    expired?}:::condition
+    G -- No --> C
+    G -- Yes --> B
 
-@mermaid{maestro_record_record-mic-vit}
+```
 
-### opus_encode {#maestro-record-opus_encode}
-@mermaid{maestro_record_opus-encode}
+### record_mic file \<time\>\/record_mic \<file_name\> \<time\>
 
-## Processing Time {#maestro-record-processing-time}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
+
+    B((Idle)):::state --> C{time
+    > 0 ?}:::condition
+    C -- Yes --> D{SD card
+    inserted?}:::condition
+    C -- No --> E[Error: Record length
+    must be greater than 0]:::error
+    E --> B
+    D -- Yes --> G{Custom
+    file name?}:::condition
+    G -- Yes --> H[Create custom
+    file name]:::function
+    G -- No --> I[Create default
+    file name]:::function
+    H --> J[Recording]:::function
+    I --> J
+    J --> K((Running)):::state
+    K -->L{time
+    expired?}:::condition
+    L -- No --> K
+    L -- Yes --> B
+    D -- No --> F[Error: Insert SD
+    card first]:::error
+    F --> B
+
+```
+
+### record_mic vit \<time\> \<language\>
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
+
+    B((Idle)):::state --> C{time
+    > 0 ?}:::condition
+    C -- Yes --> E{Selected
+    language?}:::condition
+    C -- No --> D[Error: Record length
+    must be greater than 0]:::error
+    D --> B
+    E -- Yes --> G{Supported
+    language?}:::condition
+    E -- No --> F[Error: Language
+    not selected]:::error
+    F -->B
+    G -- Yes -->I[Recording with
+    voice recognition]:::function
+    G -- No -->H[Error: Language not supported]:::error
+    H --> B
+    I --> J((Running)):::state
+    J -->K{time
+    expired?}:::condition
+    K -- No --> J
+    K -- Yes --> B
+
+```
+
+### opus_encode
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
+
+    B((Idle)):::state -->C[Encode file]:::function
+    C -->D[Check result]:::function
+    D -->B
+```
+
+## Processing Time
 
 Typical execution times of the streamer pipeline for the EVKC-MIMXRT1060 development board are detailed in the following table. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines were considered. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone, voice seeker, and VIT blocks.
 

@@ -1,19 +1,19 @@
 # Processing Time
 
 ## Table of content
-- [Maestro playback example](#maestro-playback-times)
-- [Maestro record example](#maestro-record-times)
+- [Maestro playback example](#maestro-playback-example)
+- [Maestro record example](#maestro-record-example)
 
 
 The individual time measurements were conducted using a logic analyzer by monitoring changes in the GPIO port levels on the EVKC-MIMXRT1060 development board. These measurements were executed for each individual pipeline run, capturing the timing at each corresponding element, and, when relevant, the interconnections between these elements.
 
-## Maestro playback example  {#maestro-playback-times}
+## Maestro playback example
 
 For the Maestro playback example the following reference audio file was used: [test_48khz_16bit_2ch.wav](test_48khz_16bit_2ch.wav). In this example, the pipeline depicted in the diagram was considered. Media codecs WAV and MP3 were taken into account. To compare the times spent on the SSRC block, sampling rates for both codecs were selected: 44.1 kHz and 48 kHz.
 
 ![](common/processtime/playback.svg)
 
-The measurement of streamer pipeline run started at the beginning of `streamer_process_pipelines()`: `streamer.c` and ended in the function `streamer_pcm_write()`: `streamer_pcm.c`  just before the output buffer. 
+The measurement of streamer pipeline run started at the beginning of `streamer_process_pipelines()`: `streamer.c` and ended in the function `streamer_pcm_write()`: `streamer_pcm.c`  just before the output buffer.
 
 In the scenario involving the WAV codec, the audio file was accessed in every iteration of the streamer pipeline. Meaning, during each run, the file was read directly from the SD card. However, in the case of the MP3 codec, where data processing necessitates complete MP3 frames, the file wasn't read during every run. Rather, it was accessed periodically, triggered when the codec buffer lacked a complete MP3 frame of data. The total time spent on codec processing varies significantly depending on the type and implementation of the codec. For certain types of codecs, like FLAC, there may be multiple file accesses during a single pipeline run. The provided values are specific to the reference implementation. For details about the codecs please see see audio-voice-components documentation `middleware\audio_voice\components\`.
 
@@ -44,7 +44,7 @@ In the tables and histograms below, the timings for individual elements and thei
 - **codec start** - time on decoder before file read
 - **codec end** - time on decoder after file read
 - **codec total** - codec_start+codec_end
-- **file_src** - file reading time 
+- **file_src** - file reading time
 - **SSRC_proc** - time on SSRC element
 - **audio_sink** - time on audio sink without ouput buffers
 - **pcm_write** - time on output buffers
@@ -127,7 +127,7 @@ The start times of the time intervals for individual blocks and their respective
 ![](common/processtime/mp3_44kHz_without_fileread.svg)
 
 
-## Maestro record example {#maestro-record-times}
+## Maestro record example
 
 Typical execution times of the streamer pipeline and its individual elements for the EVKC-MIMXRT1060 development board are detailed in the following tables. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines are depicted in the figure below. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone, voice seeker, and VIT blocks. The measurement of streamer pipeline run started at the beginning of `streamer_process_pipelines()`:`streamer.c` and ended in the function `streamer_pcm_write()`: `streamer_pcm.c` just before the output buffer.
 
@@ -144,7 +144,7 @@ The individual blocks in the tables are as follows:
 - **audio_src_start** - time on audio src before reading from the microphone
 - **audio_src_end** - time on audio src after reading from the microphone
 - **pcm_read** - reading from the microphone
-- **voiceseeker** - time on voice seeker element 
+- **voiceseeker** - time on voice seeker element
 - **vit** - time on VIT element
 - **audio_sink** - time on audio sink without ouput buffers
 - **pcm_write** - time on output buffers

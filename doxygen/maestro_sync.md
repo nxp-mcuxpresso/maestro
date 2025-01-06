@@ -1,17 +1,17 @@
 # Maestro sync example
 
 ## Table of content
-- [Overview](#maestro-sync-overview)
-- [Hardware requirements](#maestro-sync-HW-requirements)
-- [Hardware modifications](#maestro-sync-HW-modifications)
-- [Preparation](#maestro-sync-preparation)
-- [Running the demo](#maestro-sync-running-the-demo)
-- [Example configuration](#maestro-sync-example-configuration)
-- [Functionality](#maestro-sync-functionality)
-- [States](#maestro-sync-states)
-- [Commands in detail](#maestro-sync-commands-in-detail)
+- [Overview](#overview)
+- [Hardware requirements](#hardware-requirements)
+- [Hardware modifications](#hardware-modifications)
+- [Preparation](#preparation)
+- [Running the demo](#running-the-demo)
+- [Example configuration](#example-configuration)
+- [Functionality](#functionality)
+- [States](#states)
+- [Commands in detail](#commands-in-detail)
 
-## Overview {#maestro-sync-overview}
+## Overview
 The Maestro sync example demonstrates the use of synchronous pipelines (Tx and Rx in this case) processing in a single streamer task on the ARM cortex core utilizing the Maestro Audio Framework library.
 
 The application is controlled by commands from a shell interface using serial console.
@@ -26,8 +26,9 @@ The demo uses two pipelines running synchronously in a single streamer task:
     - Wake words + voice commands recognition.
     - Save the VoiceSeeker output to the voiceseeker_output.pcm file on the SD card.
 
-As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#maestro-sync-HW-modifications) or [Example configuration](#maestro-sync-example-configuration) sections before running the demo.
+As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
+<div class="wy-table-responsive">
 <table class="audio_FW_spec_table">
     <thead>
         <tr >
@@ -113,10 +114,11 @@ As shown in the table below, the application is supported on several development
         </tr>
     </tbody>
 </table>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#maestro-record-example-configuration) section.</div>
-- <div style="font-size:.8em"> <span>X</span> - Not supported.</div>
+</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#example-configuration) section.</div>
+<div style="font-size:.8em"> - <span>X</span> - Not supported.</div>
 
 **Limitations:**
 - Addition labraries
@@ -130,7 +132,7 @@ As shown in the table below, the application is supported on several development
 
 More information about supported features can be found on the [Supported features](supported_features.md) page.
 
-## Hardware requirements {#maestro-sync-HW-requirements}
+## Hardware requirements
 - Desired development board
 - Micro USB cable
 - Speaker with 3.5 mm stereo jack
@@ -138,14 +140,14 @@ More information about supported features can be found on the [Supported feature
 - Optional:
     - SD card for file output
 
-## Hardware modifications {#maestro-sync-HW-modifications}
+## Hardware modifications
 Some development boards need some hardware modifications to run the application. If the development board is not listed here, its default setting is required.
 - *EVKC-MIMXRT1060:*
     1. Please make sure resistors below are removed to be able to use SD-Card.
         - R368, R347, R349, R365, R363
     2. Please Make sure J99 is installed.
 
-## Preparation {#maestro-sync-preparation}
+## Preparation
 1. Connect a micro USB cable between the PC host and the debug USB port on the development board
 2. Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -158,7 +160,7 @@ Some development boards need some hardware modifications to run the application.
 5. *Optional:* Insert an SD card into the SD card slot to record to the VoiceSeeker output.
 6. Either press the reset button on your development board or launch the debugger in your IDE to begin running the demo.
 
-## Running the demo {#maestro-sync-running-the-demo}
+## Running the demo
 When the example runs successfully, you should see similar output on the serial terminal as below:
 ```
     *****************************
@@ -196,10 +198,10 @@ Type `help` to see the command list. Similar description will be displayed on se
                       to SDRAM.
                     - After the stop command, this data is transferred to the SD card.
 ```
-Details of commands can be found [here](#maestro-sync-commands-in-detail).
+Details of commands can be found [here](#commands-in-detail).
 
-## Example configuration {#maestro-sync-example-configuration}
-The example can be configured by user. Before configuration, please check the [table](#maestro-sync-overview) to see if the feature is supported on the development board.
+## Example configuration
+The example can be configured by user. Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
 - **Enable the premium version of VoiceSeeker:**
     - The premium version of the VoiceSeeker library with AEC is API compatible with this example.
     - To get the premium version, please visit [VoiceSeeker](https:\\www.nxp.com\voiceseeker) page.
@@ -209,7 +211,7 @@ The example can be configured by user. Before configuration, please check the [t
 - **VIT model generation:**
     - For custom VIT model generation (defining own wake words and voice commands) please use https://vit.nxp.com/
 
-## Functionality {#maestro-sync-functionality}
+## Functionality
 
 The `start <nosdcard>` command calls the `STREAMER_Create` function from the `app_streamer.c` file that creates pipelines with the following elements:
 - Playback pipeline:
@@ -255,32 +257,119 @@ Each of the elements has several properties that can be accessed using the `stre
 ```
 Some of the predefined values can be found in the `streamer_api.h`.
 
-## States {#maestro-sync-states}
+## States
 The application can be in 2 different states:
 - Idle
 - Running
 
-## Commands in detail {#maestro-sync-commands-in-detail}
-- [help, version](#maestro-sync-help-version)
-- [start [nosdcard]](#maestro-sync-start)
-- [stop](#maestro-sync-stop)
-- [debug [on|off]](#maestro-sync-debug-on-off)
+## Commands in detail
+- [help, version](#help-version)
+- [start [nosdcard]](#start-nosdcard)
+- [stop](#stop)
+- [debug [on|off]](#debug-onoff)
 
 Legend for diagrams:
-@mermaid{legend}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### help, version {#maestro-sync-help-version}
+    A((State)):::state
+    B{Condition}:::condition
+    C[Error message]:::error
+    D[Process function]:::function
+```
 
-@mermaid{help_version2}
+### help, version
 
-### start [nosdcard] {#maestro-sync-start}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-@mermaid{maestro-sync-start}
+    A((Idle)):::state --> C[Write help or version]:::function
+    B((Running)):::state --> C
+    C --> E((No state
+    change)):::state
+```
 
-### stop {#maestro-sync-stop}
+### start \[nosdcard\]
 
-@mermaid{maestro-sync-stop}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### debug [on|off] {#maestro-sync-debug-on-off}
+    A((Idle)):::state --> B{nosdcard
+    parameter?}:::condition
+    B -- Yes --> CH[Playing to Line-out and
+    recording]:::function
+    CH --> L((Running)):::state
+    B -- No --> C{Is SD card
+    inserted?}:::condition
+    C -- Yes --> E[Playing to Line-out and
+    recording to SD card]:::function
+    E --> F((Running)):::state
+    F --> G{Debugging
+    is enabled?}:::condition
+    G -- No --> F
+    G -- Yes --> H[Save reference and
+    microphone data to SDRAM]:::function
+    H --> F
+    C -- No --> D[Error: Insert SD
+card first]:::error
+    D --> A
+    J((Running)):::state --> K[Error: The streamer task is
+    already running]:::error
+    K --> J
+```
 
-@mermaid{maestro-sync-debug-on-off}
+### stop
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
+
+    A((Idle)):::state --> A
+    B((Running)):::state --> C{Is debugging
+    enabled?}:::condition
+    C --Yes -->E[Copy reference and
+microphone data to
+the SD card]:::function
+    E --> G((Idle)):::state
+    C -- No --> G
+```
+
+### debug \[on|off\]
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
+
+    A((Idle)):::state --> B[Error: First, start
+    the streamer task]:::error
+    C((Running)):::state --> D{Any
+    parameter?}:::condition
+    D -- Yes --> F{Started with
+    nosdcard
+    parameter?}:::condition
+    F -- No --> H[Set debugging]:::function
+    H --> C
+    F --Yes --> G[Error: Debugging cannot be used]:::error
+    G --> C
+    D -- No --> E[Error: Use the parameter
+    either on or off]:::error
+    E --> C
+```

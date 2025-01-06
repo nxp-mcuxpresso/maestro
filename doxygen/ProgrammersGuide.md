@@ -8,7 +8,7 @@ This document describes the framework in its detail, and the usage of API for pi
 ## Architecture overview
 
 A high-level block diagram of the streamer used in Maestro is shown below. An element is the most important class
-of objects in the streamer (see `streamer_element.c`). A chain of elements will be created and linked together when a [pipeline](pipeline_8c.html) is
+of objects in the streamer (see `streamer_element.c`). A chain of elements will be created and linked together when a [pipeline](#pipeline) is
 created. Data flows through this chain of elements in form of data buffers. An element has one specific function, which can be the reading
 of data from a file, decoding of this data, or outputting this data to a sink device. By chaining together several such
 elements, a pipeline is created that can do a specific task, for example, the playback.
@@ -120,7 +120,7 @@ actual seek offset.
 
 The basic sequence to use a decoder with the CCI is shown below:
 
-![cci_decoder_flow](codec_flow.png)
+![cci_decoder_flow](common/codec_flow.png)
 
 ### Adding new decoders to the CCI
 This section explains how to integrate a new decoder in the Common Codec Interface. The CCI assumes the decoder

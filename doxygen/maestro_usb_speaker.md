@@ -1,17 +1,17 @@
 # Maestro USB speaker example
 
 ## Table of content
-- [Overview](#maestro-usb-speaker-overview)
-- [Hardware requirements](#maestro-usb-speaker-HW-requirements)
-- [Hardware modifications](#maestro-usb-speaker-HW-modifications)
-- [Preparation](#maestro-usb-speaker-preparation)
-- [Running the demo](#maestro-usb-speaker-running-the-demo)
-- [Example configuration](#maestro-usb-speaker-example-configuration)
-- [Functionality](#maestro-usb-speaker-functionality)
-- [States](#maestro-usb-speaker-states)
-- [Commands in detail](#maestro-usb-speaker-commands-in-detail)
+- [Overview](#overview)
+- [Hardware requirements](#hardware-requirements)
+- [Hardware modifications](#hardware-modifications)
+- [Preparation](#preparation)
+- [Running the demo](#running-the-demo)
+- [Example configuration](#example-configuration)
+- [Functionality](#functionality)
+- [States](#states)
+- [Commands in detail](#commands-in-detail)
 
-## Overview {#maestro-usb-speaker-overview}
+## Overview
 The Maestro USB speaker example demonstrates audio processing on the ARM cortex core utilizing the Maestro Audio Framework library.
 
 The application is controlled by commands from a shell interface using serial console.
@@ -20,11 +20,12 @@ The development board will be enumerated as a USB audio class 2.0 device on the 
 
 Depending on target platform or development board there are different modes and features of the demo supported.
 - **Standard** - The mode demonstrates playback with up to 2 channels, up to 48 kHz sample rate and up to 16 bit width. This mode is enabled by default.
-- **Multi-Channel** - In this mode the device is enumerated as a UAC 5.1. This mode is disabled by default. See the [Example configuration](#maestro-usb-speaker-example-configuration) section to see how to enable the mode.
+- **Multi-Channel** - In this mode the device is enumerated as a UAC 5.1. This mode is disabled by default. See the [Example configuration](#example-configuration) section to see how to enable the mode.
     - When playing an 5.1 audio file, the example sends only the front-left and front-right channels to the audio Line-Out port (the other channels are ignored), since this example only supports on-board codecs with stereo audio output.
 
-As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#maestro-usb-speaker-HW-modifications) or [Example configuration](#maestro-usb-speaker-example-configuration) sections before running the demo.
+As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
+<div class="wy-table-responsive">
 <table class="audio_FW_spec_table">
     <thead>
         <tr >
@@ -89,10 +90,11 @@ As shown in the table below, the application is supported on several development
         </tr>
     </tbody>
 </table>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#maestro-usb-speaker-example-configuration) section.</div>
-- <div style="font-size:.8em"> <span>X</span> - Not supported.</div>
+</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#example-configuration) section.</div>
+<div style="font-size:.8em"> - <span>X</span> - Not supported.</div>
 
 **Limitations:**
 - *Note:*
@@ -103,16 +105,16 @@ As shown in the table below, the application is supported on several development
 
 More information about supported features can be found on the [Supported features](supported_features.md) page.
 
-## Hardware requirements {#maestro-usb-speaker-HW-requirements}
+## Hardware requirements
 - Desired development board
 - 2x Micro USB cable
 - Personal Computer
 - Headphones with 3.5 mm stereo jack
 
-## Hardware modifications {#maestro-usb-speaker-HW-modifications}
+## Hardware modifications
 Some development boards need some hardware modifications to run the application. If the development board is not listed here, its default setting is required.
 
-## Preparation {#maestro-usb-speaker-preparation}
+## Preparation
 1. Connect the first micro USB cable between the PC host and the debug USB port on the development board
 2. Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -125,7 +127,7 @@ Some development boards need some hardware modifications to run the application.
 5. Insert the headphones into Line-Out connector (headphone jack) on the development board.
 6. Either press the reset button on your development board or launch the debugger in your IDE to begin running the demo.
 
-## Running the demo {#maestro-usb-speaker-running-the-demo}
+## Running the demo
 When the example runs successfully, you should see similar output on the serial terminal as below:
 ```
     **********************************************
@@ -165,15 +167,15 @@ Type `help` to see the command list. Similar description will be displayed on se
                    run until the board restarts.
        EXAMPLE:   The application will run for 20 seconds: usb_speaker 20
 ```
-Details of commands can be found [here](#maestro-usb-speaker-commands-in-detail).
+Details of commands can be found [here](#commands-in-detail).
 
-## Example configuration {#maestro-usb-speaker-example-configuration}
-The example can be configured by user. Before configuration, please check the [table](#maestro-usb-speaker-overview) to see if the feature is supported on the development board.
+## Example configuration
+The example can be configured by user. Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
 - **Enable Multi-channel mode:**
     - The feature can be enabled by set the `USB_AUDIO_CHANNEL5_1` macro to `1U` in the `usb_device_descriptor.h` file.
     - *Note:* When device functionality is changed, such as UAC 5.1, please uninstall the previous PC driver to make sure the device with changed functionality can run normally.
 
-## Functionality {#maestro-usb-speaker-functionality}
+## Functionality
 The `Usb_speaker` command calls the `STREAMER_speaker_Create` function from the `app_streamer.c`file that creates pipeline with the following elements:
     - ELEMENT_USB_SRC_INDEX
     - ELEMENT_SPEAKER_INDEX
@@ -202,22 +204,67 @@ Each of the elements has several properties that can be accessed using the `stre
 ```
 Some of the predefined values can be found in the `streamer_api.h`.
 
-## States {#maestro-usb-speaker-states}
+## States
 The application can be in 2 different states:
 - Idle
 - Running
 
-## Commands in detail {#maestro-usb-speaker-commands-in-detail}
-- [help, version](#maestro-usb-speaker-help-version)
-- [usb_speaker \<seconds\>](#maestro-usb-speaker-usb-speaker)
+## Commands in detail
+- [help, version](#help-version)
+- [usb_speaker \<seconds\>](#usb_speaker-seconds)
 
 Legend for diagrams:
-@mermaid{legend}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### help, version {#maestro-usb-speaker-help-version}
+    A((State)):::state
+    B{Condition}:::condition
+    C[Error message]:::error
+    D[Process function]:::function
+```
 
-@mermaid{help_version2}
+### help, version
 
-### usb_speaker \<seconds\> {#maestro-usb-speaker-usb-speaker}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-@mermaid{maestro-usb-speaker-usb-speaker}
+    A((Idle)):::state --> C[Write help or version]:::function
+    B((Running)):::state --> C
+    C --> E((No state
+    change)):::state
+```
+
+### usb_speaker \<seconds\>
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    B((Idle)):::state -->C{Duration
+    == 0?}:::condition
+    C -- No --> E{Duration
+    < 0?}:::condition
+    C -- Yes --> D[Error: Incorrect
+    command parameter]:::error
+    D -->B
+    E -- Yes --> G[playing]:::function
+    G --> H((Running)):::state
+    H --> H
+    E -- No --> F[playing]:::function
+    F --> I((Running)):::state
+    I --> J{Duration
+    expired?}:::condition
+    J -- No -->I
+    J -- Yes --> B
+```

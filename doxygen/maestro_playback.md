@@ -1,18 +1,18 @@
 # Maestro playback example
 
 ## Table of content
-- [Overview](#maestro-playback-overview)
-- [Hardware requirements](#maestro-playback-HW-requirements)
-- [Hardware modifications](#maestro-playback-HW-modifications)
-- [Preparation](#maestro-playback-preparation)
-- [Running the demo](#maestro-playback-running-the-demo)
-- [Example configuration](#maestro-playback-example-configuration)
-- [Functionality](#maestro-playback-functionality)
-- [States](#maestro-playback-states)
-- [Commands in detail](#maestro-playback-commands-in-detail)
-- [Processing Time](#maestro-playback-processing-time)
+- [Overview](#overview)
+- [Hardware requirements](#hardware-requirements)
+- [Hardware modifications](#hardware-modifications)
+- [Preparation](#preparation)
+- [Running the demo](#running-the-demo)
+- [Example configuration](#example-configuration)
+- [Functionality](#functionality)
+- [States](#states)
+- [Commands in detail](#commands-in-detail)
+- [Processing Time](#processing-time)
 
-## Overview {#maestro-playback-overview}
+## Overview
 The Maestro playback example demonstrates audio processing on the ARM cortex core utilizing the Maestro Audio Framework library.
 
 The application is controlled by commands from a shell interface using serial console and the audio files are read from the SD card.
@@ -20,10 +20,11 @@ The application is controlled by commands from a shell interface using serial co
 Depending on target platform or development board there are different modes and features of the demo supported.
 
 - **Standard** - The mode demonstrates playback of encoded files from an SD card with up to 2 channels, up to 48 kHz sample rate and up to 16 bit width. This mode is enabled by default.
-- **Multi-channel** - The mode demonstrates playback of raw PCM files from an SD card with 2 or 8 channels, 96kHz sample rate and 32 bit width. The decoders and synchronous sample rate converter are not supported in this mode. The Multi-channel mode is only supported on selected platforms, see the table below. The [Example configuration](#maestro-playback-example-configuration) section contains information on how to enable it.
+- **Multi-channel** - The mode demonstrates playback of raw PCM files from an SD card with 2 or 8 channels, 96kHz sample rate and 32 bit width. The decoders and synchronous sample rate converter are not supported in this mode. The Multi-channel mode is only supported on selected platforms, see the table below. The [Example configuration](#example-configuration) section contains information on how to enable it.
 
-As shown in the table below, the application is supported on several development boards and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#maestro-playback-HW-modifications) or [Example configuration](#maestro-playback-example-configuration) sections before running the demo.
+As shown in the table below, the application is supported on several development boards and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
+<div class="wy-table-responsive">
 <table  class="audio_FW_spec_table">
     <thead>
         <tr >
@@ -125,10 +126,11 @@ As shown in the table below, the application is supported on several development
         </tr>
     </tbody>
 </table>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#maestro-playback-example-configuration) section.</div>
-- <div style="font-size:.8em"> <span>X</span> - Not supported.</div>
+</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#example-configuration) section.</div>
+<div style="font-size:.8em"> - <span>X</span> - Not supported.</div>
 
 **Limitations:**
 - Decoder:
@@ -149,7 +151,7 @@ As shown in the table below, the application is supported on several development
 
 More information about supported features can be found on the [Supported features](supported_features.md) page.
 
-## Hardware requirements {#maestro-playback-HW-requirements}
+## Hardware requirements
 - Desired development board
 - Micro USB cable
 - Headphones with 3.5 mm stereo jack
@@ -158,14 +160,14 @@ More information about supported features can be found on the [Supported feature
 - Optional:
     - Audio expansion board [AUD-EXP-42448 (REV B)](https://www.nxp.com/part/AUD-EXP-42448#/)
 
-## Hardware modifications {#maestro-playback-HW-modifications}
+## Hardware modifications
 Some development boards need some hardware modifications to run the application. If the development board is not listed here, its default setting is required.
 - *EVKB-MIMXRT1170:*
     1.  Please remove below resistors if on board wifi chip is not DNP:
         - R228, R229, R232, R234
     2.  Please make sure R136 is weld for GPIO card detect.
 
-## Preparation {#maestro-playback-preparation}
+## Preparation
 1. Connect a micro USB cable between the PC host and the debug USB port on the development board.
 2. Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -177,7 +179,7 @@ Some development boards need some hardware modifications to run the application.
 4. Insert the headphones into the Line-Out connector (headphone jack) on the development board.
 5. Either press the reset button on your development board or launch the debugger in your IDE to begin running the demo.
 
-## Running the demo {#maestro-playback-running-the-demo}
+## Running the demo
 When the example runs successfully, you should see similar output on the serial terminal as below:
 
 ```
@@ -216,10 +218,10 @@ Type `help` to see the command list. Similar description will be displayed on se
         list              List audio files available on mounted SD card.
         info              Prints playback info.
 ```
-Details of commands can be found [here](#maestro-playback-commands-in-detail).
+Details of commands can be found [here](#commands-in-detail).
 
-## Example configuration {#maestro-playback-example-configuration}
-The example can be configured by user. Before configuration, please check the [table](#maestro-playback-overview) to see if the feature is supported on the development board.
+## Example configuration
+The example can be configured by user. Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
 - **Enable Multi-channel mode:**
     - Add the `MULTICHANNEL_EXAMPLE` symbol to preprocessor defines on project level.
     - Connect AUD-EXP-42448 (see the point below).
@@ -231,7 +233,7 @@ The example can be configured by user. Before configuration, please check the [t
         4. Set the `DEMO_CODEC_WM8962` macro to `0` in the `app_definitions.h` file
         5. Set the `DEMO_CODEC_CS42448` macro to `1` in the `app_definitions.h` file.
 
-## Functionality {#maestro-playback-functionality}
+## Functionality
 
 The `file play <filename>` command calls the `STREAMER_file_Create` or `STREAMER_PCM_Create` function from the `app_streamer.c` file depending on the selected mode.
 
@@ -275,18 +277,18 @@ Each of the elements has several properties that can be accessed using the `stre
 
 Some of the predefined values can be found in the `streamer_api.h`.
 
-## States {#maestro-playback-states}
+## States
 The application can be in 3 different states:
 - Idle
 - Running
 - Paused
 
-In each state, each command can have a different behavior. For more information, see [Commands in detail](#maestro-playback-commands-in-detail) section.
+In each state, each command can have a different behavior. For more information, see [Commands in detail](#commands-in-detail) section.
 
-## Commands in detail {#maestro-playback-commands-in-detail}
+## Commands in detail
 The applicatin is controlled by commands from the shell interface and the available commands for the selected mode can be displayed using the `help` command. Commands are processed in the `cmd.c` file.
 
-- [help, version](#maestro-playback-help-version)
+- [help, version](#help-version)
 - [file stop](#file-stop)
 - [file pause](#file-pause)
 - [file volume \<volume\>](#file-volume-volume)
@@ -296,43 +298,201 @@ The applicatin is controlled by commands from the shell interface and the availa
 - [file info](#file-info)
 
 Legend for diagrams:
-@mermaid{legend}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### help, version {#maestro-playback-help-version}
+    A((State)):::state
+    B{Condition}:::condition
+    C[Error message]:::error
+    D[Process function]:::function
+```
 
-@mermaid{help_version}
+### help, version
 
-### file stop {#file-stop}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-@mermaid{maestro_playback_file-stop}
+    A((Idle)):::state --> D[Write help or version]:::function
+    B((Running)):::state --> D
+    C((Paused)):::state --> D
+    D-->E((No state
+    change)):::state
+```
+### file stop
 
-### file pause {#file-pause}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-@mermaid{maestro_playback_file-pause}
+    B((Idle)):::state --> B
+    C((Running)):::state -->E((Idle)):::state
+    D((Paused)):::state -->E
+```
 
-### file volume \<volume\> {#file-volume-volume}
+### file pause
 
-@mermaid{maestro_playback_file-volume}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### file seek \<seek_time\> {#file-seek-seek_time}
+    B((Idle)):::state --> B
+    C((Running)):::state -->E((Paused)):::state
+    D((Paused)):::state -->F((Running)):::state
+```
+
+### file volume \<volume\>
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
+
+    B((Idle)):::state --> M[Error: Play a track first]:::error
+    C((Running)):::state --> G{Volume
+    parameter
+    empty?}:::condition
+    D((Paused)):::state --> G
+    G -- Yes -->H[Error: Enter volume parameter]:::error
+    G -- No -->I{Volume
+    in range?}:::condition
+    I -- No -->J[Error: invalid value]:::error
+    I -- Yes -->K[Set volume]:::function
+    J --> L((No state
+    change)):::state
+    K --> L
+    H--> L
+```
+
+### file seek \<seek_time\>
 
 The seek argument is only supported in the Standard mode.
 
-@mermaid{maestro_playback_file-seek}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### file play \<filename\> {#file-play-filename}
+    B((Idle)):::state --> E[Error: First select
+    an audio track to play]:::error
+    E-->B
+    C((Running)):::state --> F[Error: First
+    pause the track]:::error
+    F --> C
+    D((Paused)):::state --> G{Seek
+    parameter
+    empty?}:::condition
+    G --No --> H{AAC file?}:::condition
+    G --Yes --> I[Error: Enter
+    a seek time value]:::error
+    I-->N((Paused)):::state;
+    H --Yes -->J[Error: The AAC decoder
+    does not support
+    the seek command]:::error
+    J-->N
+    H --No -->K{Seek
+    parameter
+    positive?}:::condition
+    K --No -->L[Error: The seek
+    time must be
+    a positive value]:::error
+    L-->N
+    K --Yes -->M[Seek the file]:::function
+    M-->N
+```
 
-@mermaid{maestro_playback_file-play}
+### file play \<filename\>
 
-### file list {#file-list}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-@mermaid{maestro_playback_file-list}
+    C((Running)):::state --> Z[Error: First stop
+    current track]:::error
+    D((Paused)):::state --> Z
+    B((Idle)):::state --> E{SD Card
+    inserted?}:::condition
+    E -- No -->F[Error: Insert SD
+    card]:::error
+    E -- Yes -->G{File
+    name
+    empty?}:::condition
+    G -- Yes -->H[Error: Enter
+    file name]:::error
+    G -- No -->I{File exists?}:::condition
+    I -- No -->O[Error: File
+    doesn't exist]:::error
+    I -- Yes -->J{Supported
+    format?}:::condition
+    J -- Yes -->K[Play the track]:::function
+    J -- No -->L[Error: Unsupported
+    file]:::error
+    K -->M((Running)):::state
+    L --> W((No state
+    change)):::state
+    O --> W
+    H --> W
+    F --> W
+    Z --> W
+```
 
-### file info {#file-info}
+### file list
 
-@mermaid{maestro_playback_file-info}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-## Processing Time {#maestro-playback-processing-time}
+    B((Idle)):::state --> G{SD Card
+    inserted?}:::condition
+    C((Running)):::state --> G
+    D((Paused)):::state --> G
+    G -- Yes -->H[List supported files]:::function
+    G -- No -->I[Error: Insert SD card]:::error
+    I --> J((No state
+    change)):::state
+    H --> J
+```
+
+### file info
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
+
+    B((Idle)):::state -->E[Write file info]:::function
+    C((Running)):::state -->E
+    D((Paused)):::state -->E
+    E --> F((No state
+        change)):::state
+```
+
+## Processing Time
 
 Typical streamer pipeline execution times and their individual elements for the EVKC-MIMXRT1060 development board are presented in the following tables. The time spent on output buffers is not included in the traversal measurements. However, file reading time is accounted for. In the case of the WAV codec, the audio file was accessed in every pipeline run. Therefore, during each run, the file was read from the SD card. However, for the MP3 codec, where data must be processed in complete MP3 frames, the file was not read in every run. Instead, it was read periodically only when the codec buffer did not contain a complete frame of data.
 

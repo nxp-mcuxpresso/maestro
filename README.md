@@ -23,11 +23,11 @@ Getting started guide and further information for Maestro on Zephyr may be found
 
 ## Maestro on FreeRTOS
 
-Maestro on FreeRTOS is supported in NXP's SDK. To get started, see [mcuxsdk repository](https://github.com/nxp-mcuxpresso/mcuxsdk-manifests).
+Maestro on FreeRTOS is supported in NXP's SDK. To get started, see [mcuxsdk doc](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/index.html).
 
-### Supported examples {#supported-examples}
+### Supported examples
 
-The current version of the Maestro audio framework supports several optional [features](supported_features.md), some of which are used in these examples:
+The current version of the Maestro audio framework supports several optional [features](doxygen/supported_features.md), some of which are used in these examples:
 
 - [maestro_playback](doxygen/maestro_playback.md)
 - [maestro_record](doxygen/maestro_record.md)

@@ -1,25 +1,26 @@
 # Maestro USB microphone example
 
 ## Table of content
-- [Overview](#maestro-usb-mic-overview)
-- [Hardware requirements](#maestro-usb-mic-HW-requirements)
-- [Hardware modifications](#maestro-usb-mic-HW-modifications)
-- [Preparation](#maestro-usb-mic-preparation)
-- [Running the demo](#maestro-usb-mic-running-the-demo)
-- [Example configuration](#maestro-usb-mic-example-configuration)
-- [Functionality](#maestro-usb-mic-functionality)
-- [States](#maestro-usb-mic-states)
-- [Commands in detail](#maestro-usb-mic-commands-in-detail)
+- [Overview](#overview)
+- [Hardware requirements](#hardware-requirements)
+- [Hardware modifications](#hardware-modifications)
+- [Preparation](#preparation)
+- [Running the demo](#running-the-demo)
+- [Example configuration](#example-configuration)
+- [Functionality](#functionality)
+- [States](#states)
+- [Commands in detail](#commands-in-detail)
 
-## Overview {#maestro-usb-mic-overview}
+## Overview
 The Maestro USB microphone example demonstrates audio processing on the ARM cortex core utilizing the Maestro Audio Framework library.
 
 The application is controlled by commands from a shell interface using serial console.
 
 The development board will be enumerated as a USB audio class 2.0 device on the USB host. The application takes audio samples from the microphone inputs and sends them to the USB host via the USB bus. User will see the volume levels obtained from the USB host but this is only an example application. To leverage the volume values, the demo has to be modified.
 
-As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#maestro-usb-mic-HW-modifications) or [Example configuration](#maestro-usb-mic-example-configuration) sections before running the demo.
+As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
+<div class="wy-table-responsive">
 <table class="audio_FW_spec_table">
     <thead>
         <tr >
@@ -75,10 +76,11 @@ As shown in the table below, the application is supported on several development
         </tr>
     </tbody>
 </table>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
-- <div style="font-size:.8em"> <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#maestro-usb-mic-example-configuration) section.</div>
-- <div style="font-size:.8em"> <span>X</span> - Not supported.</div>
+</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
+<div style="font-size:.8em"> - <span class="audio_FW_spec_table_modification">Light green</span> - Supported, but only available after some SW or HW modification. More information about modification can be found in the [Example configuration](#example-configuration) section.</div>
+<div style="font-size:.8em"> - <span>X</span> - Not supported.</div>
 
 **Limitations:**
 - *Note:*
@@ -91,17 +93,17 @@ As shown in the table below, the application is supported on several development
 
 More information about supported features can be found on the [Supported features](supported_features.md) page.
 
-## Hardware requirements {#maestro-usb-mic-HW-requirements}
+## Hardware requirements
 - Desired development board
 - 2x Micro USB cable
 - Personal Computer
 - *LPCXpresso55s69:*
     - Source of sound with 3.5 mm stereo jack connector
 
-## Hardware modifications {#maestro-usb-mic-HW-modifications}
+## Hardware modifications
 Some development boards need some hardware modifications to run the application. If the development board is not listed here, its default setting is required.
 
-## Preparation {#maestro-usb-mic-preparation}
+## Preparation
 1. Connect the first micro USB cable between the PC host and the debug USB port on the development board
 2. Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -115,7 +117,7 @@ Some development boards need some hardware modifications to run the application.
 5. Connect the second micro USB cable between the PC host and the USB port on the development board.
 6. Either press the reset button on your development board or launch the debugger in your IDE to begin running the demo.
 
-## Running the demo {#maestro-usb-mic-running-the-demo}
+## Running the demo
 When the example runs successfully, you should see similar output on the serial terminal as below:
 ```
     *************************************************
@@ -155,12 +157,12 @@ Type `help` to see the command list. Similar description will be displayed on se
                    run until the board restarts.
       EXAMPLE:   The application will run for 20 seconds: usb_mic 20
 ```
-Details of commands can be found [here](#maestro-usb-mic-commands-in-detail).
+Details of commands can be found [here](#commands-in-detail).
 
-## Example configuration {#maestro-usb-mic-example-configuration}
+## Example configuration
 The example only supports one mode and do not support any additional libraries, so the example can't be configured by user.
 
-## Functionality {#maestro-usb-mic-functionality}
+## Functionality
 The `usb_mic` command calls the `STREAMER_mic_Create` function from the `app_streamer.c`file that creates pipeline with the following elements:
     - ELEMENT_MICROPHONE_INDEX
     - ELEMENT_USB_SINK_INDEX
@@ -189,22 +191,67 @@ Each of the elements has several properties that can be accessed using the `stre
 ```
 Some of the predefined values can be found in the `streamer_api.h`.
 
-## States {#maestro-usb-mic-states}
+## States
 The application can be in 2 different states:
 - Idle
 - Running
 
-## Commands in detail {#maestro-usb-mic-commands-in-detail}
-- [help, version](#maestro-usb-mic-help-version)
-- [usb_mic \<seconds\>](#maestro-usb-mic-usb-mic)
+## Commands in detail
+- [help, version](#help-version)
+- [usb_mic \<seconds\>](#usb_mic-seconds)
 
 Legend for diagrams:
-@mermaid{legend}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-### help, version {#maestro-usb-mic-help-version}
+    A((State)):::state
+    B{Condition}:::condition
+    C[Error message]:::error
+    D[Process function]:::function
+```
 
-@mermaid{help_version2}
+### help, version
 
-### usb_mic \<seconds\> {#maestro-usb-mic-usb-mic}
+```{mermaid}
+flowchart TD
+    classDef function fill:#69CA00
+    classDef condition fill:#0EAFE0
+    classDef state fill:#F9B500
+    classDef error fill:#F54D4D
 
-@mermaid{maestro-usb-mic-usb-mic}
+    A((Idle)):::state --> C[Write help or version]:::function
+    B((Running)):::state --> C
+    C --> E((No state
+    change)):::state
+```
+
+### usb_mic \<seconds\>
+
+```{mermaid}
+flowchart TD
+    classDef function fill:#c6d22c
+    classDef condition fill:#7cb2de
+    classDef state fill:#fcb415
+    classDef error fill:#FF999C
+
+    B((Idle)):::state -->C{seconds
+    == 0?}:::condition
+    C -- No --> E{seconds
+    < 0?}:::condition
+    C -- Yes --> D[Error: Incorrect
+    command parameter]:::error
+    D -->B
+    E -- Yes --> G[recording]:::function
+    G --> H((Running)):::state
+    H --> H
+    E -- No --> F[recording]:::function
+    F --> I((Running)):::state
+    I --> J{seconds
+    expired?}:::condition
+    J -- No -->I
+    J -- Yes --> B
+```

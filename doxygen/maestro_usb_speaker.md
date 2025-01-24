@@ -26,70 +26,63 @@ Depending on target platform or development board there are different modes and 
 As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
 <div class="wy-table-responsive">
-<table class="audio_FW_spec_table">
-    <thead>
-        <tr >
-            <th colspan="1">Mode</th>
-            <th colspan="2">Standard</th>
-            <th colspan="2">Multi-channel</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="1" rowspan="2" >Feature</td>
-            <td colspan="2">Audio output [num of channels]</td>
-            <td colspan="2">Audio output [num of channels]</td>
-        </tr>
-        <tr>
-            <td colspan="1">On board codec</td>
-            <td colspan="1">aud-exp-42448</td>
-            <td colspan="1">On board codec</td>
-            <td colspan="1">aud-exp-42448</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVKC-MIMXRT1060</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVKB-MIMXRT1170</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1" >X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1" >X</td>
-        </tr>
-        <tr>
-            <td colspan="1">LPCXpresso55s69</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVK-MCXN5XX</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">RW612BGA</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">RW612QFN</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-    </tbody>
-</table>
+    <table class="audio_FW_spec_table">
+        <thead>
+            <tr >
+                <th colspan="1">Mode</th>
+                <th colspan="2">Standard</th>
+                <th colspan="2">Multi-channel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="1" rowspan="2" >Feature</td>
+                <td colspan="2">Audio output [num of channels]</td>
+                <td colspan="2">Audio output [num of channels]</td>
+            </tr>
+            <tr>
+                <td colspan="1">On board codec</td>
+                <td colspan="1">aud-exp-42448</td>
+                <td colspan="1">On board codec</td>
+                <td colspan="1">aud-exp-42448</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVKC-MIMXRT1060</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVKB-MIMXRT1170</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1" >X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1" >X</td>
+            </tr>
+            <tr>
+                <td colspan="1">LPCXpresso55s69</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVK-MCXN5XX</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+            </tr>
+            <tr>
+                <td colspan="1">RW612BGA</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
 <div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>

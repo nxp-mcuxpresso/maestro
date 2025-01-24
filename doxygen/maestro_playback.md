@@ -25,107 +25,95 @@ Depending on target platform or development board there are different modes and 
 As shown in the table below, the application is supported on several development boards and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
 <div class="wy-table-responsive">
-<table  class="audio_FW_spec_table">
-    <thead>
-        <tr >
-            <th colspan="1">Mode</th>
-            <th colspan="8">Standard</th>
-            <th colspan="1">Multi-channel</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="1" rowspan="2">Feature</td>
-            <td colspan="5">Decoder</td>
-            <td colspan="1">Sample rate converter</td>
-            <td colspan="2">Audio output [num of channels]</td>
-            <td colspan="1">Audio output [num of channels]</td>
-        </tr>
-        <tr>
-            <td colspan="1">AAC</td>
-            <td colspan="1">FLAC</td>
-            <td colspan="1">MP3</td>
-            <td colspan="1">OPUS</td>
-            <td colspan="1">WAV</td>
-            <td colspan="1">SSRC</td>
-            <td colspan="1">On board codec</td>
-            <td colspan="1">AUD-EXP-42448</td>
-            <td colspan="1">AUD-EXP-42448</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVKC-MIMXRT1060</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">1-2</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">2 or 8</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVKB-MIMXRT1170</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">LPCXpresso55s69</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVK-MCXN5X</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">RW612BGA</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">RW612QFN</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-    </tbody>
-</table>
+    <table  class="audio_FW_spec_table">
+        <thead>
+            <tr >
+                <th colspan="1">Mode</th>
+                <th colspan="8">Standard</th>
+                <th colspan="1">Multi-channel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="1" rowspan="2">Feature</td>
+                <td colspan="5">Decoder</td>
+                <td colspan="1">Sample rate converter</td>
+                <td colspan="2">Audio output [num of channels]</td>
+                <td colspan="1">Audio output [num of channels]</td>
+            </tr>
+            <tr>
+                <td colspan="1">AAC</td>
+                <td colspan="1">FLAC</td>
+                <td colspan="1">MP3</td>
+                <td colspan="1">OPUS</td>
+                <td colspan="1">WAV</td>
+                <td colspan="1">SSRC</td>
+                <td colspan="1">On board codec</td>
+                <td colspan="1">AUD-EXP-42448</td>
+                <td colspan="1">AUD-EXP-42448</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVKC-MIMXRT1060</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1" class="audio_FW_spec_table_modification">1-2</td>
+                <td colspan="1" class="audio_FW_spec_table_modification">2 or 8</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVKB-MIMXRT1170</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
+            <tr>
+                <td colspan="1">LPCXpresso55s69</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVK-MCXN5X</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
+            <tr>
+                <td colspan="1">RW612BGA</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
 <div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
@@ -133,6 +121,8 @@ As shown in the table below, the application is supported on several development
 <div style="font-size:.8em"> - <span>X</span> - Not supported.</div>
 
 **Limitations:**
+- Note:
+    - *LPCXPresso55s69* - MCUXpresso IDE project default debug console is semihost
 - Decoder:
     - **AAC:**
         - The reference decoder is supported only in the MCUXpresso IDE and ARMGCC.
@@ -148,6 +138,8 @@ As shown in the table below, the application is supported on several development
 - Decoder:
     - **MP3:**
         - The reference decoder has issues with some of the files. One of the channels can be sometimes distorted or missing parts of the signal.
+    - **OPUS:**
+        - The decoder doesn't support all the combinations of frame sizes and sample rates. The application might crash when playing an unspupported file.
 
 More information about supported features can be found on the [Supported features](supported_features.md) page.
 

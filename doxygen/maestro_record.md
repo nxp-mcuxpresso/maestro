@@ -29,131 +29,116 @@ Depending on target platform or development board there are different modes and 
 As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
 <div class="wy-table-responsive">
-<table class="audio_FW_spec_table">
-    <thead>
-        <tr >
-            <th colspan="1">Mode</th>
-            <th colspan="3">Loopback</th>
-            <th colspan="3">File recording</th>
-            <th colspan="5">Voice control</th>
-            <th colspan="1">Encoding</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="1" rowspan="2" >Feature</td>
-            <td colspan="3">Audio input / output [num of channels]</td>
-            <td colspan="3">Audio inputs [num of channels]</td>
-            <td colspan="3">Audio inputs [num of channels]</td>
-            <td colspan="2">Additional libraries</td>
-            <td colspan="1">Encoder</td>
-        </tr>
-        <tr>
-            <td colspan="1">On board codec</td>
-            <td colspan="1">DMICs</td>
-            <td colspan="1">aud-exp-42448</td>
-            <td colspan="1">On board codec</td>
-            <td colspan="1">DMICs</td>
-            <td colspan="1">aud-exp-42448</td>
-            <td colspan="1">On board codec</td>
-            <td colspan="1">DMICs</td>
-            <td colspan="1">aud-exp-42448</td>
-            <td colspan="1">VIT</td>
-            <td colspan="1">VoiceSeeker</td>
-            <td colspan="1">OPUS</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVKC-MIMXRT1060</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1 / 1</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">1-6 / 1-6</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1</td>
-            <td colspan="1" >X</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">1-6</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1</td>
-            <td colspan="1" >X</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">1-2</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVKB-MIMXRT1170</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">0 / 1-2</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1" >X</td>
-            <td colspan="1" >X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1" >X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-        </tr>
-        <tr>
-            <td colspan="1">LPCXpresso55s69</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_modification">OK</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">EVK-MCXN5XX</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
-        </tr>
-        <tr>
-            <td colspan="1">RW612BGA</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">0 / 1-2</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1">X</td>
-        </tr>
-        <tr>
-            <td colspan="1">RW612QFN</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">0 / 1-2</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
-            <td colspan="1">X</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-            <td colspan="1">X</td>
-        </tr>
-    </tbody>
-</table>
+    <table class="audio_FW_spec_table">
+        <thead>
+            <tr >
+                <th colspan="1">Mode</th>
+                <th colspan="3">Loopback</th>
+                <th colspan="3">File recording</th>
+                <th colspan="5">Voice control</th>
+                <th colspan="1">Encoding</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="1" rowspan="2" >Feature</td>
+                <td colspan="3">Audio input / output [num of channels]</td>
+                <td colspan="3">Audio inputs [num of channels]</td>
+                <td colspan="3">Audio inputs [num of channels]</td>
+                <td colspan="2">Additional libraries</td>
+                <td colspan="1">Encoder</td>
+            </tr>
+            <tr>
+                <td colspan="1">On board codec</td>
+                <td colspan="1">DMICs</td>
+                <td colspan="1">aud-exp-42448</td>
+                <td colspan="1">On board codec</td>
+                <td colspan="1">DMICs</td>
+                <td colspan="1">aud-exp-42448</td>
+                <td colspan="1">On board codec</td>
+                <td colspan="1">DMICs</td>
+                <td colspan="1">aud-exp-42448</td>
+                <td colspan="1">VIT</td>
+                <td colspan="1">VoiceSeeker</td>
+                <td colspan="1">OPUS</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVKC-MIMXRT1060</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1 / 1</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_modification">1-6 / 1-6</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1</td>
+                <td colspan="1" >X</td>
+                <td colspan="1" class="audio_FW_spec_table_modification">1-6</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1</td>
+                <td colspan="1" >X</td>
+                <td colspan="1" class="audio_FW_spec_table_modification">1-2</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_modification">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVKB-MIMXRT1170</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">0 / 1-2</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1" >X</td>
+                <td colspan="1" >X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1" >X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+            </tr>
+            <tr>
+                <td colspan="1">LPCXpresso55s69</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_modification">OK</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
+            <tr>
+                <td colspan="1">EVK-MCXN5XX</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+            </tr>
+            <tr>
+                <td colspan="1">RW612BGA</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">0 / 1-2</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1">X</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div style="font-size:.8em"> - <span class="audio_FW_spec_table_supported">Dark green</span> - Fully supported and enabled by default.</div>
 <div style="font-size:.8em"> - <span class="audio_FW_spec_table_limited">Orange</span> - Supported with some limitations and enabled by default. See the limitations section below.</div>
@@ -161,16 +146,19 @@ As shown in the table below, the application is supported on several development
 <div style="font-size:.8em"> - <span>X</span> - Not supported.</div>
 
 **Limitations:**
+- Note:
+    - *LPCXPresso55s69* - MCUXpresso IDE project default debug console is semihost
 - Addition labraries
     - **VIT:**
         - The VIT is supported only in the MCUXpresso IDE and ARMGCC.
         - *LPCXpresso55s69* - The VIT is disabled by default due to insufficient memory. To enable it, see the [Example configuration](#example-configuration) section.
+        - *EVK-MCXN5XX* - Some VIT models can't fit into memory. In order to free some space it is necessary to disable SD card handling. To disable it, see the [Example configuration](#example-configuration) section.
     - **VoiceSeeker:**
         - The VoiceSeeker is supported only in the MCUXpresso IDE and ARMGCC.
 - Encoder
     - **OPUS:**
         - *LPCXpresso55s69* - The encoder is not supported due to insufficient memory.
-- The File recording mode is not supported on *RW612BGA* and *RW612QFN* development boards due to missing SD card slot.
+- The File recording mode is not supported on *RW612BGA* development board due to missing SD card slot.
 
 **Known issues:**
 - *EVKB-MIMXRT1170* - After several tens of runs (the number of runs is not deterministic), the development board restarts because a power-up sequence is detected on the RESET pin (due to a voltage drop).
@@ -196,7 +184,7 @@ Some development boards need some hardware modifications to run the application.
     2. Please make sure R136 is weld for GPIO card detect.
 - *EVK-MCXN5XX:*
     - Short: JP7 2-3, JP8 2-3, JP10 2-3, JP11 2-3
-- *RW612BGA and RW612QFN:*
+- *RW612BGA:*
     - Connect: JP50; Disconnect JP9, JP11
 
 ## Preparation
@@ -248,7 +236,7 @@ Type `help` to see the command list. Similar description will be displayed on se
     The number defines length of recording in seconds.
 
     Please see the project defined symbols for the languages supported.
-    Then specify one of: en/cn/de/es/fr/it/ja/ko/tr as the language parameter.
+    Then specify one of: en/cn/de/es/fr/it/ja/ko/pt/tr as the language parameter.
     For voice recognition say supported WakeWord and in 3s frame supported command.
     Please note that this VIT demo is near-field and uses 1 on-board microphone.
 
@@ -276,7 +264,7 @@ The example can be configured by user. Before configuration, please check the [t
         - The audio stream is as follows:
             - Stereo INPUT 1 (J12) -> LINE 1&2 OUTPUT (J6)
             - Stereo INPUT 2 (J15) -> LINE 3&4 OUTPUT (J7)
-            - Microphone (P1) & Microphone (P2) -> LINE 5&6 OUTPUT (J8)
+            - MIC1 & MIC2 (P1, P2) -> LINE 5&6 OUTPUT (J8)
             - Insert the headphones into the different line outputs to hear the inputs.
             - To use the Stereo INPUT 1, 2, connect an audio source LINE IN jack.
 - **Enable VoiceSeeker:**
@@ -292,6 +280,9 @@ The example can be configured by user. Before configuration, please check the [t
         3. Change the `DEMO_MIC_CHANNEL_NUM` symbol value from `2` to `1` in the `app_definitions.h` file
 - **VIT model generation:**
     - For custom VIT model generation (defining own wake words and voice commands) please use https://vit.nxp.com/
+- **Disable SD card handling:**
+    - To disable it, remove `SD_ENABLED` and `STREAMER_ENABLE_FILE_SINK` symbols from preprocessor defines on project level:
+        - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
 
 ## Functionality
 

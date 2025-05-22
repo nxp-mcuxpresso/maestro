@@ -110,7 +110,7 @@ As shown in the table below, the application is supported on several development
             <tr>
                 <td colspan="1">EVK-MCXN5XX</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
-                <td colspan="1">X</td>
+                <td colspan="1">1-2</td>
                 <td colspan="1">X</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
                 <td colspan="1">X</td>
@@ -152,7 +152,7 @@ As shown in the table below, the application is supported on several development
     - **VIT:**
         - The VIT is supported only in the MCUXpresso IDE and ARMGCC.
         - *LPCXpresso55s69* - The VIT is disabled by default due to insufficient memory. To enable it, see the [Example configuration](#example-configuration) section.
-        - *EVK-MCXN5XX* - Some VIT models can't fit into memory. In order to free some space it is necessary to disable SD card handling. To disable it, see the [Example configuration](#example-configuration) section.
+        - *EVK-MCXN5XX* - Some VIT models can't fit into memory. In order to free some space it is necessary to disable SD card handling and opus encoder. To disable it, see the [Example configuration](#example-configuration) section.
     - **VoiceSeeker:**
         - The VoiceSeeker is supported only in the MCUXpresso IDE and ARMGCC.
 - Encoder
@@ -251,7 +251,9 @@ Type `help` to see the command list. Similar description will be displayed on se
 Details of commands can be found [here](#commands-in-detail).
 
 ## Example configuration
-The example can be configured by user. Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
+The example can be configured by user. There are several options how to configure the example settings, depending on the environment.
+For configuration using west and Kconfig, please follow the instructions [here](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/develop/build_system/Configuration_System.html).
+Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
 - **Connect AUD-EXP-42448:**
     - *EVKC-MIMXRT1060:*
         1. Disconnect the power supply for safety reasons.
@@ -270,19 +272,44 @@ The example can be configured by user. Before configuration, please check the [t
 - **Enable VoiceSeeker:**
     - On some development boards the VoiceSeeker is enabled by default, see the [table](#overview) above.
     - If more than one channel is used and VIT is enabled, the VoiceSeeker that combines multiple channels into one must be used, as VIT can only work with mono signal.
-    - It is necessary to add `VOICE_SEEKER_PROC` symbol to preprocessor defines on project level:
-        - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
-- **Enable VIT:**
-    - *LPCXpresso55s69:*
-        1. Remove `SD_ENABLED` and `STREAMER_ENABLE_FILE_SINK` symbols from preprocessor defines on project level.
-        2. Add `VIT_PROC` symbol to preprocessor defines on project level:
+    - Using MCUXPresso IDE:
+        - It is necessary to add `VOICE_SEEKER_PROC` symbol to preprocessor defines on project level:
             - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
-        3. Change the `DEMO_MIC_CHANNEL_NUM` symbol value from `2` to `1` in the `app_definitions.h` file
+    - Using Kconfig:
+        - Enable the VoiceSeeker in the guiconfig using `MCUX_PRJSEG_middleware.audio_voice.components.voice_seeker`
+- **Enable VIT:**
+    - *LPCXpresso55s69 and MCX-N5XX:*
+        - In MCUXPresso IDE (SDK package):
+            1. Remove `SD_ENABLED` and `STREAMER_ENABLE_FILE_SINK` symbols from preprocessor defines on project level.
+            2. Add `VIT_PROC` symbol to preprocessor defines on project level:
+                - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
+        - In armgcc in SDK package:
+            1. Remove `SD_ENABLED` and `STREAMER_ENABLE_FILE_SINK` symbols from preprocessor defines in flags.cmake file.
+            2. Remove `OPUS_ENCODE=1` and `STREAMER_ENABLE_ENCODER` preprocessor defines in flags.cmake file.
+            3. Add `VIT_PROC` symbol to preprocessor defines in flags.cmake file.
+            4. Remove sdmmc_config.c,.h files from CMakeLists.txt file.
+        - In Kconfig:
+            1. Disable File sink `MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_sink.enable`
+            2. Make sure SD card support is disabled `MCUX_COMPONENT_middleware.sdmmc.sd` and `MCUX_COMPONENT_middleware.sdmmc.host.usdhc`
+            3. Make sure sdmmc_config files (.c, .h) is excluded from project build
+                - remove `mcux_add_source` function that adds the sources in reconfig.cmake in maestro_record/cm33_core0 folder
+            4. Disable fatfs `MCUX_COMPONENT_middleware.fatfs` and `MCUX_COMPONENT_middleware.fatfs.sd`
+            5. Disable file utils `MCUX_COMPONENT_middleware.audio_voice.maestro.file_utils.enable`
+            5. Make sure Opus encoder is disabled `MCUX_COMPONENT_middleware.audio_voice.maestro.element.encoder.opus.enable`
+            6. Make sure VIT_PROC symbol is defined
+                - remove `mcux_remove_macro` function that removes the VIT_PROC preprocessor definition in reconfig.cmake in maestro_record folder
+            7. Make sure VIT processing is enabled `MCUX_PRJSEG_middleware.audio_voice.components.vit`
 - **VIT model generation:**
     - For custom VIT model generation (defining own wake words and voice commands) please use https://vit.nxp.com/
 - **Disable SD card handling:**
-    - To disable it, remove `SD_ENABLED` and `STREAMER_ENABLE_FILE_SINK` symbols from preprocessor defines on project level:
-        - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
+    - In MCUXPresso IDE:
+        - Remove `SD_ENABLED` and `STREAMER_ENABLE_FILE_SINK` symbols from preprocessor defines on project level:
+            - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
+    - In armgcc in SDK package:
+        - Remove `SD_ENABLED` and `STREAMER_ENABLE_FILE_SINK` symbols from preprocessor defines in flags.cmake file.
+    - In Kconfig:
+        1. Disable File sink `MCUX_COMPONENT_middleware.audio_voice.maestro.element.file_sink.enable`
+        2. Make sure SD card support is disabled `MCUX_COMPONENT_middleware.sdmmc.sd`
 
 ## Functionality
 

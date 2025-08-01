@@ -53,7 +53,7 @@ static StreamerFileSrcConfig file_src_cfg_lookup_table[] = {
     {"opus", DECODER_TYPE_OGG_OPUS, PARSER_TYPE_BY_PASS},
     {"ogg", DECODER_TYPE_OGG_OPUS, PARSER_TYPE_BY_PASS},
 #endif
-#if defined(AAC_DEC) && !defined(__ICCARM__)
+#if defined(AAC_DEC)
     {"aac", DECODER_TYPE_AAC, PARSER_TYPE_BY_PASS},
 #endif
 #ifdef FLAC_DEC

@@ -98,7 +98,7 @@ extern const codec_interface_function_table_t g_codec_function_table[STREAM_TYPE
 #endif
 
 /* AAC */
-#if defined(AAC_DEC) && !defined(__ICCARM__)
+#if defined(AAC_DEC)
 #include "aac_cci.h"
 #endif
 

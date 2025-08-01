@@ -51,7 +51,7 @@ int32_t ccidec_extract_meta_data(audio_stream_type_t stream_type, file_meta_data
             ret = codec_extract_metadata_ogg_opus(meta_data, ctx);
             break;
 #endif /* OGG_OPUS_DEC */
-#if defined(AAC_DEC) && !defined(__ICCARM__)
+#if defined(AAC_DEC)
         case STREAM_TYPE_AAC:
             ret = (uint8_t)codec_extract_metadata_aac(meta_data, ctx);
             break;

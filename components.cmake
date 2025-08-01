@@ -6,7 +6,7 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.aac.ena
         BASE_PATH ${SdkRootDirPath}/middleware/audio_voice/maestro/components/decoders/aac
         SOURCES *.c
                 *.h
-        TOOLCHAINS armgcc mcux
+        TOOLCHAINS armgcc iar mcux
     )
 
     mcux_add_include(
@@ -16,7 +16,7 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.decoder.aac.ena
 
     mcux_add_macro(
         CC "-DAAC_DEC=1"
-        TOOLCHAINS armgcc mcux
+        TOOLCHAINS armgcc iar mcux
     )
 endif()
 

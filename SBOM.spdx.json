@@ -2,20 +2,20 @@
   "SPDXID": "SPDXRef-DOCUMENT",
   "spdxVersion": "SPDX-2.3",
   "creationInfo": {
-    "created": "2025-06-18T00:43:17Z",
+    "created": "2025-08-04T04:50:32Z",
     "creators": [
       "Organization: NXP"
     ],
     "licenseListVersion": "3.20"
   },
-  "name": "maestro-v25.06.00",
+  "name": "maestro-v25.09.00-pvw2",
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://nxp.com/spdx/c1b86c9a-31b5-4c10-be78-c7d08b8ce4d1",
+  "documentNamespace": "https://nxp.com/spdx/e6625246-e3c3-4a31-ad1a-2f205f2a9cca",
   "packages": [
     {
-      "SPDXID": "SPDXRef-package-c1b86c9a-31b5-4c10-be78-c7d08b8ce4d1",
+      "SPDXID": "SPDXRef-package-e6625246-e3c3-4a31-ad1a-2f205f2a9cca",
       "name": "maestro",
-      "versionInfo": "v25.06.00",
+      "versionInfo": "v25.09.00-pvw2",
       "licenseConcluded": "(BSD-3-Clause)",
       "licenseDeclared": "(BSD-3-Clause)",
       "downloadLocation": "https://github.com/nxp-mcuxpresso/maestro",
@@ -29,7 +29,7 @@
     {
       "spdxElementId": "SPDXRef-DOCUMENT",
       "relationshipType": "DESCRIBES",
-      "relatedSpdxElement": "SPDXRef-package-c1b86c9a-31b5-4c10-be78-c7d08b8ce4d1"
+      "relatedSpdxElement": "SPDXRef-package-e6625246-e3c3-4a31-ad1a-2f205f2a9cca"
     }
   ]
 }

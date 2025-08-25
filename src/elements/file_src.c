@@ -135,7 +135,7 @@ int32_t filesrc_set_location(ElementHandle element, char *path)
     }
     else
     {
-        STREAMER_LOG_ERR(DBG_FILESRC, (uint32_t)fd, "[FileSRC]f_open failed\n");
+        STREAMER_LOG_ERR(DBG_FILESRC, ERRCODE_GENERAL_ERROR, "[FileSRC]f_open failed\n");
         ret = STREAM_ERR_GENERAL;
     }
 

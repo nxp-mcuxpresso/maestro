@@ -2,24 +2,82 @@
   "SPDXID": "SPDXRef-DOCUMENT",
   "spdxVersion": "SPDX-2.3",
   "creationInfo": {
-    "created": "2025-08-04T04:50:32Z",
+    "created": "2025-09-01T12:57:52Z",
     "creators": [
       "Organization: NXP"
     ],
     "licenseListVersion": "3.20"
   },
-  "name": "maestro-v25.09.00-pvw2",
+  "name": "maestro-v25.09.00",
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://nxp.com/spdx/e6625246-e3c3-4a31-ad1a-2f205f2a9cca",
+  "documentNamespace": "https://nxp.com/spdx/f222941b-638e-4e09-a8a3-0ac133262e84",
   "packages": [
     {
-      "SPDXID": "SPDXRef-package-e6625246-e3c3-4a31-ad1a-2f205f2a9cca",
+      "SPDXID": "SPDXRef-package-f222941b-638e-4e09-a8a3-0ac133262e84",
       "name": "maestro",
-      "versionInfo": "v25.09.00-pvw2",
+      "versionInfo": "v25.09.00",
       "licenseConcluded": "(BSD-3-Clause)",
       "licenseDeclared": "(BSD-3-Clause)",
       "downloadLocation": "https://github.com/nxp-mcuxpresso/maestro",
       "originator": "Organization: NXP",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-38221a48-af24-4d6b-bf1c-2a1ab49dbb68",
+      "name": "flac",
+      "versionInfo": "1.3.0",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "(LGPL-2.1-or-later AND BSD-3-Clause AND GPL-2.0-or-later AND GFDL-1.2-only)",
+      "homepage": "http://flac.sourceforge.net",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: flac",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-d4ffef4c-b703-48be-9dba-7bd906ac09c4",
+      "name": "ogg",
+      "versionInfo": "1.3.4",
+      "licenseConcluded": "BSD-2-Clause",
+      "licenseDeclared": "BSD-2-Clause",
+      "homepage": "https://github.com/xiph/ogg",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: ogg",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-9462cb4e-b62b-499c-95dd-a1aeff0f89ee",
+      "name": "opus codec",
+      "versionInfo": "1.3.1",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "homepage": "http://opus-codec.org/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: opus codec",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:opus-codec:opus:1.3.1:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-2ba5031a-d37a-4b2d-a30e-c6618a1f2e52",
+      "name": "opusfile",
+      "versionInfo": "0.12",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "homepage": "https://github.com/xiph/opusfile",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: opusfile",
       "supplier": "NOASSERTION",
       "externalRefs": [],
       "filesAnalyzed": false
@@ -29,7 +87,27 @@
     {
       "spdxElementId": "SPDXRef-DOCUMENT",
       "relationshipType": "DESCRIBES",
-      "relatedSpdxElement": "SPDXRef-package-e6625246-e3c3-4a31-ad1a-2f205f2a9cca"
+      "relatedSpdxElement": "SPDXRef-package-f222941b-638e-4e09-a8a3-0ac133262e84"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-f222941b-638e-4e09-a8a3-0ac133262e84",
+      "relationshipType": "STATIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-d4ffef4c-b703-48be-9dba-7bd906ac09c4"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-f222941b-638e-4e09-a8a3-0ac133262e84",
+      "relationshipType": "STATIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-38221a48-af24-4d6b-bf1c-2a1ab49dbb68"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-f222941b-638e-4e09-a8a3-0ac133262e84",
+      "relationshipType": "STATIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-2ba5031a-d37a-4b2d-a30e-c6618a1f2e52"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-f222941b-638e-4e09-a8a3-0ac133262e84",
+      "relationshipType": "STATIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-9462cb4e-b62b-499c-95dd-a1aeff0f89ee"
     }
   ]
 }

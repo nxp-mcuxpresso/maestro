@@ -46,12 +46,6 @@ typedef struct _AudioSrcBufferQueue_T
 } AudioSrcBufferQueue_t;
 
 /**
- * @brief Buffer size alignment
- *
- */
-#define SIZE_ALIGNMENT 32
-
-/**
  * @brief PCM Source device information
  *
  */

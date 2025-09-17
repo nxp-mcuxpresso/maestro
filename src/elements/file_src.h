@@ -47,7 +47,8 @@ struct _ElementFileSrc
 
     int32_t fd;                                 /*!< @brief File descriptor */
     char location[MAX_LOCATION_PATH_LENGTH];    /*!< @brief File location */
-    int8_t *buffer;                             /*!< @brief Buffer pointer */
+    int8_t *buffer;                             /*!< @brief Aligned buffer pointer */
+    int8_t *raw_buffer;                         /*!< @brief Raw buffer pointer */
     uint32_t chunk_size;                        /*!< @brief Chunk size */
     uint8_t end_of_stream;                      /*!< @brief End of stream flag */
     uint8_t time_seekable;                      /*!< @brief Time seekable flag */

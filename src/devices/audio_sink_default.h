@@ -36,11 +36,6 @@
  *
  */
 #define MIN_AUDIO_BUFFER_SIZE (4 * 1024U)
-/**
- * @brief Buffer size alignment
- *
- */
-#define SIZE_ALIGNMENT 32U
 
 /**
  * @brief PCM Sink device information

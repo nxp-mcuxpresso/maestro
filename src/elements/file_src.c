@@ -285,9 +285,10 @@ static uint8_t filesrc_src_activate(StreamPad *pad, uint8_t active)
                 filesrc->read_position = 0;
 
                 /* Free the chunk buffer */
-                if (filesrc->buffer)
+                if (filesrc->raw_buffer)
                 {
-                    OSA_MemoryFree(filesrc->buffer);
+                    OSA_MemoryFree(filesrc->raw_buffer);
+                    filesrc->raw_buffer = NULL;
                     filesrc->buffer = NULL;
                 }
             }
@@ -803,9 +804,10 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
 
         /* start of stream */
         filesrc->end_of_stream = false;
-        if (filesrc->buffer)
+        if (filesrc->raw_buffer)
         {
-            OSA_MemoryFree(filesrc->buffer);
+            OSA_MemoryFree(filesrc->raw_buffer);
+            filesrc->raw_buffer = NULL;
             filesrc->buffer = NULL;
         }
 
@@ -838,16 +840,23 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
              *           | *********** |
              *           ---------------
              */
-
+            size_t total_size;
             if (filesrc->file_type == RAW_DATA)
             {
-                filesrc->buffer = OSA_MemoryAllocate(sizeof(RawPacketHeader) + filesrc->chunk_size);
+                total_size = sizeof(RawPacketHeader) + filesrc->chunk_size;
             }
             else if (filesrc->file_type == AUDIO_DATA)
             {
-                filesrc->buffer = OSA_MemoryAllocate(sizeof(AudioPacketHeader) + filesrc->chunk_size);
+                total_size = sizeof(AudioPacketHeader) + filesrc->chunk_size;
             }
-            if (NULL == filesrc->buffer)
+            void *raw_buffer = OSA_MemoryAllocate(total_size + SIZE_ALIGNMENT - 1);
+            if (raw_buffer != NULL) {
+                // Align the pointer
+                filesrc->buffer = (int8_t *)MEM_ALIGN(raw_buffer, SIZE_ALIGNMENT);
+                // Store original pointer for later freeing (you'll need to add this field to ElementFileSrc)
+                filesrc->raw_buffer = (int8_t *)raw_buffer;
+            }
+            else
             {
                 STREAMER_FUNC_EXIT(DBG_FILESRC);
                 return false;
@@ -914,9 +923,10 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
         filesrc->read_position = 0;
 
         /* Free the chunk buffer */
-        if (filesrc->buffer)
+        if (filesrc->raw_buffer)
         {
-            OSA_MemoryFree(filesrc->buffer);
+            OSA_MemoryFree(filesrc->raw_buffer);
+            filesrc->raw_buffer = NULL;
             filesrc->buffer = NULL;
         }
         ret = true;
@@ -970,9 +980,10 @@ static uint8_t filesrc_src_activate_pull(StreamPad *pad, uint8_t active)
 
         /* start of stream */
         filesrc->end_of_stream = false;
-        if (filesrc->buffer)
+        if (filesrc->raw_buffer)
         {
-            OSA_MemoryFree(filesrc->buffer);
+            OSA_MemoryFree(filesrc->raw_buffer);
+            filesrc->raw_buffer = NULL;
             filesrc->buffer = NULL;
         }
 
@@ -1031,9 +1042,10 @@ static uint8_t filesrc_src_activate_pull(StreamPad *pad, uint8_t active)
         filesrc->end_of_stream             = false;
         filesrc->read_position             = 0;
         filesrc->g_read_position[StreamNo] = 0;
-        if (filesrc->buffer)
+        if (filesrc->raw_buffer)
         {
-            OSA_MemoryFree(filesrc->buffer);
+            OSA_MemoryFree(filesrc->raw_buffer);
+            filesrc->raw_buffer = NULL;
             filesrc->buffer = NULL;
         }
 

@@ -118,6 +118,12 @@
 #define TRACK_YEAR_LEN   5                       /*!< @brief Maximum track year length */
 
 /**
+ * @brief Buffer size alignment
+ *
+ */
+#define SIZE_ALIGNMENT 32U
+
+/**
  * Data Packets
  */
 

@@ -1,4 +1,6 @@
 # Maestro Audio Framework changelog
+  ## 2.0.1
+  - Fixed filesrc buffer alignment
   ## 2.0.0 (newest)
   - Added Zephyr port, see [Zephyr README](zephyr/README.rst).
     -  Possible to use standalone version, pulling its own Zephyr and dependencies

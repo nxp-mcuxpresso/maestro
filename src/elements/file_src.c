@@ -840,7 +840,7 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
              *           | *********** |
              *           ---------------
              */
-            size_t total_size;
+            size_t total_size = 0;
             if (filesrc->file_type == RAW_DATA)
             {
                 total_size = sizeof(RawPacketHeader) + filesrc->chunk_size;

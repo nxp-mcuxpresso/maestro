@@ -36,6 +36,7 @@ void FILE_Dump_Task(void *param)
     /* Local variables */
     ElementFileSink *file_sink_element_loc = NULL;
     int8_t *data_ptr_loc                   = NULL;
+    void *raw_buffer                       = NULL;
     uint32_t size_loc                      = 0;
     uint32_t data_ptr_size_loc             = 0;
     int32_t ret_count                      = 0;
@@ -67,17 +68,22 @@ void FILE_Dump_Task(void *param)
         if (size_loc > data_ptr_size_loc)
         {
             data_ptr_size_loc = size_loc;
-            if (data_ptr_loc != NULL)
+            if (raw_buffer != NULL)
             {
-                OSA_MemoryFree(data_ptr_loc);
-                data_ptr_loc = NULL;
+                OSA_MemoryFree(raw_buffer);
+                raw_buffer = NULL;
             }
-            if ((data_ptr_loc = (int8_t *)OSA_MemoryAllocate(data_ptr_size_loc)) == NULL)
+            raw_buffer = OSA_MemoryAllocate(data_ptr_size_loc + SIZE_ALIGNMENT - 1);
+            if (raw_buffer == NULL)
             {
                 STREAMER_LOG_ERR(DBG_FILE_SINK, ERRCODE_GENERAL_ERROR,
                                  "file sink [FILE_Dump_Task] (OSA_MemoryAllocate) error - lack of free memory.\n");
                 file_dump.ret = FLOW_ERROR;
                 break;
+            }
+            else
+            {
+                data_ptr_loc = (int8_t *)MEM_ALIGN(raw_buffer, SIZE_ALIGNMENT);
             }
         }
 
@@ -119,10 +125,10 @@ void FILE_Dump_Task(void *param)
     }
 
     /* Free up memmory */
-    if (data_ptr_loc != NULL)
+    if (raw_buffer != NULL)
     {
-        OSA_MemoryFree(data_ptr_loc);
-        data_ptr_loc = NULL;
+        OSA_MemoryFree(raw_buffer);
+        raw_buffer = NULL;
     }
 
     OSA_SemaphorePost(file_dump.sem_End);
@@ -167,19 +173,23 @@ static uint8_t filesink_sink_pad_activation_handler(StreamPad *pad, uint8_t acti
             // that needs a buffer however, so we need to acquire it.
             if (true == active)
             {
-                element->pullbuf = OSA_MemoryAllocate(FILESINK_PULL_SIZE + sizeof(AudioPacketHeader));
-                if (element->pullbuf == NULL)
+                element->rawbuf = OSA_MemoryAllocate(FILESINK_PULL_SIZE + sizeof(AudioPacketHeader) + SIZE_ALIGNMENT - 1);
+                if (element->rawbuf == NULL)
                 {
                     return false;
+                }
+                else
+                {
+                    element->pullbuf = (void *)MEM_ALIGN(element->rawbuf, SIZE_ALIGNMENT);
                 }
             }
             else
             {
                 // Release the pull buffer, if it was allocated
-                if (element->pullbuf != NULL)
+                if (element->rawbuf != NULL)
                 {
-                    OSA_MemoryFree(element->pullbuf);
-                    element->pullbuf = NULL;
+                    OSA_MemoryFree(element->rawbuf);
+                    element->rawbuf = NULL;
                 }
             }
 
@@ -190,10 +200,10 @@ static uint8_t filesink_sink_pad_activation_handler(StreamPad *pad, uint8_t acti
     else
     {
         // Release the pull buffer, if it was allocated
-        if (element->pullbuf != NULL)
+        if (element->rawbuf != NULL)
         {
-            OSA_MemoryFree(element->pullbuf);
-            element->pullbuf = NULL;
+            OSA_MemoryFree(element->rawbuf);
+            element->rawbuf = NULL;
         }
     }
 
@@ -258,11 +268,16 @@ static FlowReturn filesink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *
     {
         /* Allocate 20x more memory than data_size is, due to a possible delay in the FILE_Dump_Task  */
         file_dump.data_ptr_size = data_size * 20;
-        if ((file_dump.data_ptr = (int8_t *)OSA_MemoryAllocate(file_dump.data_ptr_size)) == NULL)
+        file_dump.raw_buf = (int8_t *)OSA_MemoryAllocate(file_dump.data_ptr_size + SIZE_ALIGNMENT - 1);
+        if (file_dump.raw_buf == NULL)
         {
             STREAMER_LOG_ERR(DBG_FILE_SINK, ERRCODE_GENERAL_ERROR,
                              "file sink (OSA_MemoryAllocate) error - lack of free memory.\n");
             goto Error;
+        }
+        else
+        {
+            file_dump.data_ptr = (void *)MEM_ALIGN(file_dump.raw_buf, SIZE_ALIGNMENT);
         }
     }
 
@@ -450,6 +465,7 @@ static int32_t filesink_change_state(StreamElement *element, PipelineState new_s
             /* file_dump struct initiallization */
             file_dump.file_sink_element = NULL;
             file_dump.data_ptr          = NULL;
+            file_dump.raw_buf           = NULL;
             file_dump.data_ptr_size     = 0;
             file_dump.size              = 0;
             file_dump.ret               = FLOW_OK;
@@ -488,10 +504,10 @@ static int32_t filesink_change_state(StreamElement *element, PipelineState new_s
             OSA_MutexDestroy(&(file_dump.fileDataMutex));
 
             /* Free up memmory */
-            if (file_dump.data_ptr != NULL)
+            if (file_dump.raw_buf != NULL)
             {
-                OSA_MemoryFree(file_dump.data_ptr);
-                file_dump.data_ptr = NULL;
+                OSA_MemoryFree(file_dump.raw_buf);
+                file_dump.raw_buf = NULL;
             }
 
             if (file_sink_element->fd >= 0)
@@ -680,6 +696,7 @@ int32_t filesink_init_element(StreamElement *element)
     file_sink_element->raw_write     = FILE_RAW_WRITE;
     file_sink_element->fd            = 0;
     file_sink_element->pullbuf       = NULL;
+    file_sink_element->rawbuf        = NULL;
     strncpy(file_sink_element->location, DEFAULT_FILESINK_LOCATION, sizeof(DEFAULT_FILESINK_LOCATION));
 
     /* initialize only sink pads handlers, no sink pads for file sink */

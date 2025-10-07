@@ -49,7 +49,8 @@ struct _ElementFileSink
     uint32_t chunk_size;                        /*!< @brief Chunk size */
     uint8_t end_of_stream;                      /*!< @brief End of stream flag */
     uint8_t raw_write;                          /*!< @brief Raw write flag */
-    void *pullbuf;                              /*!< @brief Pull buffer pointer */
+    void *pullbuf;                              /*!< @brief Pull buffer aligned pointer */
+    void *rawbuf;                               /*!< @brief Raw buffer pointer */
 };
 typedef struct _ElementFileSink ElementFileSink;
 
@@ -59,7 +60,8 @@ typedef struct _ElementFileSink ElementFileSink;
 typedef struct _FileDump
 {
     ElementFileSink *file_sink_element;     /*!< @brief File sink element pointer */
-    int8_t *data_ptr;                       /*!< @brief Data pointer */
+    int8_t *data_ptr;                       /*!< @brief Aligned data pointer */
+    void * raw_buf;                         /*!< @brief Raw data pointer */
     uint32_t data_ptr_size;                 /*!< @brief Data buffer size */
     uint32_t size;                          /*!< @brief File dump size */
     FlowReturn ret;                         /*!< @brief Return value */

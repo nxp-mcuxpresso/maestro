@@ -864,7 +864,6 @@ INPUT                  = ../inc \
                          maestro_record.md \
                          maestro_usb_mic.md \
                          maestro_usb_speaker.md \
-                         maestro_sync.md \
                          supported_features.md \
                          processing_time.md
 

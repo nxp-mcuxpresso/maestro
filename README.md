@@ -49,7 +49,6 @@ The current version of the Maestro audio framework supports several optional [fe
 - [maestro_record](doxygen/maestro_record.md)
 - [maestro_usb_mic](doxygen/maestro_usb_mic.md)
 - [maestro_usb_speaker](doxygen/maestro_usb_speaker.md)
-- [maestro_sync](doxygen/maestro_sync.md)
 
 The examples can be found in the **audio_examples** folder of the desired board. The demo applications are based on FreeRTOS and use multiple tasks to form the application functionality.
 

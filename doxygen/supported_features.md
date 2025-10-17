@@ -5,7 +5,6 @@ The current version of the audio framework supports several optional features. T
 - [maestro_record](maestro_record.md)
 - [maestro_usb_mic](maestro_usb_mic.md)
 - [maestro_usb_speaker](maestro_usb_speaker.md)
-- [maestro_sync](maestro_sync.md)
 
 Some features are delivered as prebuilt library and the binaries can be found in the `\middleware\audio_voice\components\*component*\libs` folder. The source code of some features can be found in the `\middleware\audio_voice\maestro\src` folder.
 

@@ -45,9 +45,9 @@ static ElementTypeLookup type_lookup_table[] = {
     {TYPE_ELEMENT_FILE_SINK, ELEMENT_FILE_SINK_INDEX},   {TYPE_ELEMENT_MEM_SINK, ELEMENT_MEM_SINK_INDEX},
     {TYPE_ELEMENT_AUDIO_SINK, ELEMENT_SPEAKER_INDEX},    {TYPE_ELEMENT_DECODER, ELEMENT_DECODER_INDEX},
     {TYPE_ELEMENT_ENCODER, ELEMENT_ENCODER_INDEX},       {TYPE_ELEMENT_PROCESS_SINK, ELEMENT_VIT_INDEX},
-    {TYPE_ELEMENT_AUDIO_PROC, ELEMENT_VIT_PROC_INDEX},   {TYPE_ELEMENT_AUDIO_PROC, ELEMENT_VOICESEEKER_INDEX},
-    {TYPE_ELEMENT_AUDIO_PROC, ELEMENT_SRC_INDEX},        {TYPE_ELEMENT_AUDIO_SRC, ELEMENT_USB_SRC_INDEX},
-    {TYPE_ELEMENT_AUDIO_SINK, ELEMENT_USB_SINK_INDEX},   {TYPE_ELEMENT_AUDIO_PROC, ELEMENT_ASRC_INDEX}};
+    {TYPE_ELEMENT_AUDIO_PROC, ELEMENT_VIT_PROC_INDEX},   {TYPE_ELEMENT_AUDIO_PROC, ELEMENT_SRC_INDEX},
+    {TYPE_ELEMENT_AUDIO_SRC, ELEMENT_USB_SRC_INDEX},     {TYPE_ELEMENT_AUDIO_SINK, ELEMENT_USB_SINK_INDEX},
+    {TYPE_ELEMENT_AUDIO_PROC, ELEMENT_ASRC_INDEX}};
 
 /**
  * @brief Osa task handle object
@@ -64,9 +64,9 @@ const STREAMER_MSG_HANDLER_T msg_handler_table[] = {
 #ifdef STREAMER_ENABLE_FILESRC
     {STREAM_MSG_SET_FILE, streamer_msg_set_file},
 #endif
-    {STREAM_MSG_SET_STATE, streamer_msg_set_state}, {STREAM_MSG_GET_STATE, streamer_msg_get_state},         
-    {STREAM_MSG_QUERY_PIPELINE, streamer_msg_send_query}, {STREAM_MSG_SET_PROPERTY, streamer_msg_set_property},   
-    {STREAM_MSG_GET_PROPERTY, streamer_msg_get_property}, {STREAM_MSG_SEEK_PIPELINE, streamer_msg_seek_pipeline}, 
+    {STREAM_MSG_SET_STATE, streamer_msg_set_state}, {STREAM_MSG_GET_STATE, streamer_msg_get_state},
+    {STREAM_MSG_QUERY_PIPELINE, streamer_msg_send_query}, {STREAM_MSG_SET_PROPERTY, streamer_msg_set_property},
+    {STREAM_MSG_GET_PROPERTY, streamer_msg_get_property}, {STREAM_MSG_SEEK_PIPELINE, streamer_msg_seek_pipeline},
     {STREAM_MSG_SET_REPEAT, streamer_msg_set_repeat}};
 /*!
  * @brief    Streamer deinit

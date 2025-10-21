@@ -102,11 +102,6 @@ if MAESTRO_AUDIO_FRAMEWORK
         #     bool "Audio process"
         #     default n
 
-        # config MAESTRO_ELEMENT_VOICE_SEEKER_ENABLE
-        #     bool "Enables VoiceSeeker processing element"
-        #     select MAESTRO_ENABLE_ELEMENT_AUDIO_PROC
-        #     default n
-
         # config MAESTRO_ELEMENT_FILE_SINK_ENABLE
         #     bool "File sink"
         #     default n

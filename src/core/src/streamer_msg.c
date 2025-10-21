@@ -65,7 +65,6 @@ static ElementPropertyLookup property_lookup_table[] = {{PROP_MICROPHONE_MASK, E
                                                         {PROP_MEMSINK_MASK, ELEMENT_MEM_SINK_INDEX},
                                                         {PROP_VITSINK_MASK, ELEMENT_VIT_INDEX},
                                                         {PROP_VIT_PROC_MASK, ELEMENT_VIT_PROC_INDEX},
-                                                        {PROP_VOICESEEKER_MASK, ELEMENT_VOICESEEKER_INDEX},
                                                         {PROP_SRC_MASK, ELEMENT_SRC_INDEX},
                                                         {PROP_ENCODER_MASK, ELEMENT_ENCODER_INDEX},
                                                         {PROP_USB_SRC_MASK, ELEMENT_USB_SRC_INDEX},
@@ -554,7 +553,7 @@ int streamer_msg_set_file(STREAMER_T *task_data, void *msg_data)
      streamer_msg->errorcode = ret;
 
      STREAMER_FUNC_EXIT(DBG_CORE);
-     return (int)ret;  
+     return (int)ret;
 }
 #endif
 

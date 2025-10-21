@@ -162,10 +162,6 @@ if(CONFIG_MAESTRO_AUDIO_FRAMEWORK)
         message(SEND_ERROR "Maestro Audio proc element not implemented yet. TODO")
     endif()
 
-    if(CONFIG_MAESTRO_ELEMENT_VOICE_SEEKER_ENABLE)
-        message(SEND_ERROR "Maestro Voice Seeker element not implemented yet. TODO")
-    endif()
-
     if(CONFIG_MAESTRO_ELEMENT_FILE_SINK_ENABLE)
         message(SEND_ERROR "Maestro File sink element not implemented yet. TODO")
     endif()

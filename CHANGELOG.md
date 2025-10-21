@@ -1,4 +1,6 @@
 # Maestro Audio Framework changelog
+  ## 2.0.2
+  - Removed VoiceSeeker support
   ## 2.0.1
   - Fixed filesrc buffer alignment
   ## 2.0.0 (newest)

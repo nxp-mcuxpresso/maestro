@@ -129,7 +129,7 @@ The start times of the time intervals for individual blocks and their respective
 
 ## Maestro record example
 
-Typical execution times of the streamer pipeline and its individual elements for the EVKC-MIMXRT1060 development board are detailed in the following tables. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines are depicted in the figure below. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone, voice seeker, and VIT blocks. The measurement of streamer pipeline run started at the beginning of `streamer_process_pipelines()`:`streamer.c` and ended in the function `streamer_pcm_write()`: `streamer_pcm.c` just before the output buffer.
+Typical execution times of the streamer pipeline and its individual elements for the EVKC-MIMXRT1060 development board are detailed in the following tables. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines are depicted in the figure below. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone and VIT blocks. The measurement of streamer pipeline run started at the beginning of `streamer_process_pipelines()`:`streamer.c` and ended in the function `streamer_pcm_write()`: `streamer_pcm.c` just before the output buffer.
 
 ![](common/processtime/record.svg)
 
@@ -144,7 +144,6 @@ The individual blocks in the tables are as follows:
 - **audio_src_start** - time on audio src before reading from the microphone
 - **audio_src_end** - time on audio src after reading from the microphone
 - **pcm_read** - reading from the microphone
-- **voiceseeker** - time on voice seeker element
 - **vit** - time on VIT element
 - **audio_sink** - time on audio sink without ouput buffers
 - **pcm_write** - time on output buffers
@@ -156,7 +155,6 @@ The start times of the time intervals for individual blocks and their respective
 - **streamer** - `streamer_process_pipelines()`:`streamer.c`
 - **audio_src** - `audiosrc_src_process()`:`audio_src.c`
 - **pcm_read** - `streamer_pcm_read()`:`streamer_pcm.c`
-- **voiceseeker** - `audio_proc_sink_pad_chain_handler()`:`audio_proc.c`
 - **vit** - `vitsink_sink_pad_chain_handler()`:`vit_sink.c`
 - **audio_sink** - `audiosink_sink_pad_chain_handler()`:`audio_sink.c`
 - **pcm_write** - `streamer_pcm_write()`:`streamer_pcm.c`
@@ -199,18 +197,3 @@ The start times of the time intervals for individual blocks and their respective
 <br/>
 
 ![](common/processtime/mic_vit_elements.svg)
-
-
-### Pipeline Microphone -> Voice seeker -> VIT
-
-| microphone -> voice seeker -> VIT | streamer  | audio_src_start | pcm_read  | audio_src_end | link audio_src-voiceseeker     | voiceseeker | link voiceseeker-vit    | vit      |
-|---------------------------------------------|-----------|-----------------|-----------|---------------|--------------------------------|-------------|-------------------------|----------|
-| mean                                        | 9.916 ms  | 22 &mu;s        | 20.084 ms | 84 &mu;s      | 4 &mu;s                        | 2.386 ms    | 13 &mu;s                | 7.407 ms |
-| min                                         | 4.983 ms  | 19 &mu;s        | 19.738 ms | 72 &mu;s      | <1 &mu;s                       | 2.228 ms    | 2 &mu;s                 | 2.662 ms |
-| max                                         | 10.423 ms | 34 &mu;s        | 24.777 ms | 100 &mu;s     | 7 &mu;s                        | 2.522 ms    | 31 &mu;s                | 7.729 ms |
-
-<br/>
-
-![](common/processtime/mic_vs_vit_elements.svg)
-
-

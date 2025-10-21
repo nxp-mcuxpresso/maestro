@@ -26,10 +26,6 @@ LOG_MODULE_REGISTER(demo_appStreamerElm_vit, LOG_LEVEL_WRN);
 #include "fsl_os_abstraction.h"
 #include "fsl_debug_console.h"
 
-#ifdef CONFIG_MAESTRO_ENABLE_ELEMENT_VOICE_SEEKER
-#include "libVoiceSeekerLight.h"
-#endif
-
 /* List of available VIT language models */
 #ifdef CONFIG_MAESTRO_EXAMPLE_VIT_LANGUAGE_EN_ENABLE
 #include "VIT_Model_en.h"
@@ -83,10 +79,6 @@ LOG_MODULE_REGISTER(demo_appStreamerElm_vit, LOG_LEVEL_WRN);
 #define NUMBER_OF_CHANNELS (1u)
 #define VIT_CMD_TIME_SPAN  (3.0)
 #define VIT_OPERATING_MODE (VIT_WAKEWORD_ENABLE | VIT_VOICECMD_ENABLE)
-
-#ifdef CONFIG_MAESTRO_ENABLE_ELEMENT_VOICE_SEEKER
-extern RETUNE_VOICESEEKERLIGHT_plugin_t vsl;
-#endif
 
 #define SAMPLES_PER_FRAME VIT_SAMPLES_PER_30MS_FRAME
 #define MEMORY_ALIGNMENT  8                   // in bytes
@@ -401,9 +393,6 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
             {
                 PRINTF(" %s\r\n", WakeWord.pName);
             }
-#ifdef CONFIG_MAESTRO_ENABLE_ELEMENT_VOICE_SEEKER
-            VoiceSeekerLight_TriggerFound(&vsl, WakeWord.StartOffset);
-#endif
         }
     }
     else if (VIT_DetectionResults == VIT_VC_DETECTED)

@@ -35,5 +35,3 @@ For more details about the reference decoders please see audio-voice-components 
 ## Additional libraries
 
 - **VIT** - Voice Intelligent Technology (VIT) Wake Word and Voice Command Engines provide free, ready to use voice UI enablement for developers. It enables customer-defined wake words and commands using free online tools. More details about VIT are available in the VIT package, which is located in `middleware\audio_voice\components\vit\{platform}\Doc\`(depending on the platform) or via following [link](https://nxp.com/vit).
-
-- **VoiceSeeker** - VoiceSeeker is a multi-microphone voice control audio front-end signal processing solution. More details about VoiceSeeker are available in the VoiceSeeker package, which is located in `middleware\audio_voice\components\voice_seeker\{platform}\Doc\`(depending on the platform) or via following [link](https://nxp.com/voiceseeker).

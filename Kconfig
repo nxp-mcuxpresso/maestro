@@ -28,10 +28,6 @@ if MCUX_COMPONENT_middleware.audio_voice.maestro
             bool "Audio process"
             default n
             if MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.enable
-                config MAESTRO_ELEMENT_AUDIO_PROC_VOICE_SEEKER_ENABLE
-                    bool "Enables VoiceSeeker processing element"
-                    select MCUX_PRJSEG_middleware.audio_voice.components.voice_seeker
-                    default n
                 config MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.ssrc.enable
                     bool "Enables Synchronous sample rate converter processing element"
                     select MCUX_COMPONENT_middleware.audio_voice.components.ssrc

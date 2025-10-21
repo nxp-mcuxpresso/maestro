@@ -133,14 +133,6 @@ typedef struct
 #define PROP_ENCODER_CONFIG        0xc02
 #define PROP_ENCODER_BITSTREAMINFO 0xc03
 
-/* VOICESEEKER */
-#define PROP_VOICESEEKER_MASK                0xd00
-#define PROP_VOICESEEKER_FUNCPTR             0xd00
-#define PROP_VOICESEEKER_REFDATA_FUNCPTR     0xd01
-#define PROP_VOICESEEKER_REFDATA_NUM_BUFFERS 0xd02
-#define PROP_VOICESEEKER_REFDATA_PUSH        0xd03
-#define PROP_VOICESEEKER_SET_DEBUGGING       0xd04
-
 /* SRC */
 #define PROP_SRC_MASK    0xe00
 #define PROP_SRC_FUNCPTR 0xe00
@@ -198,27 +190,6 @@ typedef struct
     uint32_t buffer_size; /*!< @brief Buffer size */
     uint32_t sector_size; /*!< @brief Sector size */
 } QUEUE_SET_BUFFER_T;
-
-/**
- * @brief External processing funcion prototypes for process reference data (VoiceSeeker)
- *
- */
-typedef struct
-{
-    int (*set_num_buff_func)(int); /*!< @brief Set num buffer func pointer */
-    int (*push_func)(void *);      /*!< @brief Push func pointer */
-    int (*set_debugging)(bool);    /*!< @brief Set debugging func pointer */
-} EXT_PROCESS_REFDAT_DESC_T;
-
-/**
- * @brief Reference audio data structure (due to VoiceSeeker AEC)
- *
- */
-typedef struct
-{
-    uint8_t *buffer; /*!< @brief pointers to reference data */
-    uint16_t size;   /*!< @brief size of reference data */
-} AudioRefData_t;
 
 /*!
  * @brief Audio sink application functions

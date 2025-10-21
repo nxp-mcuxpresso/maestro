@@ -115,13 +115,6 @@ if (CONFIG_MCUX_COMPONENT_middleware.audio_voice.maestro.element.audio_proc.ssrc
     )
 endif()
 
-if (CONFIG_MCUX_PRJSEG_middleware.audio_voice.components.voice_seeker)
-    mcux_add_macro(
-        CC "-DVOICE_SEEKER_PROC=1"
-        TOOLCHAINS armgcc mcux
-    )
-endif()
-
 if (CONFIG_MCUX_PRJSEG_middleware.audio_voice.components.vit)
     mcux_add_macro(
         CC "-DVIT_PROC=1"

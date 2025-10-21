@@ -2,7 +2,7 @@ NXP Software Content Register
 
 Package: maestro
 Name: Maestro Audio Framework
-Version: 2.0.1
+Version: 2.0.2
 Outgoing License: BSD 3-clause
 License File: LICENSE.txt
 Type of Content: Source and header files

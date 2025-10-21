@@ -117,15 +117,6 @@ AudioSinkStreamErrorType audiosink_default_init_device(ElementAudioSink *audio_s
     dev_info->device_state      = AUDIO_SINK_DEVICE_STATE_OPENED;
     dev_info->resample          = false;
 
-    if (audio_sink_ptr->refData_element)
-    {
-        if (STREAM_OK != element_set_property(audio_sink_ptr->refData_element, PROP_VOICESEEKER_REFDATA_NUM_BUFFERS,
-                                              AUDIO_SINK_BUFFER_NUM + 1))
-        {
-            return AUDIO_SINK_FAILED;
-        }
-    }
-
     STREAMER_FUNC_EXIT(DBG_AUDIO_SINK);
 
     return AUDIO_SINK_SUCCESS;
@@ -344,15 +335,6 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
             STREAMER_LOG_ERR(DBG_AUDIO_SINK, ERRCODE_BUSY, "[DEFAULT Sink] failed to write PCM data\n");
             STREAMER_FUNC_EXIT(DBG_AUDIO_SINK);
             return FLOW_ERROR;
-        }
-        if ((ret == 0) && (audio_sink_ptr->refData_element))
-        {
-            AudioRefData_t refData = {(uint8_t *)dev_info->audbuf[dev_info->input_index], dev_info->input_size};
-            if (STREAM_OK != element_set_property(audio_sink_ptr->refData_element, PROP_VOICESEEKER_REFDATA_PUSH,
-                                                  (uintptr_t)&refData))
-            {
-                return FLOW_ERROR;
-            }
         }
 
         /* Move to the next PCM storage buffer for the next chunk. */

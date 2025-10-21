@@ -569,9 +569,6 @@ static int32_t audiosink_set_property(StreamElement *element_ptr, uint16_t prop,
                 ret = STREAM_ERR_GENERAL;
             break;
         case PROP_SPEAKER_SET_REFDATA_ELEMENT:
-        case PROP_USB_SINK_SET_REFDATA_ELEMENT:
-            audio_sink_ptr->refData_element = (ElementHandle)val;
-            break;
         case PROP_SPEAKER_SET_APP_FUNCTIONS:
         case PROP_USB_SINK_SET_APP_FUNCTIONS:
             audio_sink_ptr->appFunctions.open_func      = ((EXT_AUDIOELEMENT_DESC_T *)val)->open_func;
@@ -627,7 +624,6 @@ int32_t audiosink_init_element(StreamElement *element)
     audio_sink_ptr->device_name        = AUDIO_SINK_DEVICE_DEFAULT;
     audio_sink_ptr->device_info        = NULL;
     audio_sink_ptr->device_started     = false;
-    audio_sink_ptr->refData_element    = (ElementHandle)NULL;
 
     audio_sink_ptr->appFunctions.open_func      = NULL;
     audio_sink_ptr->appFunctions.close_func     = NULL;

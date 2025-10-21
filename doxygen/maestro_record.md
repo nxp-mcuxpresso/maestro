@@ -45,7 +45,7 @@ As shown in the table below, the application is supported on several development
                 <td colspan="3">Audio input / output [num of channels]</td>
                 <td colspan="3">Audio inputs [num of channels]</td>
                 <td colspan="3">Audio inputs [num of channels]</td>
-                <td colspan="2">Additional libraries</td>
+                <td colspan="1">Additional libraries</td>
                 <td colspan="1">Encoder</td>
             </tr>
             <tr>
@@ -59,7 +59,6 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">DMICs</td>
                 <td colspan="1">aud-exp-42448</td>
                 <td colspan="1">VIT</td>
-                <td colspan="1">VoiceSeeker</td>
                 <td colspan="1">OPUS</td>
             </tr>
             <tr>
@@ -74,7 +73,6 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1" >X</td>
                 <td colspan="1" class="audio_FW_spec_table_modification">1-2</td>
                 <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-                <td colspan="1" class="audio_FW_spec_table_modification">OK</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
             </tr>
             <tr>
@@ -88,7 +86,6 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">X</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
                 <td colspan="1">X</td>
-                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
                 <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
             </tr>
@@ -105,7 +102,6 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">X</td>
                 <td colspan="1" class="audio_FW_spec_table_modification">OK</td>
                 <td colspan="1">X</td>
-                <td colspan="1">X</td>
             </tr>
             <tr>
                 <td colspan="1">EVK-MCXN5XX</td>
@@ -119,7 +115,6 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">X</td>
                 <td colspan="1">X</td>
                 <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
-                <td colspan="1">X</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
             </tr>
             <tr>
@@ -133,7 +128,6 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">X</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
                 <td colspan="1">X</td>
-                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
                 <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
                 <td colspan="1">X</td>
             </tr>
@@ -153,8 +147,6 @@ As shown in the table below, the application is supported on several development
         - The VIT is supported only in the MCUXpresso IDE and ARMGCC.
         - *LPCXpresso55s69* - The VIT is disabled by default due to insufficient memory. To enable it, see the [Example configuration](#example-configuration) section.
         - *EVK-MCXN5XX* - Some VIT models can't fit into memory. In order to free some space it is necessary to disable SD card handling and opus encoder. To disable it, see the [Example configuration](#example-configuration) section.
-    - **VoiceSeeker:**
-        - The VoiceSeeker is supported only in the MCUXpresso IDE and ARMGCC.
 - Encoder
     - **OPUS:**
         - *LPCXpresso55s69* - The encoder is not supported due to insufficient memory.
@@ -228,7 +220,6 @@ Type `help` to see the command list. Similar description will be displayed on se
 
     "record_mic": Record MIC audio and perform one (or more) of following actions:
     - playback on codec
-    - perform VoiceSeeker processing
     - perform voice recognition (VIT)
     - store samples to a file.
 
@@ -261,7 +252,6 @@ Before configuration, please check the [table](#overview) to see if the feature 
         3. Uninstall J99.
         4. Set the `DEMO_CODEC_WM8962` macro to `0` in the `app_definitions.h` file
         5. Set the `DEMO_CODEC_CS42448` macro to `1` in the `app_definitions.h` file.
-        6. Enable VoiceSeeker, see point bellow.
     - *Note:*
         - The audio stream is as follows:
             - Stereo INPUT 1 (J12) -> LINE 1&2 OUTPUT (J6)
@@ -269,14 +259,6 @@ Before configuration, please check the [table](#overview) to see if the feature 
             - MIC1 & MIC2 (P1, P2) -> LINE 5&6 OUTPUT (J8)
             - Insert the headphones into the different line outputs to hear the inputs.
             - To use the Stereo INPUT 1, 2, connect an audio source LINE IN jack.
-- **Enable VoiceSeeker:**
-    - On some development boards the VoiceSeeker is enabled by default, see the [table](#overview) above.
-    - If more than one channel is used and VIT is enabled, the VoiceSeeker that combines multiple channels into one must be used, as VIT can only work with mono signal.
-    - Using MCUXPresso IDE:
-        - It is necessary to add `VOICE_SEEKER_PROC` symbol to preprocessor defines on project level:
-            - (Project -> Properties -> C/C++ Build -> Settings -> MCU C Compiler -> Preprocessor)
-    - Using Kconfig:
-        - Enable the VoiceSeeker in the guiconfig using `MCUX_PRJSEG_middleware.audio_voice.components.voice_seeker`
 - **Enable VIT:**
     - *LPCXpresso55s69 and MCX-N5XX:*
         - In MCUXPresso IDE (SDK package):
@@ -323,7 +305,6 @@ The `record_mic` or `opus_encode` command calls the `STREAMER_mic_Create` or `ST
         - ELEMENT_FILE_SINK_INDEX
 - When the *Voice control* mode is selected, the command calls the `STREAMER_mic_Create` function that creates a pipeline with the following elements:
         - ELEMENT_MICROPHONE_INDEX
-        - ELEMENT_VOICESEEKER_INDEX (If `VOICE_SEEKER_PROC` is defined)
         - ELEMENT_VIT_INDEX
 - When the Encoding mode is selected, the command calls the `STREAMER_opusmem2mem_Create` function that creates a pipeline with the following elements:
         - ELEMENT_MEM_SRC_INDEX
@@ -504,7 +485,7 @@ flowchart TD
 
 ## Processing Time
 
-Typical execution times of the streamer pipeline for the EVKC-MIMXRT1060 development board are detailed in the following table. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines were considered. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone, voice seeker, and VIT blocks.
+Typical execution times of the streamer pipeline for the EVKC-MIMXRT1060 development board are detailed in the following table. The duration spent on output buffers and reading from the microphone is excluded from traversal measurements. Three measured pipelines were considered. The first involves a loopback from microphone to speaker, supporting both mono and stereo configurations. The second pipeline is a mono voice control setup, comprising microphone and VIT blocks. The final pipeline is a stereo voice control setup, integrating microphone and VIT blocks.
 
 For further details of execution times on individual elements, please refer to the [Processing Time](processing_time.md) document.
 
@@ -513,4 +494,3 @@ For further details of execution times on individual elements, please refer to t
 | microphone -> speaker 1 channel   | 40 &mu;s  |
 | microphone -> speaker 2 channels  | 115 &mu;s |
 | microphone -> VIT                 | 7.4 ms    |
-| microphone -> voice seeker -> VIT | 9.9 ms    |

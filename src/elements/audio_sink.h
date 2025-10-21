@@ -184,8 +184,6 @@ struct _ElementAudioSink
     uint8_t codec_num_channels;                      /*!< @brief Number of channels for HW codec*/
     uint8_t codec_bits_per_sample;                   /*!< @brief Sample width for HW codec*/
 
-    ElementHandle refData_element; /*!< @brief Element handle where reference audio data will be sent (VoiceSeeker) */
-
     EXT_AUDIOELEMENT_DESC_T appFunctions; /*!< @brief Function defined in the application. */
 };
 

@@ -145,7 +145,11 @@
 #define MEM4_ALIGN(n) ((uintptr_t)(n) + (-(uintptr_t)(n)&3))
 /** @brief Macro to change a value to a given size aligned value */
 #define MEM_ALIGN(var, alignbytes) \
-    ((unsigned int)((var) + ((alignbytes)-1U)) & (unsigned int)(~(unsigned int)((alignbytes)-1U)))
+    ({ \
+        uintptr_t _var = (uintptr_t)(var); \
+        uintptr_t _align = (uintptr_t)(alignbytes); \
+        (_var + (_align - 1U)) & (~(_align - 1U)); \
+    })
 
 /** @brief Check arguments */
 #define CHK_ARGS(check, error) \

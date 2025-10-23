@@ -35,7 +35,7 @@ As shown in the table below, the application is supported on several development
                 <th colspan="1">Mode</th>
                 <th colspan="3">Loopback</th>
                 <th colspan="3">File recording</th>
-                <th colspan="5">Voice control</th>
+                <th colspan="4">Voice control</th>
                 <th colspan="1">Encoding</th>
             </tr>
         </thead>
@@ -108,8 +108,8 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1" class="audio_FW_spec_table_supported">1-2 / 1-2</td>
                 <td colspan="1">1-2</td>
                 <td colspan="1">X</td>
-                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
                 <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
                 <td colspan="1">X</td>
                 <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
                 <td colspan="1">X</td>

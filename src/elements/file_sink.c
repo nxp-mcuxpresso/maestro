@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2025 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -260,6 +260,9 @@ static FlowReturn filesink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *
      * from which data has to be written.
      */
 
+    /* INT30-C: Prevent unsigned integer underflow in subtraction */
+    assert((file_dump.file_sink_element->raw_write == 0U) || (buf->size >= pkt_hdr_size));
+
     /* Calculate data size */
     data_size = !file_dump.file_sink_element->raw_write ? buf->size : buf->size - pkt_hdr_size;
 
@@ -281,8 +284,11 @@ static FlowReturn filesink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *
         }
     }
 
+    /* INT30-C: Prevent unsigned integer overflow in addition */
+    assert(file_dump.size <= UINT32_MAX - data_size);
     /* Wait if the global buffer is full */
-    while (file_dump.size + data_size > file_dump.data_ptr_size)
+    assert((data_size == 0U) || (file_dump.size <= (file_dump.data_ptr_size - data_size)));
+    while ((file_dump.size + data_size) > file_dump.data_ptr_size)
     {
         OSA_MutexUnlock(&(file_dump.fileDataMutex));
         OSA_SemaphoreWait(file_dump.sem_Write, osaWaitForever_c);
@@ -600,7 +606,7 @@ static uint8_t filesink_sink_pad_query_handler(StreamPad *pad, StreamQuery *quer
  */
 static int32_t filesink_set_property(StreamElement *element_ptr, uint16_t prop, uint32_t val)
 {
-    uint32_t ret = STREAM_OK;
+    int32_t ret = STREAM_OK;
 
     STREAMER_FUNC_ENTER(DBG_FILE_SINK);
 
@@ -613,6 +619,8 @@ static int32_t filesink_set_property(StreamElement *element_ptr, uint16_t prop, 
             break;
 
         case PROP_FILESINK_RAW_WRITE_MODE:
+            /* INT31-C: Validate value before narrowing conversion */
+            assert(val <= UINT8_MAX);
             ret = filesink_set_write_mode((ElementHandle)element_ptr, (uint8_t)val);
             break;
 
@@ -653,7 +661,9 @@ static int32_t filesink_get_property(StreamElement *element_ptr, uint16_t prop, 
 
             if (str_desc_ptr->str == NULL)
             {
-                str_desc_ptr->len = strlen(file_sink_ptr->location) + 1;
+                /* INT30-C: strlen bounded by MAX_LOCATION_PATH_LENGTH, overflow not possible */
+                assert(strlen(file_sink_ptr->location) < MAX_LOCATION_PATH_LENGTH);
+                str_desc_ptr->len = strlen(file_sink_ptr->location) + 1U;
             }
             else
             {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2025 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -24,7 +24,7 @@
 
 int32_t ccidec_extract_meta_data(audio_stream_type_t stream_type, file_meta_data_t *meta_data, CCI_Ctx *ctx)
 {
-    uint8_t ret = CODEC_METADATA_FILETYPE_FAILED;
+    int32_t ret = CODEC_METADATA_FILETYPE_FAILED;
 
     switch (stream_type)
     {
@@ -32,12 +32,12 @@ int32_t ccidec_extract_meta_data(audio_stream_type_t stream_type, file_meta_data
         case STREAM_TYPE_PCM:
         case STREAM_TYPE_MSADPCM:
         case STREAM_TYPE_IMAADPCM:
-            ret = (uint8_t)codec_extract_metadata_wave(meta_data, ctx);
+            ret = codec_extract_metadata_wave(meta_data, ctx);
             break;
 #endif
 #ifdef MP3_DEC
         case STREAM_TYPE_MP3:
-            ret = (uint8_t)codec_extract_metadata_mp3(meta_data, ctx);
+            ret = codec_extract_metadata_mp3(meta_data, ctx);
             break;
 #endif
 #ifdef OPUS_DEC
@@ -53,12 +53,12 @@ int32_t ccidec_extract_meta_data(audio_stream_type_t stream_type, file_meta_data
 #endif /* OGG_OPUS_DEC */
 #if defined(AAC_DEC)
         case STREAM_TYPE_AAC:
-            ret = (uint8_t)codec_extract_metadata_aac(meta_data, ctx);
+            ret = codec_extract_metadata_aac(meta_data, ctx);
             break;
 #endif
 #ifdef FLAC_DEC
         case STREAM_TYPE_FLAC:
-            ret = (uint8_t)codec_extract_metadata_flac(meta_data, ctx);
+            ret = codec_extract_metadata_flac(meta_data, ctx);
             break;
 #endif
         default:

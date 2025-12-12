@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2025 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -330,7 +330,10 @@ static FlowReturn filesrc_read(ElementFileSrc *filesrc, uint32_t offset, uint32_
     /* if the required offset is not same as the last read offset */
     if (filesrc->read_position != offset)
     {
-        ret = file_seek(filesrc->fd, offset);
+        /* INT31-C: Validate before unsigned to signed conversion */
+        assert(offset <= (uint32_t)INT32_MAX);
+        int32_t seek_offset = (int32_t)offset;
+        ret = file_seek(filesrc->fd, seek_offset);
         if (ret == 0)
         {
             /* update read position */
@@ -345,6 +348,8 @@ static FlowReturn filesrc_read(ElementFileSrc *filesrc, uint32_t offset, uint32_
     /* Seek done ? */
     if (ret == 0)
     {
+        /* INT31-C: Validate before unsigned to signed conversion */
+        assert(length <= (uint32_t)INT32_MAX);
         int32_t readlen  = (int32_t)length;
         int8_t *data_buf = NULL;
 
@@ -354,6 +359,7 @@ static FlowReturn filesrc_read(ElementFileSrc *filesrc, uint32_t offset, uint32_
         {
             goto eos;
         }
+
         if (filesrc->file_type == RAW_DATA)
         {
             /* Set pointer to read data to buffer */
@@ -365,6 +371,7 @@ static FlowReturn filesrc_read(ElementFileSrc *filesrc, uint32_t offset, uint32_
             data_buf = buf->buffer + sizeof(AudioPacketHeader);
         }
 
+        assert(data_buf != NULL);
         /* read length of data */
         bytesRead = file_read(filesrc->fd, (void *)data_buf, (uint32_t)readlen);
         if (bytesRead < 0)
@@ -429,7 +436,8 @@ int32_t filesrc_src_pad_process(StreamPad *pad)
     /* init buffer metadata */
     buf.buffer = NULL;
     buf.size   = 0;
-    buf.time   = (uint32_t)-1; /* Don't know anything about time */
+    /* INT31-C: Two's complement - intentional max value (predefined pattern) */
+    buf.time   = (0xFFFFFFFF);
     buf.offset = 0;
 
     /* Its an end of stream */
@@ -840,7 +848,10 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
              *           | *********** |
              *           ---------------
              */
+            /* INT30-C: Prevent unsigned integer overflow */
             size_t total_size = 0;
+            size_t alloc_size = 0;
+
             if (filesrc->file_type == RAW_DATA)
             {
                 total_size = sizeof(RawPacketHeader) + filesrc->chunk_size;
@@ -849,7 +860,18 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
             {
                 total_size = sizeof(AudioPacketHeader) + filesrc->chunk_size;
             }
-            void *raw_buffer = OSA_MemoryAllocate(total_size + SIZE_ALIGNMENT - 1);
+
+            /* INT30-C: Validate total_size before addition operations */
+            if (total_size > (SIZE_MAX - 32U))
+            {
+                STREAMER_FUNC_EXIT(DBG_FILESRC);
+                return false;
+            }
+
+            /* Calculate allocation size with overflow protection */
+            assert(total_size <= (SIZE_MAX - SIZE_ALIGNMENT));
+            alloc_size = total_size + SIZE_ALIGNMENT - 1U;
+            void *raw_buffer = OSA_MemoryAllocate(alloc_size);
             if (raw_buffer != NULL) {
                 // Align the pointer
                 filesrc->buffer = (int8_t *)MEM_ALIGN(raw_buffer, SIZE_ALIGNMENT);
@@ -886,7 +908,10 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
 
             /* Get the seekable in bytes and size in bytes */
             filesrc->byte_seekable = true;
-            filesrc->size          = file_getsize(filesrc->fd);
+            /* INT31-C: Validate before signed to unsigned conversion */
+            int32_t file_size = file_getsize(filesrc->fd);
+            assert(file_size >= 0);
+            filesrc->size = (uint32_t)file_size;
 
             STREAMER_LOG_DEBUG(DBG_FILESRC, "[FileSRC]Size: %d, seekable: %d\n", filesrc->size, filesrc->byte_seekable);
 
@@ -1008,7 +1033,11 @@ static uint8_t filesrc_src_activate_pull(StreamPad *pad, uint8_t active)
         {
             /* Get the seekable in bytes and size in bytes */
             filesrc->byte_seekable = true;
-            filesrc->size          = file_getsize(filesrc->fd);
+            /* INT31-C: Validate before signed to unsigned conversion */
+            int32_t file_size = file_getsize(filesrc->fd);
+            assert(file_size >= 0);
+            filesrc->size = (uint32_t)file_size;
+
             /* Get the duration and seekable in msec */
             filesrc->time_seekable = true;
             /* TODO: calculate duration correctly. */

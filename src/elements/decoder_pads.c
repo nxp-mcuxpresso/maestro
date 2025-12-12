@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022 NXP.
+ * Copyright 2018-2025 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -274,8 +274,18 @@ uint8_t decoder_sink_pad_event_handler(StreamPad *pad, StreamEvent *event)
                     {
                         /* Calculate the rate in bytes */
                         uint32_t bit_rate = dec_element->average_bit_rate >> 3;
+                        uint32_t quotient;
+                        uint32_t remainder;
 
-                        time += ((offset / bit_rate) * 1000) + (((offset % bit_rate) * 1000) / bit_rate);
+                        /* INT30-C: Prevent division by zero and multiplication overflow */
+                        assert(bit_rate != 0U);
+                        quotient = offset / bit_rate;
+                        remainder = offset % bit_rate;
+                        assert(quotient <= (UINT32_MAX / 1000UL));
+                        assert(remainder <= (UINT32_MAX / 1000UL));
+                        assert(bit_rate != 0U);
+
+                        time += (quotient * 1000UL) + ((remainder * 1000UL) / bit_rate);
 
                         event_create_new_segment(event, DATA_FORMAT_TIME, time);
                     }
@@ -335,7 +345,7 @@ FlowReturn decoder_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *buffer)
 
 int32_t decoder_sink_pad_process_handler(StreamPad *pad)
 {
-    uint8_t ret = true;
+    int32_t ret = -1;
     ElementDecoder *dec_element;
 
     STREAMER_FUNC_ENTER(DBG_DECODER);
@@ -350,7 +360,7 @@ int32_t decoder_sink_pad_process_handler(StreamPad *pad)
     /* call decoder sink activation_handler */
     if (dec_element->handlers != NULL && dec_element->handlers->sink_process != NULL)
     {
-        ret = dec_element->handlers->sink_process(pad);
+        ret = dec_element->handlers->sink_process(pad); /* INT31-C: Type-safe assignment */
     }
 
     STREAMER_FUNC_EXIT(DBG_DECODER);

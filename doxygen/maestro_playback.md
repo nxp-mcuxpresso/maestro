@@ -24,7 +24,7 @@ Depending on target platform or development board there are different modes and 
 
 As shown in the table below, the application is supported on several development boards and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
-<div class="wy-table-responsive">
+<div class="pst-scrollable-table-container">
     <table  class="audio_FW_spec_table">
         <thead>
             <tr >

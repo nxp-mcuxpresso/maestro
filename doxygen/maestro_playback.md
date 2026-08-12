@@ -4,6 +4,7 @@
 - [Overview](#overview)
 - [Hardware requirements](#hardware-requirements)
 - [Hardware modifications](#hardware-modifications)
+- [Development board connectors](#development-board-connectors)
 - [Preparation](#preparation)
 - [Running the demo](#running-the-demo)
 - [Example configuration](#example-configuration)
@@ -16,6 +17,8 @@
 The Maestro playback example demonstrates audio processing on the ARM cortex core utilizing the Maestro Audio Framework library.
 
 The application is controlled by commands from a shell interface using serial console and the audio files are read from the SD card.
+
+**Note:** This example requires an SD card loaded with supported audio files (AAC, FLAC, MP3, OPUS, or WAV).
 
 Depending on target platform or development board there are different modes and features of the demo supported.
 
@@ -112,6 +115,18 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">X</td>
                 <td colspan="1">X</td>
             </tr>
+            <tr>
+                <td colspan="1">FRDM-IMXRT1152</td>
+                <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
         </tbody>
     </table>
 </div>
@@ -145,7 +160,7 @@ More information about supported features can be found on the [Supported feature
 
 ## Hardware requirements
 - Desired development board
-- Micro USB cable
+- Micro USB cable (USB-C for FRDM-IMXRT1152)
 - Headphones with 3.5 mm stereo jack
 - SD card with supported audio files
 - Personal computer
@@ -158,6 +173,17 @@ Some development boards need some hardware modifications to run the application.
     1.  Please remove below resistors if on board wifi chip is not DNP:
         - R228, R229, R232, R234
     2.  Please make sure R136 is weld for GPIO card detect.
+
+## Development board connectors
+
+| Board | Debug Port | Line-Out |
+|---|---|---|
+| EVKC-MIMXRT1060 | J53 | J101 |
+| EVKB-MIMXRT1170 | J86 | J101 |
+| LPCXpresso55s69 | P6 | J2 |
+| EVK-MCXN5XX | J5 | J7 |
+| RW612BGA | — | — |
+| FRDM-IMXRT1152 | J13 | J30 |
 
 ## Preparation
 1. Connect a micro USB cable between the PC host and the debug USB port on the development board.
@@ -206,6 +232,7 @@ Type `help` to see the command list. Similar description will be displayed on se
         pause             Pause actual track or resume if already paused.
         volume <volume>   Set volume. The volume can be set from 0 to 100.
         seek <seek_time>  Seek currently paused track. Seek time is absolute time in milliseconds.
+                          Takes effect on resume, so playback continues from that time (not for AAC).
         play <filename>   Select audio track to play.
         list              List audio files available on mounted SD card.
         info              Prints playback info.
@@ -374,6 +401,8 @@ flowchart TD
 ### file seek \<seek_time\>
 
 The seek argument is only supported in the Standard mode.
+
+**Note:** The `seek <seek_time>` command sets the playback position of the currently paused track to the specified absolute time in milliseconds. The track does not move immediately, the new position takes effect once playback is resumed using the `file pause` command, so playback continues from the specified time. Seek is not supported for AAC files.
 
 ```{mermaid}
 flowchart TD

@@ -4,6 +4,7 @@
 - [Overview](#overview)
 - [Hardware requirements](#hardware-requirements)
 - [Hardware modifications](#hardware-modifications)
+- [Development board connectors](#development-board-connectors)
 - [Preparation](#preparation)
 - [Running the demo](#running-the-demo)
 - [Example configuration](#example-configuration)
@@ -131,6 +132,20 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1" class="audio_FW_spec_table_limited">OK</td>
                 <td colspan="1">X</td>
             </tr>
+            <tr>
+                <td colspan="1">FRDM-IMXRT1152</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1 / 1</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">OK</td>
+            </tr>
         </tbody>
     </table>
 </div>
@@ -159,7 +174,7 @@ More information about supported features can be found on the [Supported feature
 
 ## Hardware requirements
 - Desired development board
-- Micro USB cable
+- Micro USB cable (USB-C for FRDM-IMXRT1152)
 - Headphones with 3.5 mm stereo jack
 - Personal computer
 - Optional:
@@ -178,6 +193,20 @@ Some development boards need some hardware modifications to run the application.
     - Short: JP7 2-3, JP8 2-3, JP10 2-3, JP11 2-3
 - *RW612BGA:*
     - Connect: JP50; Disconnect JP9, JP11
+- *FRDM-IMXRT1152:*
+    - Please remove below resistors to enable the microphone:
+        - R183, R131, R151, R177, R124
+
+## Development board connectors
+
+| Board | Debug Port | Line-In |
+|---|---|---|
+| EVKC-MIMXRT1060 | J53 | J101 |
+| EVKB-MIMXRT1170 | J86 | J101 |
+| LPCXpresso55s69 | P6 | J1 |
+| EVK-MCXN5XX | J5 | J6 |
+| RW612BGA | J7 | J4 |
+| FRDM-IMXRT1152 | J13 | J30 |
 
 ## Preparation
 1. Connect a micro USB cable between the PC host and the debug USB port on the development board
@@ -380,6 +409,8 @@ flowchart TD
 
 ### record_mic audio \<time\>
 
+**Note:** This mode records from the microphone and plays the audio back on the on-board codec output (headphone jack). The audio is **not** saved to the SD card, no SD card is required for this mode.
+
 ```{mermaid}
 flowchart TD
     classDef function fill:#69CA00
@@ -402,6 +433,8 @@ flowchart TD
 ```
 
 ### record_mic file \<time\>\/record_mic \<file_name\> \<time\>
+
+**Note:** This mode records from the microphone and saves the audio as a PCM file on the SD card. An SD card must be inserted before running this command. Using the `file` option creates a file with a predefined name, while specifying `<file_name>` saves the recording under the given name.
 
 ```{mermaid}
 flowchart TD
@@ -437,6 +470,8 @@ flowchart TD
 ```
 
 ### record_mic vit \<time\> \<language\>
+
+**Note:** This mode activates voice control using the VIT library. After the recording starts, the supported wake words and voice commands for the selected language are printed to the serial monitor.
 
 ```{mermaid}
 flowchart TD

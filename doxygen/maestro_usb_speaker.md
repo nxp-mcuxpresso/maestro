@@ -4,6 +4,7 @@
 - [Overview](#overview)
 - [Hardware requirements](#hardware-requirements)
 - [Hardware modifications](#hardware-modifications)
+- [Development board connectors](#development-board-connectors)
 - [Preparation](#preparation)
 - [Running the demo](#running-the-demo)
 - [Example configuration](#example-configuration)
@@ -17,6 +18,8 @@ The Maestro USB speaker example demonstrates audio processing on the ARM cortex 
 The application is controlled by commands from a shell interface using serial console.
 
 The development board will be enumerated as a USB audio class 2.0 device on the USB host. The application takes audio samples from the USB host and sends them to the audio Line-Out port. User will see the volume levels obtained from the USB host but this is only an example application. To leverage the volume values, the demo has to be modified.
+
+After the program starts and the USB audio cable is connected, the board will be visible in the operating system's sound settings as a USB audio output device (speaker / Line-Out). You can then select it as the active playback device on your PC to stream audio to the board's headphone jack output.
 
 Depending on target platform or development board there are different modes and features of the demo supported.
 - **Standard** - The mode demonstrates playback with up to 2 channels, up to 48 kHz sample rate and up to 16 bit width. This mode is enabled by default.
@@ -81,6 +84,13 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">X</td>
                 <td colspan="1">X</td>
             </tr>
+            <tr>
+                <td colspan="1">FRDM-IMXRT1152</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1-2</td>
+                <td colspan="1">X</td>
+            </tr>
         </tbody>
     </table>
 </div>
@@ -100,12 +110,23 @@ More information about supported features can be found on the [Supported feature
 
 ## Hardware requirements
 - Desired development board
-- 2x Micro USB cable
+- 2x Micro USB cable (USB-C for FRDM-IMXRT1152)
 - Personal Computer
 - Headphones with 3.5 mm stereo jack
 
 ## Hardware modifications
 Some development boards need some hardware modifications to run the application. If the development board is not listed here, its default setting is required.
+
+## Development board connectors
+
+| Board | Debug Port | USB Port (Emulation) | Line-Out |
+|---|---|---|---|
+| EVKC-MIMXRT1060 | J53 | J48 | J101 |
+| EVKB-MIMXRT1170 | J86 | J20 | J101 |
+| LPCXpresso55s69 | P6 | P10 (FULL SPD) | J2 |
+| EVK-MCXN5XX | J5 | J27 | J7 |
+| RW612BGA | — | — | — |
+| FRDM-IMXRT1152 | J13 | J51 | J30 |
 
 ## Preparation
 1. Connect the first micro USB cable between the PC host and the debug USB port on the development board
@@ -164,9 +185,12 @@ Details of commands can be found [here](#commands-in-detail).
 
 ## Example configuration
 The example can be configured by user. Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
+- **LPCXpresso55s69:**
+    - Change the value of the `USB_DEVICE_WORKAROUND_AUDIO_20_WINDOWS` macro from `(0U)` to `(1U)` in the `usb_device_descriptor.h` file.
 - **Enable Multi-channel mode:**
     - The feature can be enabled by set the `USB_AUDIO_CHANNEL5_1` macro to `1U` in the `usb_device_descriptor.h` file.
     - *Note:* When device functionality is changed, such as UAC 5.1, please uninstall the previous PC driver to make sure the device with changed functionality can run normally.
+
 
 ## Functionality
 The `Usb_speaker` command calls the `STREAMER_speaker_Create` function from the `app_streamer.c`file that creates pipeline with the following elements:

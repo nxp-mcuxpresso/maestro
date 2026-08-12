@@ -4,6 +4,7 @@
 - [Overview](#overview)
 - [Hardware requirements](#hardware-requirements)
 - [Hardware modifications](#hardware-modifications)
+- [Development board connectors](#development-board-connectors)
 - [Preparation](#preparation)
 - [Running the demo](#running-the-demo)
 - [Example configuration](#example-configuration)
@@ -17,6 +18,8 @@ The Maestro USB microphone example demonstrates audio processing on the ARM cort
 The application is controlled by commands from a shell interface using serial console.
 
 The development board will be enumerated as a USB audio class 2.0 device on the USB host. The application takes audio samples from the microphone inputs and sends them to the USB host via the USB bus. User will see the volume levels obtained from the USB host but this is only an example application. To leverage the volume values, the demo has to be modified.
+
+After the program starts and the USB audio cable is connected, the board will be visible in the operating system's sound settings as a USB audio input device (microphone / Line-In). You can then select it as the active recording device in any application on your PC.
 
 As shown in the table below, the application is supported on several development boards, and each development board may have certain limitations, some development boards may also require hardware modifications or allow to use of an audio expansion board. Therefore, please check the supported features and [Hardware modifications](#hardware-modifications) or [Example configuration](#example-configuration) sections before running the demo.
 
@@ -68,6 +71,12 @@ As shown in the table below, the application is supported on several development
                 <td colspan="1">X</td>
                 <td colspan="1">X</td>
             </tr>
+            <tr>
+                <td colspan="1">FRDM-IMXRT1152</td>
+                <td colspan="1" class="audio_FW_spec_table_supported">1</td>
+                <td colspan="1">X</td>
+                <td colspan="1">X</td>
+            </tr>
         </tbody>
     </table>
 </div>
@@ -89,13 +98,27 @@ More information about supported features can be found on the [Supported feature
 
 ## Hardware requirements
 - Desired development board
-- 2x Micro USB cable
+- 2x Micro USB cable (USB-C for FRDM-IMXRT1152)
 - Personal Computer
 - *LPCXpresso55s69:*
     - Source of sound with 3.5 mm stereo jack connector
 
 ## Hardware modifications
 Some development boards need some hardware modifications to run the application. If the development board is not listed here, its default setting is required.
+- *FRDM-IMXRT1152:*
+    - Please remove below resistors to enable the microphone:
+        - R183, R131, R151, R177, R124
+
+## Development board connectors
+
+| Board | Debug Port | USB Port (Emulation) | Line-In |
+|---|---|---|---|
+| EVKC-MIMXRT1060 | J53 | J48 | J101 |
+| EVKB-MIMXRT1170 | J86 | J20 | J101 |
+| LPCXpresso55s69 | P6 | P10 (FULL SPD) | J1 |
+| EVK-MCXN5XX | J5 | J27 | J6 |
+| RW612BGA | — | — | — |
+| FRDM-IMXRT1152 | J13 | J51 | J30 |
 
 ## Preparation
 1. Connect the first micro USB cable between the PC host and the debug USB port on the development board

@@ -13,6 +13,7 @@
 /*
  * INCLUDE FILES
  */
+#include <assert.h>
 #include <string.h>
 
 #include "audio_cfg.h"
@@ -55,6 +56,8 @@ int32_t _get_file_data(
 
     STREAMER_FUNC_ENTER(DBG_CCID);
 
+    assert((stream_num >= 0) && (stream_num < FILESRC_BUFFER_NUM));
+
     STREAMER_LOG_DEBUG(DBG_CCID,
                        "%s: available input size=%d, "
                        "required=%d stream no = %d\n",
@@ -81,6 +84,7 @@ int32_t _get_file_data(
             buffer.buffer = (int8_t *)cci_dec->filesrc_buffer[stream_num] - sizeof(RawPacketHeader);
             /* Request filesrc element to read file and refill src buffer
              * based on stream using */
+            assert(cci_dec->dec_frame_size >= 0);
             flowret = pad_pull_range(sink, cci_dec->filesrc_offset[stream_num],
                                      stream_num == 0 ? (uint32_t)cci_dec->dec_frame_size : 2048U, &buffer);
             if (FLOW_OK == flowret)
@@ -90,13 +94,16 @@ int32_t _get_file_data(
                     /*A read file from file source element always return a RAW_DATA id,
                      * after verify it we don't need it any more so shift cci_dec->filesrc_buffer.
                      * Update filesrc_buffer variables after a success read file.*/
-                    buffer_ptr                          = (uint8_t *)(buffer.buffer + sizeof(RawPacketHeader));
-                    cci_dec->filesrc_size[stream_num]   = (buffer.size - sizeof(RawPacketHeader));
+                    buffer_ptr          = (uint8_t *)(buffer.buffer + sizeof(RawPacketHeader));
+                    size_t payload_size = buffer.size - sizeof(RawPacketHeader);
+                    assert(payload_size <= (size_t)INT32_MAX);
+                    cci_dec->filesrc_size[stream_num]   = (int32_t)payload_size;
                     cci_dec->filesrc_offset[stream_num] = buffer.offset;
                     /*Verify if the size read is bigger than RemainingBytes*/
                     if (RemainingBytes > cci_dec->filesrc_size[stream_num])
                         RemainingBytes = cci_dec->filesrc_size[stream_num];
                     /* Copy the remaining size_to_read bytes to decoder_buffer*/
+                    assert(RemainingBytes >= 0);
                     memcpy(decoder_buffer + DecoderBufferOffset, buffer_ptr, RemainingBytes);
                     /* After a copy bytes update filesrc_buffer variables */
                     cci_dec->filesrc_buffer_idx[stream_num] = RemainingBytes;
@@ -164,6 +171,9 @@ static int32_t _seek_file_data(int32_t stream_num, int32_t offset, int32_t posit
     int32_t absoffset   = 0;
 
     STREAMER_FUNC_ENTER(DBG_CCID);
+
+    assert((stream_num >= 0) && (stream_num < FILESRC_BUFFER_NUM));
+
     STREAMER_LOG_DEBUG(DBG_CCID,
                        "%s: offset required=%d, "
                        "position=%d\n",
@@ -172,28 +182,54 @@ static int32_t _seek_file_data(int32_t stream_num, int32_t offset, int32_t posit
     if (SEEK_SET == position)
     {
         /* Here the offset is absolute */
+        assert(offset >= 0);
         absoffset = offset;
+        assert(((int64_t)offset - (int64_t)cci_dec->filesrc_offset[stream_num]) >= (int64_t)INT32_MIN);
+        assert(((int64_t)offset - (int64_t)cci_dec->filesrc_offset[stream_num]) <= (int64_t)INT32_MAX);
         reloffset = offset - cci_dec->filesrc_offset[stream_num];
     }
     else if (SEEK_CUR == position)
     {
         /* Here the offset is relative */
+        if (offset >= 0)
+        {
+            assert(cci_dec->filesrc_offset[stream_num] <= (0xFFFFFFFFU - (uint32_t)offset));
+        }
+        else
+        {
+            assert(cci_dec->filesrc_offset[stream_num] >= (uint32_t)(-offset));
+        }
         absoffset = cci_dec->filesrc_offset[stream_num] + offset;
         reloffset = offset;
     }
     else if (SEEK_END == position)
     {
         /* Here offset is relative to the end */
+        if (offset >= 0)
+        {
+            assert(cci_dec->element->file_size <= (0xFFFFFFFFU - (uint32_t)offset));
+        }
+        else
+        {
+            assert(cci_dec->element->file_size >= (uint32_t)(-offset));
+        }
         absoffset = cci_dec->element->file_size + offset;
+        assert(absoffset >= 0);
+        assert((uint32_t)absoffset >= cci_dec->filesrc_offset[stream_num]);
         reloffset = absoffset - cci_dec->filesrc_offset[stream_num];
     }
     /* Verify If offset fall inside of current filesrc_buffer */
-    if ((absoffset >= (int32_t)(cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num])) &&
+    assert(cci_dec->filesrc_buffer_idx[stream_num] >= 0);
+    assert(cci_dec->filesrc_offset[stream_num] >= cci_dec->filesrc_buffer_idx[stream_num]);
+    assert((cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num]) <= (uint32_t)INT32_MAX);
+    if ((reloffset >= 0) &&
+        (absoffset >= (int32_t)(cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num])) &&
         (reloffset < cci_dec->filesrc_size[stream_num]))
     {
         /* If offset fall inside of current buffer then Update size and
         idx variables */
         cci_dec->filesrc_size[stream_num] -= reloffset;
+        assert(reloffset >= 0);
         cci_dec->filesrc_buffer_idx[stream_num] += reloffset;
     }
     else
@@ -220,10 +256,15 @@ int32_t _get_file_position(int32_t stream_num, void *user_data)
 {
     CCIDecInfo *cci_dec = (CCIDecInfo *)user_data;
 
+    assert((stream_num >= 0) && (stream_num < FILESRC_BUFFER_NUM));
+
     if (NULL == cci_dec)
         return CODEC_MEDIA_READ_ERROR;
     else
+    {
+        assert(cci_dec->filesrc_offset[stream_num] <= (uint32_t)INT32_MAX);
         return cci_dec->filesrc_offset[stream_num];
+    }
 }
 
 /**
@@ -279,11 +320,14 @@ int32_t ccidec_decode_frame(ElementDecoder *element)
             out_buffer.buffer = NULL;
             out_buffer.size   = 0;
             /* Don't know anything about time */
-            out_buffer.time   = (uint32_t)-1;
+            out_buffer.time   = UINT32_MAX;
             out_buffer.offset = 0;
 
+            int32_t buf_index = cci_dec->buffer_index;
+            assert((buf_index >= 0) && (buf_index < NUM_OF_PING_PONG_BUFFER));
+
             /* initialize data buffer to copy data after header */
-            data = cci_dec->packed_buffer[cci_dec->buffer_index] + sizeof(AudioPacketHeader);
+            data = cci_dec->packed_buffer[buf_index] + sizeof(AudioPacketHeader);
 
             /*  extract pcm samples accordingly */
             if (element->mute_frames > 0)
@@ -297,7 +341,7 @@ int32_t ccidec_decode_frame(ElementDecoder *element)
             }
 
             /* Use this pointer to load header info */
-            output_header = (AudioPacketHeader *)cci_dec->packed_buffer[cci_dec->buffer_index];
+            output_header = (AudioPacketHeader *)cci_dec->packed_buffer[buf_index];
             /* clear init header info */
             memset(output_header, 0, sizeof(AudioPacketHeader));
             /* load header info */
@@ -310,13 +354,15 @@ int32_t ccidec_decode_frame(ElementDecoder *element)
                 cci_dec->metadata->bits_per_sample = cci_dec->metadata->bits_per_sample * 2;
 
             AUDIO_BITS_PER_SAMPLE(output_header) = cci_dec->metadata->bits_per_sample;
-            AUDIO_NUM_CHANNELS(output_header)    = cci_dec->metadata->num_channels;
+            int32_t num_channels                 = cci_dec->metadata->num_channels;
+            assert(num_channels >= 0);
+            AUDIO_NUM_CHANNELS(output_header) = (uint32_t)num_channels;
 
             AUDIO_FORMAT(output_header) = AUDIO_SET_FORMAT(DECODER_INTERLEAVED, AF_LITTLE_ENDIAN, DECODER_SIGNED,
                                                            cci_dec->metadata->bits_per_sample);
 
             /* setup StreamBuffer structure for output */
-            BUFFER_PTR(&out_buffer)    = (int8_t *)cci_dec->packed_buffer[cci_dec->buffer_index];
+            BUFFER_PTR(&out_buffer)    = (int8_t *)cci_dec->packed_buffer[buf_index];
             BUFFER_OFFSET(&out_buffer) = 0;
             BUFFER_SIZE(&out_buffer)   = bytes_produced + sizeof(AudioPacketHeader);
             /* count the total decoded frames */
@@ -378,7 +424,8 @@ uint8_t get_cci_metadata(ElementDecoder *element)
     uint8_t ret = true; /* streamer return codes */
     uint32_t smallest;
     char metadata_string[TITLE_SIZE];
-    uint8_t cci_ret     = CODEC_SUCCESS; /* return codes used by CCI */
+    uint8_t cci_ret = CODEC_SUCCESS; /* return codes used by CCI */
+    int32_t cci_ret_raw;
     CCIDecInfo *cci_dec = NULL;
     StreamData data     = {0};
 
@@ -405,7 +452,9 @@ uint8_t get_cci_metadata(ElementDecoder *element)
     }
     element->file_size = data.value32u;
     /* Extract metadata for the given input file */
-    cci_ret = ccidec_extract_meta_data((audio_stream_type_t)cci_dec->stream_type, cci_dec->metadata, &ctx);
+    cci_ret_raw = ccidec_extract_meta_data((audio_stream_type_t)cci_dec->stream_type, cci_dec->metadata, &ctx);
+    assert((cci_ret_raw >= 0) && (cci_ret_raw <= 0xFF));
+    cci_ret = (uint8_t)cci_ret_raw;
 
     if (CODEC_SUCCESS != cci_ret)
     {
@@ -565,6 +614,7 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
          * since the max bytes saved can be ((2 * frame size) - 1) */
         for (uint8_t i = 0; i < FILESRC_BUFFER_NUM; i++)
         {
+            assert(cci_dec->dec_frame_size >= 0);
             cci_dec->unaligned_filesrc_buffer[i] =
                 OSA_MemoryAllocate(cci_dec->dec_frame_size + sizeof(uint32_t) + sizeof(RawPacketHeader));
             STREAMER_LOG_DEBUG(DBG_CCID, "[CCID] CCI unaligned_filesrc_buffer[%u]  %d\n", i,
@@ -578,6 +628,7 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
             }
         }
         /* packed_buffer[] will store the data to be sent to audiosink */
+        assert(dec_out_frame_size >= 0);
         cci_dec->unaligned_packed_buffer = OSA_MemoryAllocate(
             (sizeof(AudioPacketHeader) + dec_out_frame_size + sizeof(uint32_t)) * NUM_OF_PING_PONG_BUFFER);
 
@@ -634,13 +685,14 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
         {
             cci_dec->init_done = false;
             cci_dec->eos_done  = false;
-        }
-        if (cci_dec->stream_type == STREAM_TYPE_OGG_OPUS)
-        {
-            if (codec_reset((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory) != 0)
+
+            if (cci_dec->stream_type == STREAM_TYPE_OGG_OPUS)
             {
-                ret = false;
-                goto Error;
+                if (codec_reset((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory) != 0)
+                {
+                    ret = false;
+                    goto Error;
+                }
             }
         }
     }
@@ -720,6 +772,9 @@ uint8_t ccidec_sink_pad_event_handler(StreamPad *pad, StreamEvent *event)
                 {
                     /* Calculate the rate in bytes */
                     uint32_t bit_rate = element->average_bit_rate >> 3;
+                    assert(bit_rate != 0U);
+                    assert((offset / bit_rate) <= (0xFFFFFFFFU / 1000U));
+                    assert((offset % bit_rate) <= (0xFFFFFFFFU / 1000U));
                     time += ((offset / bit_rate) * 1000) + (((offset % bit_rate) * 1000) / bit_rate);
                     if (time > element->duration)
                     {
@@ -814,10 +869,13 @@ uint8_t ccidec_src_pad_event_handler(StreamPad *pad, StreamEvent *event)
                     time_in_msec = time_in_msec - (time_in_sec * 1000);
                     /* use avg bit rate to estimate offset in bytes for whole seconds */
                     offset_temp = (uint64_t)((uint64_t)time_in_sec * cci_dec->metadata->avg_bit_rate);
-                    offset      = (uint32_t)((uint64_t)(offset_temp) / 8);
+                    assert(((uint64_t)(offset_temp) / 8) <= 0xFFFFFFFFU);
+                    offset = (uint32_t)((uint64_t)(offset_temp) / 8);
                     /* and account for fractional seconds */
-                    offset_temp = ((uint64_t)time_in_msec * cci_dec->metadata->avg_bit_rate);
-                    offset += (uint32_t)((uint64_t)(offset_temp) / (8 * 1000));
+                    offset_temp          = ((uint64_t)time_in_msec * cci_dec->metadata->avg_bit_rate);
+                    uint64_t frac_offset = (uint64_t)(offset_temp) / (8 * 1000);
+                    assert(((uint64_t)offset + frac_offset) <= 0xFFFFFFFFU);
+                    offset += (uint32_t)frac_offset;
 
                     if (offset > stream_size)
                         offset = stream_size;
@@ -835,8 +893,10 @@ uint8_t ccidec_src_pad_event_handler(StreamPad *pad, StreamEvent *event)
                     // Seek 0 is possible only...
                     if (0 == offset)
                     {
-                        offset = (uint32_t)codec_seek((audio_stream_type_t)cci_dec->stream_type,
+                        int32_t seek_ret = codec_seek((audio_stream_type_t)cci_dec->stream_type,
                                                       &cci_dec->ccidec_memory, (int32_t)offset);
+                        assert(seek_ret >= 0);
+                        offset = (uint32_t)seek_ret;
 
                         STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Offset after alignment: %d\n", offset);
                         event_create_seek(&data_event, DATA_FORMAT_BYTES, offset);
@@ -855,16 +915,23 @@ uint8_t ccidec_src_pad_event_handler(StreamPad *pad, StreamEvent *event)
                 else
                 {
                     /* Use CCI to get offset aligned to a frame */
-                    offset = (uint32_t)codec_seek((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory,
-                                                  (int32_t)offset);
+                    assert(offset <= (uint32_t)INT32_MAX);
+                    int32_t seek_ret =
+                        codec_seek((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory, (int32_t)offset);
+                    assert(seek_ret >= 0);
+
+                    offset = (uint32_t)seek_ret;
 
                     if (cci_dec->stream_type == STREAM_TYPE_MP3)
                     {
+                        assert((uint32_t)offset <= (0xFFFFFFFFU - cci_dec->metadata->start_pos));
+                        assert(((uint64_t)offset + cci_dec->metadata->start_pos) <= (uint32_t)INT32_MAX);
                         _seek_file_data(0, (int32_t)offset + (int32_t)cci_dec->metadata->start_pos, SEEK_SET,
                                         (void *)cci_dec);
                     }
                     else if (cci_dec->stream_type != STREAM_TYPE_OGG_OPUS)
                     {
+                        assert(offset <= (uint32_t)INT32_MAX);
                         _seek_file_data(0, (int32_t)offset, SEEK_SET, (void *)cci_dec);
                     }
 
@@ -883,19 +950,32 @@ uint8_t ccidec_src_pad_event_handler(StreamPad *pad, StreamEvent *event)
                 {
                     /* A negative EVENT_DATA(event) means the number of bytes (raw seek) and a positive number the
                      * number of pcm samples (pcm seek) */
-                    offset = (uint32_t)codec_seek((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory,
+                    assert(EVENT_DATA(event) <= (uint32_t)INT32_MAX);
+                    int32_t seek_ret = codec_seek((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory,
                                                   -(int32_t)EVENT_DATA(event));
+                    assert(seek_ret >= 0);
+                    offset = (uint32_t)seek_ret;
                 }
                 else
                 {
-                    offset = (uint32_t)codec_seek((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory,
+                    assert(EVENT_DATA(event) <= (uint32_t)INT32_MAX);
+                    int32_t seek_ret = codec_seek((audio_stream_type_t)cci_dec->stream_type, &cci_dec->ccidec_memory,
                                                   (int32_t)EVENT_DATA(event));
+                    assert(seek_ret >= 0);
+                    offset = (uint32_t)seek_ret;
                 }
 
                 if (cci_dec->stream_type == STREAM_TYPE_MP3)
+                {
+                    assert(offset <= (0xFFFFFFFFU - cci_dec->metadata->start_pos));
+                    assert(((uint64_t)offset + cci_dec->metadata->start_pos) <= (uint32_t)INT32_MAX);
                     _seek_file_data(0, offset + cci_dec->metadata->start_pos, SEEK_SET, cci_dec);
+                }
                 else
+                {
+                    assert(offset <= (uint32_t)INT32_MAX);
                     _seek_file_data(0, offset, SEEK_SET, cci_dec);
+                }
                 /* Push the event out from the sink pad */
                 ret = pad_push_event(ELEMENT_SINK_PAD(element, 0), event);
             }
@@ -937,34 +1017,43 @@ uint8_t ccidec_src_pad_query_handler(StreamPad *pad, StreamQuery *query)
     {
         case INFO_ALBUM:
             smallest = smallest_int(2 * ALBUM_SIZE, CASCFG_TRACK_ALBUM_LEN);
+            assert(smallest <= sizeof(metadata_string));
             memcpy(metadata_string, cci_dec->metadata->song_album, smallest);
-            data->string.string_buffer = metadata_string;
-            data->string.num_chars     = strlen(metadata_string);
+            metadata_string[sizeof(metadata_string) - 1] = '\0';
+            data->string.string_buffer                   = metadata_string;
+            data->string.num_chars                       = strlen(metadata_string);
             break;
 
         case INFO_ARTIST:
             smallest = smallest_int(2 * ARTIST_SIZE, CASCFG_TRACK_ARTIST_LEN);
+            assert(smallest <= sizeof(metadata_string));
             memcpy(metadata_string, cci_dec->metadata->song_artist, smallest);
-            data->string.string_buffer = metadata_string;
-            data->string.num_chars     = strlen(metadata_string);
+            metadata_string[sizeof(metadata_string) - 1] = '\0';
+            data->string.string_buffer                   = metadata_string;
+            data->string.num_chars                       = strlen(metadata_string);
             break;
 
         case INFO_TITLE:
             smallest = smallest_int(2 * TITLE_SIZE, CASCFG_TRACK_TITLE_LEN);
+            assert(smallest <= sizeof(metadata_string));
             memcpy(metadata_string, cci_dec->metadata->song_title, smallest);
-            data->string.string_buffer = metadata_string;
-            data->string.num_chars     = strlen(metadata_string);
+            metadata_string[sizeof(metadata_string) - 1] = '\0';
+            data->string.string_buffer                   = metadata_string;
+            data->string.num_chars                       = strlen(metadata_string);
             break;
 
         case INFO_GENRE:
             smallest = smallest_int(2 * GENRE_SIZE, CASCFG_TRACK_GENRE_LEN);
+            assert(smallest <= sizeof(metadata_string));
             memcpy(metadata_string, cci_dec->metadata->song_genre, smallest);
-            data->string.string_buffer = metadata_string;
-            data->string.num_chars     = strlen(metadata_string);
+            metadata_string[sizeof(metadata_string) - 1] = '\0';
+            data->string.string_buffer                   = metadata_string;
+            data->string.num_chars                       = strlen(metadata_string);
             break;
 
         case INFO_YEAR:
             smallest = smallest_int(2 * YEAR_SIZE, CASCFG_TRACK_YEAR_LEN);
+            assert(smallest <= sizeof(metadata_string));
             memcpy(metadata_string, cci_dec->metadata->song_year, smallest);
             data->string.string_buffer = metadata_string;
             data->string.num_chars     = 4; /* Should not be more than 4 chars */
@@ -972,6 +1061,7 @@ uint8_t ccidec_src_pad_query_handler(StreamPad *pad, StreamQuery *query)
 
         case INFO_TRACK:
             /* convert string to decimal number */
+            assert(cci_dec->metadata->track_number <= 0xFFU);
             data->value8u = cci_dec->metadata->track_number;
             break;
 

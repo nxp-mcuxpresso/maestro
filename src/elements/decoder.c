@@ -13,7 +13,9 @@
 /*
  * INCLUDE FILES
  */
+#include <assert.h>
 #include "streamer.h"
+
 #include "decoder.h"
 #include "decoder_pads.h"
 #include "pipeline.h"
@@ -63,7 +65,9 @@ int32_t decoder_change_state(StreamElement *element, PipelineState new_dec_state
             if ((dec_element->decoder_type == DECODER_TYPE_UNKNOWN) || (dec_element->handlers == NULL))
             {
                 STREAMER_LOG_ERR(DBG_DECODER, ERRCODE_NOT_SUPPORTED, "[Decoder] unknown decoder type\n");
-                ret = STREAM_ERR_GENERAL;
+                int32_t err_code = STREAM_ERR_GENERAL;
+                assert((err_code >= INT32_MIN) && (err_code <= INT32_MAX));
+                ret = (uint32_t)err_code;
             }
             break;
         case STATE_CHANGE_READY_TO_PAUSED:
@@ -96,10 +100,12 @@ int32_t decoder_change_state(StreamElement *element, PipelineState new_dec_state
     }
 
     STREAMER_FUNC_EXIT(DBG_DECODER);
-    return ret;
+    assert(ret <= (uint32_t)INT32_MAX);
+    return (int32_t)ret;
 }
 
 uint32_t decoder_get_duration(ElementDecoder *element, StreamDataFormat format)
+
 {
     StreamQuery query;
     StreamData data;
@@ -144,7 +150,13 @@ void decoder_set_duration(ElementDecoder *element, uint32_t stream_size, uint32_
     bit_rate = element->average_bit_rate >> 3;
 
     /* Get the total time */
-    element->duration = ((stream_size / bit_rate) * 1000) + (((stream_size % bit_rate) * 1000) / bit_rate);
+    assert(bit_rate != 0U);
+    uint32_t whole_sec = stream_size / bit_rate;
+    uint32_t frac_rem  = stream_size % bit_rate;
+    assert(whole_sec <= (0xFFFFFFFFU / 1000U));
+    assert(frac_rem <= (0xFFFFFFFFU / 1000U));
+    assert((whole_sec * 1000U) <= (0xFFFFFFFFU - ((frac_rem * 1000U) / bit_rate)));
+    element->duration = (whole_sec * 1000U) + ((frac_rem * 1000U) / bit_rate);
 
     STREAMER_FUNC_EXIT(DBG_DECODER);
 }
@@ -247,9 +259,12 @@ void vUpdateAverageBitrate(ElementDecoder *element)
     STREAMER_FUNC_ENTER(DBG_DECODER);
 
     /* Find moving average of bitrate */
-    element->average_bit_rate =
-        ((element->average_bit_rate * element->num_decoded_frames) + element->current_bit_rate) /
-        (element->num_decoded_frames + 1);
+    assert((uint64_t)element->average_bit_rate * (uint64_t)element->num_decoded_frames <= 0xFFFFFFFFU);
+    uint32_t weighted_sum = element->average_bit_rate * element->num_decoded_frames;
+    assert((uint64_t)weighted_sum + (uint64_t)element->current_bit_rate <= 0xFFFFFFFFU);
+    weighted_sum += element->current_bit_rate;
+    assert(element->num_decoded_frames != 0xFFFFFFFFU);
+    element->average_bit_rate = weighted_sum / (element->num_decoded_frames + 1U);
 
     STREAMER_FUNC_EXIT(DBG_DECODER);
 }
@@ -264,6 +279,7 @@ int32_t decoder_set_property(StreamElement *element, uint16_t prop_id, uint32_t 
     {
         case PROP_DECODER_DECODER_TYPE:
             STREAMER_LOG_DEBUG(DBG_DECODER, "[Decoder]set decode type :%d\n", prop_value);
+            assert(prop_value < (uint32_t)LAST_DECODER_TYPE);
             ret = decoder_set_type((ElementHandle)element, (DecoderType)prop_value);
             break;
         case PROP_DECODER_PARSE_TAG:

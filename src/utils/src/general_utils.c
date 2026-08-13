@@ -5,6 +5,7 @@
  */
 
 #include "general_utils.h"
+#include <assert.h>
 
 /*!
  * @file    general_utils.c
@@ -47,7 +48,7 @@ uint32_t _transform_16_to_32(
 
     for (i = 0; i < num; i++)
     {
-        *dst_temp = (uint32_t)(*src_temp << 16);
+        *dst_temp = ((uint32_t)(*src_temp)) << 16;
         dst_temp++;
         src_temp++;
     }
@@ -85,10 +86,14 @@ uint32_t _transform_24_to_32(
     else
         sample_num = src_len / 3;
 
+    assert(sample_num <= ((UINT32_MAX - 2U) / 3U));
+
     j = 0;
     for (i = 0; i < sample_num; i++)
     {
-        dst_temp[i] = (src_temp[j + 2] << 24) | (src_temp[j + 1] << 16) | (src_temp[j] << 8);
+        assert(j <= (UINT32_MAX - 3U));
+        dst_temp[i] =
+            ((uint32_t)(src_temp[j + 2]) << 24) | ((uint32_t)(src_temp[j + 1]) << 16) | ((uint32_t)(src_temp[j]) << 8);
         j += 3;
     }
 
@@ -130,7 +135,7 @@ uint32_t _transform_32_to_24(
     {
         if (1 != ((i + 1) % 4))
         {
-            temp_value |= (src_temp[i] << (8 * j));
+            temp_value |= ((uint32_t)(src_temp[i]) << (8 * j));
             j++;
         }
 
@@ -151,6 +156,8 @@ uint32_t _transform_32_to_24(
         for (i = 0; i < j; i++)
             fill_pos[i] = src_temp[i];
     }
+
+    assert(k <= ((UINT32_MAX - j) / 4U));
 
     return ((k * 4) + j);
 }
@@ -217,10 +224,14 @@ uint32_t data_copy_32bits(void *src, uint32_t src_len, void *dst, uint32_t dst_l
         length = src_len >> 2;
     }
 
-    while (length--)
+    assert(length <= (UINT32_MAX - 1U));
+
+    while (length > 0U)
     {
         dst_temp[index] = (uint32_t)src_temp[index];
+        assert(index <= (UINT32_MAX - 1U));
         index++;
+        length--;
     }
     return (index << 2);
 }
@@ -262,9 +273,9 @@ uint32_t _interleave_16_to_32(
 
     for (i = 0; i < num; i++)
     {
-        *dst_temp = (uint32_t)(*src_temp << 16);
+        *dst_temp = ((uint32_t)(*src_temp)) << 16;
         dst_temp++;
-        *dst_temp = (uint32_t)(*src_temp << 16);
+        *dst_temp = ((uint32_t)(*src_temp)) << 16;
         src_temp++;
         dst_temp++;
     }
@@ -306,11 +317,16 @@ uint32_t _interleave_24_to_32(
         sample_num = src_len / 3;
     }
 
+    assert(sample_num <= ((UINT32_MAX - 2U) / 3U));
+
     j = 0;
     for (i = 0; i < sample_num; i++)
     {
-        *dst_temp++ = (src_temp[j + 2] << 24) | (src_temp[j + 1] << 16) | (src_temp[j] << 8);
-        *dst_temp++ = (src_temp[j + 2] << 24) | (src_temp[j + 1] << 16) | (src_temp[j] << 8);
+        assert(j <= (UINT32_MAX - 3U));
+        *dst_temp++ =
+            ((uint32_t)(src_temp[j + 2]) << 24) | ((uint32_t)(src_temp[j + 1]) << 16) | ((uint32_t)(src_temp[j]) << 8);
+        *dst_temp++ =
+            ((uint32_t)(src_temp[j + 2]) << 24) | ((uint32_t)(src_temp[j + 1]) << 16) | ((uint32_t)(src_temp[j]) << 8);
         j += 3;
     }
 

@@ -24,7 +24,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <string.h>
 #include <stdbool.h>
+#include <assert.h>
+#include <stdint.h>
 #include <error.h>
+
 #include "codec_interface.h"
 #include "cci_metadata.h"
 #include "mp3_metadata.h"
@@ -88,7 +91,7 @@ uint8_t mp3_copy_one_byte(char *ptr, char *ptr1)
 }
 uint8_t mp3_copy_two_byte(char *ptr, uint16_t *ptr1)
 {
-    *ptr1 = *ptr;
+    *ptr1 = (uint16_t)(uint8_t)*ptr;
     return 1;
 }
 void mp3_copy_16_to_8(uint8_t *ptr, uint16_t *ptr1, int32_t size)
@@ -96,7 +99,8 @@ void mp3_copy_16_to_8(uint8_t *ptr, uint16_t *ptr1, int32_t size)
     int i = 0;
     for (i = 0; i < size; i++)
     {
-        *ptr = (uint8_t)*ptr1;
+        *ptr = (uint8_t)(*ptr1 & 0xFFU);
+
         ptr++;
         ptr1++;
     }
@@ -116,7 +120,8 @@ static uint64_t Divide_64_by_32(uint64_t n, uint32_t base)
     {
         high /= base;
         res = (uint64_t)high << 32;
-        rem -= (uint64_t)(high * base) << 32;
+        assert(rem >= (((uint64_t)high * base) << 32));
+        rem -= ((uint64_t)high * base) << 32;
     }
 
     while ((int64_t)b > 0 && b < rem)
@@ -130,6 +135,7 @@ static uint64_t Divide_64_by_32(uint64_t n, uint32_t base)
         if (rem >= b)
         {
             rem -= b;
+            assert((UINT64_MAX - res) >= d);
             res += d;
         }
         b >>= 1;
@@ -642,7 +648,9 @@ RtStatus_t GetMp3FrameInfo(file_meta_data_t *MetaData, CCI_Ctx *Ctx, MP3_DFFI_t 
         {
             offset = MP3_BYTES_TO_READ; // so that Read can happen after seeking
             // Reset to beginning of file or start position offset by the current offset
-            if ((Ctx->cci_dec_seek(0, u32StartPosFirstSync[i32SyncCount] + u32StartPosOffset, SEEK_SET,
+            assert((UINT32_MAX - u32StartPosFirstSync[i32SyncCount]) >= u32StartPosOffset);
+            assert((u32StartPosFirstSync[i32SyncCount] + u32StartPosOffset) <= (uint32_t)INT32_MAX);
+            if ((Ctx->cci_dec_seek(0, (int32_t)(u32StartPosFirstSync[i32SyncCount] + u32StartPosOffset), SEEK_SET,
                                    Ctx->user_data)) < 0)
                 return (CODEC_FSEEK_FAILED);
 
@@ -702,8 +710,10 @@ RtStatus_t GetMp3FrameInfo(file_meta_data_t *MetaData, CCI_Ctx *Ctx, MP3_DFFI_t 
             offset = MP3_BYTES_TO_READ; // so that Read can happen after seeking
 
             // Move forward to next frame and read it.
-            if ((Ctx->cci_dec_seek(0, (u32StartPosFirstSync[i32SyncCount] + (uint32_t)wFrameLengthInBytes), SEEK_SET,
-                                   Ctx->user_data)) < 0)
+            assert((UINT32_MAX - u32StartPosFirstSync[i32SyncCount]) >= (uint32_t)wFrameLengthInBytes);
+            assert((u32StartPosFirstSync[i32SyncCount] + (uint32_t)wFrameLengthInBytes) <= (uint32_t)INT32_MAX);
+            if ((Ctx->cci_dec_seek(0, (int32_t)(u32StartPosFirstSync[i32SyncCount] + (uint32_t)wFrameLengthInBytes),
+                                   SEEK_SET, Ctx->user_data)) < 0)
                 return CODEC_FSEEK_FAILED;
 
             // Extract frame header from file
@@ -744,8 +754,11 @@ RtStatus_t GetMp3FrameInfo(file_meta_data_t *MetaData, CCI_Ctx *Ctx, MP3_DFFI_t 
                     }
                     else
                     {
-                        if ((Ctx->cci_dec_seek(0, (wFrameLengthInBytes - (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ),
-                                               SEEK_CUR, Ctx->user_data)) < 0)
+                        assert(wFrameLengthInBytes >= (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ);
+                        assert((wFrameLengthInBytes - (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ) <= (uint32_t)INT32_MAX);
+                        if ((Ctx->cci_dec_seek(
+                                0, (int32_t)(wFrameLengthInBytes - (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ), SEEK_CUR,
+                                Ctx->user_data)) < 0)
                             return CODEC_FSEEK_FAILED;
 
                         if ((bit_rate != u32BitRateTemp) || (ptrThis->g_wVBRSignature == 'X') ||
@@ -792,7 +805,8 @@ RtStatus_t GetMp3FrameInfo(file_meta_data_t *MetaData, CCI_Ctx *Ctx, MP3_DFFI_t 
         {
             iExtract = ExtractMp3Frame(Ctx, btFrameUnpack, &offset);
             // safety check offset+2 is not >= 128
-            if ((offset + 2) >= 128)
+            assert(offset >= 0);
+            if (offset >= (128 - 2))
             {
                 return CODEC_METADATA_UNSUPPORTED_FILE;
             }
@@ -812,8 +826,10 @@ RtStatus_t GetMp3FrameInfo(file_meta_data_t *MetaData, CCI_Ctx *Ctx, MP3_DFFI_t 
             offset = MP3_BYTES_TO_READ;
 
             // Move forward to next frame and read it.
-            if ((Ctx->cci_dec_seek(0, (wFrameLengthInBytes - (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ), SEEK_CUR,
-                                   Ctx->user_data)) < 0)
+            assert(wFrameLengthInBytes >= (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ);
+            assert((wFrameLengthInBytes - (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ) <= (uint32_t)INT32_MAX);
+            if ((Ctx->cci_dec_seek(0, (int32_t)(wFrameLengthInBytes - (uint32_t)MP3_FRAME_HEADER_BYTES_TO_READ),
+                                   SEEK_CUR, Ctx->user_data)) < 0)
                 return CODEC_FSEEK_FAILED;
 
             if (bit_rate != u32BitRateTemp)
@@ -932,8 +948,10 @@ RtStatus_t ScanForFF(CCI_Ctx *Ctx, uint32_t wThresholdMax, file_meta_data_t *pMe
                 {
                     rtn = SUCCESS;
                     // update the start position of the MP3 data
+                    assert((UINT32_MAX - pMetaData->start_pos) >= wCount);
                     pMetaData->start_pos += (uint32_t)wCount;
-                    Ctx->cci_dec_seek(0, pMetaData->start_pos, SEEK_SET, Ctx->user_data);
+                    assert(pMetaData->start_pos <= (uint32_t)INT32_MAX);
+                    Ctx->cci_dec_seek(0, (int32_t)pMetaData->start_pos, SEEK_SET, Ctx->user_data);
                     bLoopDone = 1;
                     break;
                 }
@@ -977,7 +995,13 @@ uint32_t GetFrameLength(
     // For Layer I files us this formula:
     // FrameLengthInBytes = (12 * BitRate / SampleRate + Padding) * 4
     if (iLayer == LayerI)
-        wFrameLengthInBytes = ((((uint32_t)12000 * bit_rate / sample_rate) + (uint32_t)btPaddingBit) * (uint32_t)4);
+    {
+        assert(sample_rate != 0U);
+        assert(bit_rate <= (UINT32_MAX / (uint32_t)12000));
+        uint32_t u32FrameLenTmp = (((uint32_t)12000 * bit_rate) / sample_rate) + (uint32_t)btPaddingBit;
+        assert(u32FrameLenTmp <= (UINT32_MAX / (uint32_t)4));
+        wFrameLengthInBytes = u32FrameLenTmp * (uint32_t)4;
+    }
 
     // For Layer II & III files use this formula:
     // FrameLengthInBytes = (FrameSizeInBits/8) * BitRate / SampleRate + Padding
@@ -987,12 +1011,28 @@ uint32_t GetFrameLength(
     else
     {
         // Layer II uses the same formula irrespective of MPEG versions.
+        assert(sample_rate != 0U);
+        assert(bit_rate <= (uint32_t)INT32_MAX);
+        assert(sample_rate <= (uint32_t)INT32_MAX);
+        int32_t i32BitRate    = (int32_t)bit_rate;
+        int32_t i32SampleRate = (int32_t)sample_rate;
+        int32_t i32Result;
         if ((btMPEGVer == MPEGv1) || (iLayer == LayerII))
-            wFrameLengthInBytes =
-                (((((int32_t)bit_rate * (int32_t)1000 * (int32_t)144) / (int32_t)sample_rate)) + (int32_t)btPaddingBit);
+        {
+            int64_t i64FrameLen =
+                ((int64_t)i32BitRate * 1000LL * 144LL) / (int64_t)i32SampleRate + (int64_t)btPaddingBit;
+            assert((i64FrameLen >= 0LL) && (i64FrameLen <= (int64_t)INT32_MAX));
+            i32Result = (int32_t)i64FrameLen;
+        }
         else
-            wFrameLengthInBytes =
-                (((((int32_t)bit_rate * (int32_t)1000 * (int32_t)72) / (int32_t)sample_rate)) + (int32_t)btPaddingBit);
+        {
+            int64_t i64FrameLen =
+                ((int64_t)i32BitRate * 1000LL * 72LL) / (int64_t)i32SampleRate + (int64_t)btPaddingBit;
+            assert((i64FrameLen >= 0LL) && (i64FrameLen <= (int64_t)INT32_MAX));
+            i32Result = (int32_t)i64FrameLen;
+        }
+        assert(i32Result >= 0);
+        wFrameLengthInBytes = (uint32_t)i32Result;
     }
     return (wFrameLengthInBytes);
 }

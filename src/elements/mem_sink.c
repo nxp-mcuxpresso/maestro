@@ -10,6 +10,7 @@
  */
 
 #include <string.h>
+#include <assert.h>
 
 #include "mem_sink.h"
 #include "pipeline.h"
@@ -101,6 +102,7 @@ static FlowReturn memsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *b
      * Get the raw data size considering the offset as offset into raw data
      * from which data has to be written.
      */
+    assert(buf->size >= pkt_hdr_size);
     raw_data_size = buf->size - pkt_hdr_size;
 
     STREAMER_LOG_DEBUG(DBG_MEM_SINK, "\traw_data_size = %d\n", raw_data_size);
@@ -386,7 +388,7 @@ static int32_t memsink_set_property(StreamElement *element_ptr, uint16_t prop, u
 
         case PROP_MEMSINK_RAW_WRITE_MODE:
             STREAMER_LOG_DEBUG(DBG_MEM_SINK, "[PROP_SET_RAW_WRITE_MODE]%d", val);
-            ret = memsink_set_raw_write_mode((ElementHandle)element_ptr, (uint8_t)val);
+            ret = memsink_set_raw_write_mode((ElementHandle)element_ptr, (uint8_t)((uint32_t)val & 0xFFU));
             break;
 
         default:

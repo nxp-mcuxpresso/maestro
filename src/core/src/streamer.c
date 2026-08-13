@@ -64,7 +64,7 @@ const STREAMER_MSG_HANDLER_T msg_handler_table[] = {
 #ifdef STREAMER_ENABLE_FILESRC
     {STREAM_MSG_SET_FILE, streamer_msg_set_file},
 #endif
-    {STREAM_MSG_SET_STATE, streamer_msg_set_state}, {STREAM_MSG_GET_STATE, streamer_msg_get_state},
+    {STREAM_MSG_SET_STATE, streamer_msg_set_state},       {STREAM_MSG_GET_STATE, streamer_msg_get_state},
     {STREAM_MSG_QUERY_PIPELINE, streamer_msg_send_query}, {STREAM_MSG_SET_PROPERTY, streamer_msg_set_property},
     {STREAM_MSG_GET_PROPERTY, streamer_msg_get_property}, {STREAM_MSG_SEEK_PIPELINE, streamer_msg_seek_pipeline},
     {STREAM_MSG_SET_REPEAT, streamer_msg_set_repeat}};
@@ -82,9 +82,9 @@ static int32_t streamer_deinit(STREAMER_T *streamer);
 
 STREAMER_T *streamer_create(STREAMER_CREATE_PARAM *task_param)
 {
-    int32_t ret = ERRCODE_NO_ERROR;
+    int32_t ret                = ERRCODE_NO_ERROR;
     osa_task_def_t thread_attr = {0};
-    STREAMER_T *streamer = NULL;
+    STREAMER_T *streamer       = NULL;
     OSA_SR_ALLOC()
 
     STREAMER_FUNC_ENTER(DBG_CORE);
@@ -117,7 +117,8 @@ STREAMER_T *streamer_create(STREAMER_CREATE_PARAM *task_param)
                     streamer->message_channel_out.is_mq_created = false;
                     OSA_EXIT_CRITICAL();
                     STREAMER_LOG_ERR(DBG_CORE, ret, "streamer unable to open out message queue\n");
-                } else
+                }
+                else
                 {
                     streamer->message_channel_out.is_mq_created = true;
                     OSA_EXIT_CRITICAL();
@@ -156,7 +157,7 @@ STREAMER_T *streamer_create(STREAMER_CREATE_PARAM *task_param)
             STREAMER_MSG_T msg;
             msg.id = STREAM_MSG_CLOSE_TASK;
 
-            if (streamer->streamer_mq[0] != (uint32_t) NULL)
+            if (streamer->streamer_mq[0] != (uint32_t)NULL)
             {
                 wait_cnt = 200;
                 OSA_MsgQPut(streamer->streamer_mq, (void *)&msg);
@@ -480,7 +481,7 @@ int streamer_msg_handler(STREAMER_T *task_data, STREAMER_MSG_T *msg)
         *(msg->ret) = ret;
 
     *(msg->processed) = true;
-    if(msg->cond != NULL)
+    if (msg->cond != NULL)
     {
         OSA_EventSet(msg->cond, EVENT_WAIT_BIT);
     }
@@ -543,19 +544,19 @@ int streamer_process_pipelines(STREAMER_T *task_data)
  */
 static int32_t streamer_handle_msg(STREAMER_T *streamer, STREAMER_MSG_T *msg, bool block)
 {
-    int32_t ret             = ERRCODE_NO_ERROR;
-    int32_t streamer_result = ERRCODE_NO_ERROR;
-    volatile bool msg_processed      = false;
+    int32_t ret                 = ERRCODE_NO_ERROR;
+    int32_t streamer_result     = ERRCODE_NO_ERROR;
+    volatile bool msg_processed = false;
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
     if (block)
     {
-        OSA_MUTEX_HANDLE_DEFINE(mutex);      /*!< @brief Mutex to protect signal */
-        OSA_EVENT_HANDLE_DEFINE(cond);       /*!< @brief Signal to unlock wait for streamer response */
+        OSA_MUTEX_HANDLE_DEFINE(mutex); /*!< @brief Mutex to protect signal */
+        OSA_EVENT_HANDLE_DEFINE(cond);  /*!< @brief Signal to unlock wait for streamer response */
 
         msg->mutex = mutex;
-        msg->cond = cond;
+        msg->cond  = cond;
 
         OSA_MutexCreate(msg->mutex);
         OSA_EventCreate(msg->cond, true);
@@ -579,6 +580,11 @@ static int32_t streamer_handle_msg(STREAMER_T *streamer, STREAMER_MSG_T *msg, bo
 
         if (ERRCODE_NO_ERROR == ret)
             ret = streamer_result; /* return the streamer returned value */
+
+        msg->mutex     = NULL;
+        msg->cond      = NULL;
+        msg->ret       = NULL;
+        msg->processed = NULL;
     }
     else
     {
@@ -603,7 +609,8 @@ int32_t streamer_create_pipeline(STREAMER_T *streamer,
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    if (!streamer || elements.num_elements < 2 || elements.element_ids == NULL)
+    if (!streamer || pipeline_id < 0 || pipeline_id >= MAX_PIPELINES || elements.num_elements < 2 ||
+        elements.element_ids == NULL)
     {
         STREAMER_FUNC_EXIT(DBG_CORE);
         return ERRCODE_INVALID_ARGUMENT;
@@ -617,7 +624,8 @@ int32_t streamer_create_pipeline(STREAMER_T *streamer,
         streamer->elements[pipeline_id]->element_ids[i] = elements.element_ids[i];
     }
 
-    CHECK_RET(create_pipeline(&streamer->pipes[pipeline_id], pipeline_id, &(streamer->message_channel_out)), "create_pipeline");
+    CHECK_RET(create_pipeline(&streamer->pipes[pipeline_id], pipeline_id, &(streamer->message_channel_out)),
+              "create_pipeline");
 
     for (i = 0; i < elements.num_elements; i++)
     {
@@ -648,14 +656,25 @@ int32_t streamer_destroy_pipeline(STREAMER_T *streamer, int32_t pipeline_id, boo
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    if (!streamer)
+    if (!streamer || pipeline_id < 0 || pipeline_id >= MAX_PIPELINES)
     {
         STREAMER_FUNC_EXIT(DBG_CORE);
         return ERRCODE_INVALID_ARGUMENT;
     }
     PipelineElements *pipelineElements = streamer->elements[pipeline_id];
-    ElementIndex *element_ids          = pipelineElements->element_ids;
+    if (pipelineElements == NULL)
+    {
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return ERRCODE_INVALID_ARGUMENT;
+    }
+    ElementIndex *element_ids = pipelineElements->element_ids;
+    if (element_ids == NULL)
+    {
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return ERRCODE_INVALID_ARGUMENT;
+    }
 
+    assert(pipelineElements->num_elements >= 1);
     for (; i < pipelineElements->num_elements - 1; i++)
     {
         CHECK_RET(unlink_elements(streamer->elems[pipeline_id][element_ids[i]], 0,
@@ -669,8 +688,8 @@ int32_t streamer_destroy_pipeline(STREAMER_T *streamer, int32_t pipeline_id, boo
                   "remove_element_pipeline");
     }
 
-    OSA_MemoryFree(streamer->elements[pipeline_id]);
     OSA_MemoryFree(streamer->elements[pipeline_id]->element_ids);
+    OSA_MemoryFree(streamer->elements[pipeline_id]);
     streamer->elements[pipeline_id] = NULL;
 
     STREAMER_FUNC_EXIT(DBG_CORE);
@@ -684,7 +703,7 @@ int32_t streamer_get_track_info(STREAMER_T *streamer, int32_t pipeline_id, Track
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    if (!streamer || !info)
+    if (!streamer || !info || pipeline_id < 0 || pipeline_id >= MAX_PIPELINES)
     {
         STREAMER_FUNC_EXIT(DBG_CORE);
         return ERRCODE_GENERAL_ERROR;
@@ -712,7 +731,7 @@ int32_t streamer_set_state(STREAMER_T *streamer, int32_t pipeline_id, PipelineSt
 {
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    if (!streamer)
+    if (!streamer || pipeline_id < 0 || pipeline_id >= MAX_PIPELINES)
     {
         STREAMER_FUNC_EXIT(DBG_CORE);
         return ERRCODE_INVALID_ARGUMENT;
@@ -734,7 +753,7 @@ int32_t streamer_get_state(STREAMER_T *streamer, int32_t pipeline_id, PipelineSt
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    if (!streamer || !state)
+    if (!streamer || !state || pipeline_id < 0 || pipeline_id >= MAX_PIPELINES)
     {
         STREAMER_FUNC_EXIT(DBG_CORE);
         return ERRCODE_INVALID_ARGUMENT;
@@ -766,8 +785,9 @@ int32_t streamer_query_info(
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    msg.id             = STREAM_MSG_QUERY_PIPELINE;
-    msg.pipeline_index = pipeline_id;
+    msg.id = STREAM_MSG_QUERY_PIPELINE;
+    assert(pipeline_id >= INT8_MIN && pipeline_id <= INT8_MAX);
+    msg.pipeline_index = (int8_t)pipeline_id;
     msg.query_type     = infoType;
     msg.get_value      = query_data;
     if (block)
@@ -797,9 +817,11 @@ int32_t streamer_seek_pipeline(STREAMER_T *streamer, int32_t pipeline_id, int32_
         return ERRCODE_INVALID_ARGUMENT;
     }
 
+    assert(seek_time_ms >= 0);
+    assert(pipeline_id >= INT8_MIN && pipeline_id <= INT8_MAX);
     msg.id             = STREAM_MSG_SEEK_PIPELINE;
-    msg.time_ms        = seek_time_ms;
-    msg.pipeline_index = pipeline_id;
+    msg.time_ms        = (uint32_t)seek_time_ms;
+    msg.pipeline_index = (int8_t)pipeline_id;
 
     STREAMER_FUNC_EXIT(DBG_CORE);
     return streamer_handle_msg(streamer, &msg, block);
@@ -870,10 +892,11 @@ int32_t streamer_set_file(STREAMER_T *streamer, int32_t pipeline_id, char *path,
         return ERRCODE_INVALID_ARGUMENT;
     }
 
-    STREAMER_MSG_T msg       = {0};
-    msg.id                   = STREAM_MSG_SET_FILE;
-    msg.state                = state;
-    msg.pipeline_index       = pipeline_id;
+    STREAMER_MSG_T msg = {0};
+    msg.id             = STREAM_MSG_SET_FILE;
+    msg.state          = state;
+    assert(pipeline_id >= INT8_MIN && pipeline_id <= INT8_MAX);
+    msg.pipeline_index       = (int8_t)pipeline_id;
     msg.element_property.val = (uintptr_t)path;
 
     if (strlen(path) < MAX_LOCATION_PATH_LENGTH)
@@ -899,10 +922,11 @@ int32_t streamer_set_repeat(STREAMER_T *streamer, int32_t pipeline_id, bool repe
         return ERRCODE_INVALID_ARGUMENT;
     }
 
-    STREAMER_MSG_T msg       = {0};
-    msg.id                   = STREAM_MSG_SET_REPEAT;
-    msg.pipeline_index       = pipeline_id;
-    msg.element_property.val = (uintptr_t)repeat_on;
+    STREAMER_MSG_T msg = {0};
+    msg.id             = STREAM_MSG_SET_REPEAT;
+    assert(pipeline_id >= INT8_MIN && pipeline_id <= INT8_MAX);
+    msg.pipeline_index       = (int8_t)pipeline_id;
+    msg.element_property.val = (uintptr_t)(repeat_on ? 1U : 0U);
 
     STREAMER_FUNC_EXIT(DBG_CORE);
     return streamer_handle_msg(streamer, &msg, block);

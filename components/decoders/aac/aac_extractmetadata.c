@@ -26,6 +26,7 @@
 #include "cci_metadata.h"
 #include "aac_metadata.h"
 #include <string.h>
+#include <assert.h>
 // #include <wchar.h>
 ////////////////////////////////////////////////////////////////////////////////
 //  External Definitions
@@ -330,8 +331,10 @@ uint64_t BigNum_Divide_64_by_32_aac(uint64_t n, uint32_t base)
     if (high >= base)
     {
         high /= base;
-        res = (uint64_t)high << 32;
-        rem -= (uint64_t)(high * base) << 32;
+        res          = (uint64_t)high << 32;
+        uint64_t sub = ((uint64_t)high * base) << 32;
+        assert(rem >= sub);
+        rem -= sub;
     }
 
     while ((int64_t)b > 0 && b < rem)
@@ -345,6 +348,7 @@ uint64_t BigNum_Divide_64_by_32_aac(uint64_t n, uint32_t base)
         if (rem >= b)
         {
             rem -= b;
+            assert(res <= (UINT64_MAX - d));
             res += d;
         }
         b >>= 1;
@@ -492,8 +496,9 @@ int32_t codec_extract_metadata_aac(file_meta_data_t *MetaData, CCI_Ctx *Ctx)
                 MetaData->stream_type    = STREAM_TYPE_AAC;
                 MetaData->audio_sub_type = MEDIA_SUBTYPE_ADIF;
                 MetaData->avg_bit_rate   = MetaData->bit_rate;
-                MetaData->total_time = (uint32_t)BigNum_Divide_64_by_32_aac(((uint64_t)MetaData->num_bytes * 8 * 1000),
-                                                                            (MetaData->bit_rate));
+                MetaData->total_time = (uint32_t)(BigNum_Divide_64_by_32_aac(((uint64_t)MetaData->num_bytes * 8 * 1000),
+                                                                             (MetaData->bit_rate)) &
+                                                  0xFFFFFFFFU);
                 MetaData->bits_per_sample = 16;
             }
         }
@@ -578,7 +583,8 @@ RtStatus_t AacParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData, AAC_DFFI_t *ptrAa
         // Skip unknown chunks
         if (ckIDval == UNKNOWN_CKID)
         {
-            if (((ptrAac->AacCkSize + ptrAac->aac_file_offset) > MetaData->num_bytes) || (ptrAac->AacCkSize < 0))
+            if ((((int64_t)ptrAac->AacCkSize + (int64_t)ptrAac->aac_file_offset) > (int64_t)MetaData->num_bytes) ||
+                (ptrAac->AacCkSize < 0))
             {
                 if (ptrAac->aac_file_offset >= MetaData->num_bytes)
                 {
@@ -616,7 +622,8 @@ RtStatus_t AacParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData, AAC_DFFI_t *ptrAa
         {
             for (i = 0; i < MAX_MDAT_ATOM; i++)
             {
-                if ((ptrAac->AacDataBegin[i] - i32OffsetOfFirstValidChunk) == MetaData->start_pos)
+                if (((int64_t)ptrAac->AacDataBegin[i] - (int64_t)i32OffsetOfFirstValidChunk) ==
+                    (int64_t)MetaData->start_pos)
                 {
                     ptrAac->AacMDATCount = i;
                     break;
@@ -626,17 +633,23 @@ RtStatus_t AacParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData, AAC_DFFI_t *ptrAa
         else
         {
             ptrAac->AacMDATCount = i;
-            MetaData->start_pos  = ptrAac->AacDataBegin[i];
+            assert(ptrAac->AacDataBegin[i] >= 0);
+            MetaData->start_pos = (uint32_t)ptrAac->AacDataBegin[i];
         }
 
         // no valid mdat found.
         if (i >= MAX_MDAT_ATOM)
             return CODEC_METADATA_FILETYPE_FAILED;
 
-        ptrAac->Aac_BitRate = BigNum_Divide_64_by_32_aac(
-            (int64_t)(ptrAac->AacMDATSize[ptrAac->AacMDATCount] * 8 * ptrAac->Aac_TimeScale),
-            (ptrAac->Aac_Duration)); // BigNum_Divide_64_by_32_aac(((int64_t)(ptrAac->AacMDATSize[ptrAac->AacMDATCount]
-                                     // * ptrAac->Aac_SamplingRate )) , ( 128 *  ptrAac->Aac_NumSamples ));
+        assert(ptrAac->AacMDATSize[ptrAac->AacMDATCount] >= 0);
+        assert(ptrAac->Aac_TimeScale >= 0);
+        assert(ptrAac->Aac_Duration >= 0);
+        ptrAac->Aac_BitRate =
+            (int32_t)(BigNum_Divide_64_by_32_aac(((uint64_t)ptrAac->AacMDATSize[ptrAac->AacMDATCount] * 8ULL *
+                                                  (uint64_t)(uint32_t)ptrAac->Aac_TimeScale),
+                                                 ((uint32_t)ptrAac->Aac_Duration) & 0xFFFFFFFFU) &
+                      0x7FFFFFFFU); // BigNum_Divide_64_by_32_aac(((int64_t)(ptrAac->AacMDATSize[ptrAac->AacMDATCount]
+                                    // * ptrAac->Aac_SamplingRate )) , ( 128 *  ptrAac->Aac_NumSamples ));
     }
 
     if (ptrAac->aac_file_flag < 2) // error in file
@@ -678,8 +691,8 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
         case FTYP_CKID:
             SkipAACData(8, Ctx, ptrAac);
             filetype = GetAACDWord(Ctx, ptrAac);
-            filetype = filetype & 0xffffff00;
-            if ((*AacCkSize - 12) > 0)
+            filetype &= ~0xFF;
+            if (*AacCkSize > 12)
                 SkipAACData(*AacCkSize - 12, Ctx, ptrAac);
             if ((filetype != TITLE_M4A) && (filetype != TITLE_M4A_LOWER) && (filetype != TITLE_MP4) &&
                 (filetype != TITLE_M4B) && (filetype != TITLE_M4B_LOWER) && (filetype != TITLE_3GP) &&
@@ -689,6 +702,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             }
             break;
         case MOOV_CKID:
+            assert(ptrAac->aac_file_flag < INT32_MAX);
             ptrAac->aac_file_flag++; // this atom is compulsary indicates file is valid
             ptrAac->MandatoryAtoms |= MOOV_BIT;
             ptrAac->AllAtoms |= MOOV_BIT;
@@ -701,6 +715,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
 
         case DRMS_CKID:
         case MP4A_CKID:
+            assert(ptrAac->aac_file_flag < INT32_MAX);
             ptrAac->aac_file_flag++;
             SkipAACData(28, Ctx, ptrAac); // skips to time scale
             ptrAac->tracktype     = 0;    // tracktype MP4A
@@ -709,19 +724,32 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             ptrAac->MandatoryAtoms |= MP4A_BIT;
             ptrAac->AllAtoms |= MP4A_BIT;
             break;
+
         case ALAC_CKID:
+            assert(ptrAac->aac_file_flag < INT32_MAX);
             ptrAac->aac_file_flag++;
             // Skip ALAC specific Info
             SkipAACData(36, Ctx, ptrAac);
             MetaData->stream_type = STREAM_TYPE_AAC;
             // Skip Version flag(4 byte), frame length(4 byte) and compatibleVersion(1 byte)
             SkipAACData(9, Ctx, ptrAac);
-            MetaData->bits_per_sample = GetAACByte(Ctx, ptrAac);
+            MetaData->bits_per_sample = GetAACByte(Ctx, ptrAac) & 0xFF;
             SkipAACData(3, Ctx, ptrAac);
-            MetaData->num_channels = GetAACByte(Ctx, ptrAac);
+            MetaData->num_channels = GetAACByte(Ctx, ptrAac) & 0xFF;
             SkipAACData(10, Ctx, ptrAac);
-            MetaData->sample_rate = GetAACDWord(Ctx, ptrAac);
-            SkipAACData(*AacCkSize - 36 - 9 - 1 - 3 - 1 - 10 - 4, Ctx, ptrAac);
+            MetaData->sample_rate = GetAACDWord(Ctx, ptrAac) & 0x7FFFFFFF;
+            assert(*AacCkSize >= 0);
+            // Subtract the 64 bytes already consumed above from the atom size to skip
+            // the remainder of the ALAC atom. The 64 bytes break down as:
+            //   36  SkipAACData(36)   ALAC-specific info block
+            //    9  SkipAACData(9)    version flag (4) + frame length (4) + compatibleVersion (1)
+            //    1  GetAACByte()      bits_per_sample (1 byte)
+            //    3  SkipAACData(3)    reserved/skipped bytes
+            //    1  GetAACByte()      num_channels (1 byte)
+            //   10  SkipAACData(10)   skipped bytes
+            //    4  GetAACDWord()     sample_rate (4-byte dword)
+            //   => 64 bytes total consumed, subtracted from *AacCkSize
+            SkipAACData(*AacCkSize - 64, Ctx, ptrAac);
 
             ptrAac->MandatoryAtoms |= ALAC_BIT;
             ptrAac->AllAtoms |= ALAC_BIT;
@@ -729,12 +757,13 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
 
         case HDLR_CKID:
             SkipAACData(8, Ctx, ptrAac);
-            u32Handler = GetAACDWord(Ctx, ptrAac);
+            u32Handler = GetAACDWord(Ctx, ptrAac) & 0x7FFFFFFF;
             if (u32Handler == HANDLER_video) // If Video Handler then Do not append
             {
                 ret_val = -1;
             }
-            SkipAACData(*AacCkSize - 12, Ctx, ptrAac);
+            if (*AacCkSize > 12)
+                SkipAACData(*AacCkSize - 12, Ctx, ptrAac);
             break; // skips to time scale
 
         case AVC1_CKID:
@@ -755,13 +784,13 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             GetAACDWord(Ctx, ptrAac);
             u32Counter = 4;
             // ES descriptor type
-            u8Temp = GetAACByte(Ctx, ptrAac);
+            u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
             ++u32Counter;
 
             if (u8Temp == 0x03)
             {
                 // Have we got a tag, or the length?
-                u8Temp = GetAACByte(Ctx, ptrAac);
+                u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 ++u32Counter;
 
                 if (u8Temp == 0x80 || u8Temp == 0xFE)
@@ -770,7 +799,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                     SkipAACData(2, Ctx, ptrAac);
                     u32Counter += 2;
 
-                    u8Temp = GetAACByte(Ctx, ptrAac);
+                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                     ++u32Counter;
                 }
 
@@ -779,18 +808,18 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                 u32Counter += 2;
 
                 // Stream priority
-                u8Temp = GetAACByte(Ctx, ptrAac);
+                u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 ++u32Counter;
 
                 // Decoder config descriptor
-                u8Temp = GetAACByte(Ctx, ptrAac);
+                u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 ++u32Counter;
 
                 // Check the descriptor is 0x04
                 if (u8Temp == 0x04)
                 {
                     // Have we got a tag, or the length?
-                    u8Temp = GetAACByte(Ctx, ptrAac);
+                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                     ++u32Counter;
 
                     if (u8Temp == 0x80 || u8Temp == 0xFE)
@@ -799,12 +828,12 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                         SkipAACData(2, Ctx, ptrAac);
                         u32Counter += 2;
 
-                        u8Temp = GetAACByte(Ctx, ptrAac);
+                        u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                         ++u32Counter;
                     }
 
                     // Object type ID
-                    u8Temp = GetAACByte(Ctx, ptrAac);
+                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                     ++u32Counter;
 
                     // read 1 byte version string and 3-byte flag string
@@ -820,11 +849,11 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                     u32Counter += 4;
 
                     // Decoder specific descriptor
-                    u8Temp = GetAACByte(Ctx, ptrAac);
+                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                     ++u32Counter;
 
                     // Have we got a tag, or the length?
-                    u8Temp = GetAACByte(Ctx, ptrAac);
+                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                     ++u32Counter;
 
                     if (u8Temp == 0x80 || u8Temp == 0xFE)
@@ -833,7 +862,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                         SkipAACData(2, Ctx, ptrAac);
                         u32Counter += 2;
 
-                        u8Temp = GetAACByte(Ctx, ptrAac);
+                        u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                         ++u32Counter;
                     }
 
@@ -843,15 +872,20 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                     // Save it off...
                     for (i = 0; i < dsiSize && i < 8; i++)
                     {
-                        dsi[i] = GetAACByte(Ctx, ptrAac);
+                        dsi[i] = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
                         ++u32Counter;
                     }
 
-                    // calculate bytes to skip and skips that bytes to correctly move to next atom.
-                    // 8 bytes are for atom size(4 bytes) and atom type('e','s','d','s' (4 bytes))
-                    u32Counter = ((uint32_t)(*AacCkSize - u32Counter));
+                    // guard against malformed atom; return if atom size is smaller than bytes already consumed.
+                    assert(u32Counter <= (uint32_t)INT32_MAX);
+                    if (*AacCkSize <= (int32_t)u32Counter)
+                    {
+                        return CODEC_METADATA_FILETYPE_FAILED;
+                    }
                     // Skip forward the remaining bytes as we are not using any value so skip it instead of parsing it.
-                    SkipAACData(u32Counter, Ctx, ptrAac);
+                    // atom size minus bytes already read); 8 bytes are for atom size(4 bytes) and atom
+                    // type('e','s','d','s' (4 bytes))
+                    SkipAACData((long)(*AacCkSize - (int32_t)u32Counter), Ctx, ptrAac);
 
                     ret_val = AacReadDecoderSpecificInfo(dsi, dsiSize, MetaData, ptrAac);
                 }
@@ -865,6 +899,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             // get the number of samples
             ptrAac->Aac_NumSamples = GetAACDWord(Ctx, ptrAac);
             // skip the remaining data of the atom
+            assert(*AacCkSize >= 12);
             SkipAACData(*AacCkSize - 8 - 4, Ctx, ptrAac);
             ptrAac->MandatoryAtoms |= STSZ_BIT;
             ptrAac->AllAtoms |= STSZ_BIT;
@@ -875,8 +910,9 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             // skip first 8 bytes of data
             SkipAACData(8, Ctx, ptrAac);
             // this should be same as mdat offset
-            MetaData->start_pos = GetAACDWord(Ctx, ptrAac);
+            MetaData->start_pos = GetAACDWord(Ctx, ptrAac) & 0x7FFFFFFF;
             // skip the remaining data of the atom
+            assert(*AacCkSize >= 12);
             SkipAACData(*AacCkSize - 8 - 4, Ctx, ptrAac);
             ptrAac->MandatoryAtoms |= STCO_BIT;
             ptrAac->AllAtoms |= STCO_BIT;
@@ -886,12 +922,12 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             SkipAACData(16, Ctx, ptrAac);
             *AacCkSize = *AacCkSize - 16;
             {
-                char cMetadataString[TITLE_SIZE];
-                char *pString = cMetadataString;
+                unsigned char cMetadataString[TITLE_SIZE];
+                char *pString = (char *)cMetadataString;
                 int32_t i32i;
 
                 for (i = 0; i < min(TITLE_SIZE - 1, *AacCkSize); i++)
-                    cMetadataString[i] = GetAACByte(Ctx, ptrAac);
+                    cMetadataString[i] = (unsigned char)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 cMetadataString[i] = 0;
                 if (*AacCkSize > TITLE_SIZE - 1)
                     SkipAACData(*AacCkSize - TITLE_SIZE - 1, Ctx, ptrAac);
@@ -916,12 +952,12 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             SkipAACData(16, Ctx, ptrAac);
             *AacCkSize = *AacCkSize - 16;
             {
-                char cMetadataString[ALBUM_SIZE];
-                char *pString = cMetadataString;
+                unsigned char cMetadataString[ALBUM_SIZE];
+                char *pString = (char *)cMetadataString;
                 int32_t i32i;
 
                 for (i = 0; i < min(ALBUM_SIZE - 1, *AacCkSize); i++)
-                    cMetadataString[i] = GetAACByte(Ctx, ptrAac);
+                    cMetadataString[i] = (unsigned char)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 cMetadataString[i] = 0;
 
                 if (*AacCkSize > ALBUM_SIZE - 1)
@@ -937,7 +973,6 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                     }
                     pString += uBytesConsumed;
                 }
-
             }
             // printf("Album:                 %s \n", MetaData->wAlbum);
             ptrAac->AACMetaDataFlag = 1;
@@ -949,12 +984,12 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             SkipAACData(16, Ctx, ptrAac);
             *AacCkSize = *AacCkSize - 16;
             {
-                char cMetadataString[GENRE_SIZE];
-                char *pString = cMetadataString;
+                unsigned char cMetadataString[GENRE_SIZE];
+                char *pString = (char *)cMetadataString;
                 int32_t i32i;
 
                 for (i = 0; i < min(GENRE_SIZE - 1, *AacCkSize); i++)
-                    cMetadataString[i] = GetAACByte(Ctx, ptrAac);
+                    cMetadataString[i] = (unsigned char)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 cMetadataString[i] = 0;
 
                 if (*AacCkSize > GENRE_SIZE - 1)
@@ -962,7 +997,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
 
                 if (*AacCkSize == 2)
                 {
-                    uint32_t index = cMetadataString[1];
+                    uint32_t index = (uint32_t)((uint8_t)cMetadataString[1]);
 
                     if (index < NUMBER_OF_GENRES)
                     {
@@ -992,7 +1027,6 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                         pString += uBytesConsumed;
                     }
                 }
-
             }
             // printf("Genre:                 %s \n", MetaData->wGenre);
             ptrAac->AACMetaDataFlag = 1;
@@ -1003,12 +1037,12 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             SkipAACData(16, Ctx, ptrAac);
             *AacCkSize = *AacCkSize - 16;
             {
-                char cMetadataString[ARTIST_SIZE];
-                char *pString = cMetadataString;
+                unsigned char cMetadataString[ARTIST_SIZE];
+                char *pString = (char *)cMetadataString;
                 int32_t i32i;
 
                 for (i = 0; i < min(ARTIST_SIZE - 1, *AacCkSize); i++)
-                    cMetadataString[i] = GetAACByte(Ctx, ptrAac);
+                    cMetadataString[i] = (unsigned char)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 cMetadataString[i] = 0;
 
                 if (*AacCkSize > ARTIST_SIZE - 1)
@@ -1033,12 +1067,12 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             SkipAACData(16, Ctx, ptrAac);
             *AacCkSize = *AacCkSize - 16;
             {
-                char cMetadataString[YEAR_SIZE];
-                char *pString = cMetadataString;
+                unsigned char cMetadataString[YEAR_SIZE];
+                char *pString = (char *)cMetadataString;
                 int32_t i32i;
 
                 for (i = 0; i < min(YEAR_SIZE - 1, *AacCkSize); i++)
-                    cMetadataString[i] = GetAACByte(Ctx, ptrAac);
+                    cMetadataString[i] = (unsigned char)(GetAACByte(Ctx, ptrAac) & 0xFF);
                 cMetadataString[i] = 0;
 
                 if (*AacCkSize > YEAR_SIZE - 1)
@@ -1054,7 +1088,6 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                     }
                     pString += uBytesConsumed;
                 }
-
             }
             ptrAac->AACMetaDataFlag = 1;
             ptrAac->AllAtoms |= DAY_BIT;
@@ -1064,7 +1097,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             if (*AacCkSize > 0)
             {
                 // ignore MDAT atoms after MAX_MDAT_ATOM reached.
-                if (ptrAac->AacMDATCount < MAX_MDAT_ATOM)
+                if ((ptrAac->AacMDATCount >= 0) && (ptrAac->AacMDATCount < MAX_MDAT_ATOM))
                 {
                     // media data found
                     ptrAac->AacDataBegin[ptrAac->AacMDATCount] = ptrAac->aac_file_offset;
@@ -1091,6 +1124,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                 ptrAac->Aac_SamplingRate = ptrAac->Aac_TimeScale;
                 ptrAac->AacFlag          = 1;
                 ptrAac->Aac_Duration     = GetAACDWord(Ctx, ptrAac);
+                assert(*AacCkSize >= 20);
                 SkipAACData(*AacCkSize - 20, Ctx, ptrAac); // Align the file reads correctly.
             }
             else
@@ -1102,9 +1136,9 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
             SkipAACData(16, Ctx, ptrAac);
             SkipAACData(2, Ctx, ptrAac); // skip first two zeros
             // Extrack track number which is always in big indian form.
-            MetaData->track_number = GetAACByte(Ctx, ptrAac);
+            MetaData->track_number = (int32_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
             MetaData->track_number <<= 8;
-            MetaData->track_number |= GetAACByte(Ctx, ptrAac);
+            MetaData->track_number |= (int32_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
             SkipAACData(2, Ctx, ptrAac); // Skip two bytes of total track
             SkipAACData(2, Ctx, ptrAac); // skip last two bytes of zeros.
             ptrAac->AllAtoms |= TRKN_BIT;
@@ -1139,7 +1173,8 @@ int32_t GetAACckID(CCI_Ctx *Ctx, AAC_DFFI_t *ptrAac)
     int32_t i;
     int32_t ckid = UNKNOWN_CKID;
 
-    ptrAac->AacCkSize = GetAACDWord(Ctx, ptrAac) - 8;
+    ptrAac->AacCkSize = (int32_t)GetAACDWord(Ctx, ptrAac);
+    ptrAac->AacCkSize = (ptrAac->AacCkSize >= 8) ? (ptrAac->AacCkSize - 8) : 0;
 
     ptrAac->AacCkVal = GetAACDWord(Ctx, ptrAac);
 
@@ -1200,6 +1235,7 @@ uint32_t BitstreamGetBits_adif(BitStream_adif_t *pBitStream, uint8_t u8BitsToRea
     int32_t i32Shift;
 
     // update bits read
+    assert(pBitStream->u32TotalBitsRead <= (uint32_t)(UINT32_MAX - u8BitsToRead));
     pBitStream->u32TotalBitsRead += u8BitsToRead;
 
     // update bits left
@@ -1229,8 +1265,8 @@ uint32_t BitstreamGetBits_adif(BitStream_adif_t *pBitStream, uint8_t u8BitsToRea
     pPtr = pBitStream->bsBufferPtr;
 
     // read next word
-    pBitStream->bsCurrentWord =
-        ((*pPtr & 0xff) << 24) + ((*(pPtr + 1) & 0xff) << 16) + ((*(pPtr + 2) & 0xff) << 8) + *(pPtr + 3);
+    pBitStream->bsCurrentWord = ((uint32_t)(*pPtr & 0xff) << 24U) | ((uint32_t)(*(pPtr + 1) & 0xff) << 16U) |
+                                ((uint32_t)(*(pPtr + 2) & 0xff) << 8U) | (uint32_t)(*(pPtr + 3) & 0xFFU);
 
     // update buffer pointer
     pBitStream->bsBufferPtr += 4;
@@ -1261,8 +1297,7 @@ RtStatus_t AdifParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData)
     uint8_t i;
     uint8_t u8IsCPE;
 
-    temp = Ctx->cci_dec_read(0, (uint8_t *)&buf[0], 128, 0, Ctx->user_data);
-    if (temp != 128)
+    if (Ctx->cci_dec_read(0, (uint8_t *)&buf[0], 128, 0, Ctx->user_data) != (long)128)
         return CODEC_METADATA_FILETYPE_FAILED;
 
     BitstreamInit_adif(&pbs, buf, 128);
@@ -1290,7 +1325,7 @@ RtStatus_t AdifParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData)
     MetaData->bit_rate = temp;
 
     // 4 bit number of program config elements
-    u8PCECount = BitstreamGetBits_adif(&pbs, 4);
+    u8PCECount = (uint8_t)(BitstreamGetBits_adif(&pbs, 4) & 0xFFU);
 
     if (bitstreamtype == 0)
         BitstreamGetBits_adif(&pbs, 20);
@@ -1301,27 +1336,41 @@ RtStatus_t AdifParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData)
         temp = BitstreamGetBits_adif(&pbs, 4);
 
         // object type(profile)
-        temp = (uint8_t)BitstreamGetBits_adif(&pbs, 2);
+        temp = (uint8_t)(BitstreamGetBits_adif(&pbs, 2) & 0xFFU);
         // sample rate freq index
-        u8SampleFreqIdx = (uint8_t)BitstreamGetBits_adif(&pbs, 4);
+        u8SampleFreqIdx = (uint8_t)(BitstreamGetBits_adif(&pbs, 4) & 0xFFU);
 
         // channel count for various elements
-        u8NumFrontCh = (uint8_t)BitstreamGetBits_adif(&pbs, 4);
+        u8NumFrontCh = (uint8_t)(BitstreamGetBits_adif(&pbs, 4) & 0xFFU);
         BitstreamGetBits_adif(&pbs, 20);
 
         for (i = 0; i < u8NumFrontCh; i++)
         {
             // is mono or stereo
-            u8IsCPE = BitstreamGetBits_adif(&pbs, 1);
+            u8IsCPE = (uint8_t)(BitstreamGetBits_adif(&pbs, 1) & 0xFFU);
             (void)BitstreamGetBits_adif(&pbs, 4);
 
             if (u8IsCPE)
                 u8NumCh += 2;
             else
+            {
+                assert(u8NumCh < (uint8_t)UINT8_MAX);
                 u8NumCh++;
+            }
         }
     }
-    MetaData->sample_rate  = g_iSampleRate_adif[u8SampleFreqIdx];
+    {
+        if (u8SampleFreqIdx < (sizeof(g_iSampleRate_adif) / sizeof(g_iSampleRate_adif[0])))
+        {
+            int32_t i32SampleRate = g_iSampleRate_adif[u8SampleFreqIdx];
+            assert(i32SampleRate >= 0);
+            MetaData->sample_rate = (uint32_t)i32SampleRate & 0xFFFFFFFFU;
+        }
+        else
+        {
+            MetaData->sample_rate = 0;
+        }
+    }
     MetaData->num_channels = u8NumCh;
 
     return SUCCESS;
@@ -1387,6 +1436,7 @@ RtStatus_t AdtsParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData)
                     MetaData->sample_rate  = ADTS_IndexToSampleRate(u32Index);
                     i32SkipBytes           = 0 - 4;
                     ADTS_SkipBytes(Ctx, i32SkipBytes);
+                    assert(cur_offset >= 7);
                     MetaData->start_pos = cur_offset - 7;
                     return SUCCESS;
                 }
@@ -1419,10 +1469,10 @@ int AacReadDecoderSpecificInfo(const uint8_t *pDsi, int iDsiSize, file_meta_data
     // 4 bits for SamplingFrequencyIndex
     freqindex = ((pDsi[0] & 0x7) << 1) + ((pDsi[1] & 0x80) >> 7);
 
-    if (freqindex < 13)
+    if ((freqindex >= 0) && (freqindex < 13))
     {
         MetaData->sample_rate    = sr_index[freqindex];
-        ptrAac->Aac_SamplingRate = sr_index[freqindex];
+        ptrAac->Aac_SamplingRate = (int32_t)(sr_index[freqindex] & 0x7FFFFFFFU);
     }
     else
     {
@@ -1437,4 +1487,4 @@ int AacReadDecoderSpecificInfo(const uint8_t *pDsi, int iDsiSize, file_meta_data
 // End of file
 ///////////////////////////////////////////////////////////////////////////////
 //! @}
-#endif //defined(AAC_DEC)
+#endif // defined(AAC_DEC)

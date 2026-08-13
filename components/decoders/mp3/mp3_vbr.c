@@ -16,6 +16,8 @@
 //  Includes
 ////////////////////////////////////////////////////////////////////////////////
 #include <string.h>
+#include <assert.h>
+#include <stdint.h>
 #include "cci_metadata.h"
 #include "mp3_metadata.h"
 
@@ -136,8 +138,15 @@ int MP3MetaDataReadVBRHeaders(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uint32_
             pMetaData->valid_vbr_header = 1;
         }
         // increment the StartPosition so we're positioned after the Xing or VBR Headers.
+        assert(pMetaData->start_pos <= (UINT32_MAX - wOffset));
         pMetaData->start_pos += wOffset;
-        Ctx->cci_dec_seek(0, (uPosition + wOffset), SEEK_SET, Ctx->user_data);
+        assert(uPosition >= 0);
+        assert((uint32_t)uPosition <= (UINT32_MAX - wOffset));
+        {
+            uint32_t u32SeekPos = (uint32_t)uPosition + wOffset;
+            assert(u32SeekPos <= (uint32_t)INT32_MAX);
+            Ctx->cci_dec_seek(0, (int32_t)u32SeekPos, SEEK_SET, Ctx->user_data);
+        }
     }
     return SUCCESS;
 }
@@ -223,7 +232,9 @@ int32_t GetXingHeader(
 
     if (head_flags & FRAMES_FLAG)
     {
-        VbrHeader->VBRStreamFrames = ExtractI4(btVBRUnpack, iXingPtr);
+        int32_t i32XingFrames = ExtractI4(btVBRUnpack, iXingPtr);
+        assert(i32XingFrames >= 0);
+        VbrHeader->VBRStreamFrames = (uint32_t)i32XingFrames;
         iXingPtr += 4;
     }
     else
@@ -231,7 +242,9 @@ int32_t GetXingHeader(
 
     if (head_flags & BYTES_FLAG)
     {
-        VbrHeader->VBRStreamBytes = ExtractI4(btVBRUnpack, iXingPtr);
+        int32_t i32XingBytes = ExtractI4(btVBRUnpack, iXingPtr);
+        assert(i32XingBytes >= 0);
+        VbrHeader->VBRStreamBytes = (uint32_t)i32XingBytes;
         iXingPtr += 4;
     }
 
@@ -239,10 +252,13 @@ int32_t GetXingHeader(
 
     // Calculate the total seconds
     wTemp = VbrHeader->VBRSampleRate >= 32000 ? MP3L2_3FRAME_SIZE : MP3VBR_LOW_FRAME_SIZE;
+    assert(VbrHeader->VBRSampleRate != 0U);
+    assert((wTemp == 0U) || ((uint32_t)VbrHeader->VBRStreamFrames <= (UINT32_MAX / wTemp)));
     ptrThis->g_VBRGlobalData.VBRTotalSeconds =
         (uint32_t)(((uint32_t)VbrHeader->VBRStreamFrames * wTemp) / VbrHeader->VBRSampleRate);
 
     // Note - multiply by 128 so we can preserve two digits of accuracy.
+    assert(ptrThis->g_VBRGlobalData.VBRTotalSeconds <= (UINT32_MAX / 128U));
     ptrThis->g_VBRGlobalData.VBRDurPerBin =
         ((ptrThis->g_VBRGlobalData.VBRTotalSeconds * 128) / (ptrThis->g_VBRGlobalData.VBRTableSize + 1));
 
@@ -276,9 +292,11 @@ int32_t GetXingHeader(
 
             // In order to emulate the VBRi template, we only need to store the difference
             // between samples.
+            assert((wLookup256 == 0U) || ((uint32_t)VbrHeader->VBRStreamBytes <= (UINT32_MAX / (uint32_t)wLookup256)));
             wCurrentByteCount = ((((uint32_t)VbrHeader->VBRStreamBytes * (uint32_t)wLookup256) + 128) / 256);
             if (pVBRTOCTable)
             {
+                assert(wCurrentByteCount >= wPreviousByteCount);
                 *pVBRTOCTable = (uint32_t)((uint32_t)wCurrentByteCount - (uint32_t)wPreviousByteCount);
                 pVBRTOCTable++;
             }
@@ -368,35 +386,42 @@ int32_t GetVBRiHeader(
 
     // Now extract the tag information.
     iVBRiPtr += 4;
-    VbrHeader->VBRVersion = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);                 // get Version
-    iVBRiPtr += 6;                                                                 // Skip Delay & Quality.
-    VbrHeader->VBRStreamBytes = ExtractIVar(btVBRUnpack, iVBRiPtr, 3);             // get Hi 3 Bytes - Stream Bytes
+    VbrHeader->VBRVersion = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);       // get Version
+    iVBRiPtr += 6;                                                       // Skip Delay & Quality.
+    VbrHeader->VBRStreamBytes = ExtractIVar(btVBRUnpack, iVBRiPtr, 3);   // get Hi 3 Bytes - Stream Bytes
     VbrHeader->VBRStreamBytes <<= 8;
-    iVBRiPtr += 3;                                                                 // Point to Low word.
-    VbrHeader->VBRStreamBytes |= ExtractIVar(btVBRUnpack, iVBRiPtr, 1);            // get Low Byte - Stream bytes
-    iVBRiPtr += 1;                                                                 // Point to Stream Frames.
-    VbrHeader->VBRStreamFrames = ExtractIVar(btVBRUnpack, iVBRiPtr, 3);            // get Hi Word - Stream Frames
+    iVBRiPtr += 3;                                                       // Point to Low word.
+    VbrHeader->VBRStreamBytes |= ExtractIVar(btVBRUnpack, iVBRiPtr, 1);  // get Low Byte - Stream bytes
+    iVBRiPtr += 1;                                                       // Point to Stream Frames.
+    VbrHeader->VBRStreamFrames = ExtractIVar(btVBRUnpack, iVBRiPtr, 3);  // get Hi Word - Stream Frames
     VbrHeader->VBRStreamFrames <<= 8;
-    iVBRiPtr += 3;                                                                 // Point to Low word.
-    VbrHeader->VBRStreamFrames |= ExtractIVar(btVBRUnpack, iVBRiPtr, 1);           // get Low Word - Stream Frames
-    iVBRiPtr += 1;                                                                 // Point to Table Size.
-    ptrThis->g_VBRGlobalData.VBRTableSize = ExtractIVar(btVBRUnpack, iVBRiPtr, 2); // get Table Size
-    iVBRiPtr += 2;                                                                 // Point to Table Scale.
-    VbrHeader->VBRTableScale = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);              // get Table Scale
-    iVBRiPtr += 2;                                                                 // Point to Entry Bytes.
-    VbrHeader->VBREntryBytes = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);              // get Entry Bytes
-    iVBRiPtr += 2;                                                                 // Point to Entry Frames.
-    VbrHeader->VBREntryFrames = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);             // get Entry Frames
-    iVBRiPtr += 2;                                                                 // Point to Entry Bytes.
+    iVBRiPtr += 3;                                                       // Point to Low word.
+    VbrHeader->VBRStreamFrames |= ExtractIVar(btVBRUnpack, iVBRiPtr, 1); // get Low Word - Stream Frames
+    iVBRiPtr += 1;                                                       // Point to Table Size.
+    {
+        uint32_t u32TableSize = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);   // get Table Size
+        assert(u32TableSize <= (uint32_t)INT32_MAX);
+        ptrThis->g_VBRGlobalData.VBRTableSize = (int32_t)u32TableSize;
+    }
+    iVBRiPtr += 2;                                                     // Point to Table Scale.
+    VbrHeader->VBRTableScale = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);  // get Table Scale
+    iVBRiPtr += 2;                                                     // Point to Entry Bytes.
+    VbrHeader->VBREntryBytes = ExtractIVar(btVBRUnpack, iVBRiPtr, 2);  // get Entry Bytes
+    iVBRiPtr += 2;                                                     // Point to Entry Frames.
+    VbrHeader->VBREntryFrames = ExtractIVar(btVBRUnpack, iVBRiPtr, 2); // get Entry Frames
+    iVBRiPtr += 2;                                                     // Point to Entry Bytes.
 
     ptrThis->g_VBRGlobalData.VBRTableSize =
         (ptrThis->g_VBRGlobalData.VBRTableSize < VBR_TOC_SIZE) ? ptrThis->g_VBRGlobalData.VBRTableSize : VBR_TOC_SIZE;
 
     // Calculate the total seconds
     wTemp1 = VbrHeader->VBRSampleRate >= 32000 ? MP3L2_3FRAME_SIZE : MP3VBR_LOW_FRAME_SIZE;
+    assert(VbrHeader->VBRSampleRate != 0U);
+    assert((wTemp1 == 0U) || ((uint32_t)VbrHeader->VBRStreamFrames <= (UINT32_MAX / wTemp1)));
     ptrThis->g_VBRGlobalData.VBRTotalSeconds =
         (uint32_t)(((uint32_t)VbrHeader->VBRStreamFrames * wTemp1) / VbrHeader->VBRSampleRate);
 
+    assert(ptrThis->g_VBRGlobalData.VBRTotalSeconds <= (UINT32_MAX / 128U));
     ptrThis->g_VBRGlobalData.VBRDurPerBin =
         ((ptrThis->g_VBRGlobalData.VBRTotalSeconds * 128) / (ptrThis->g_VBRGlobalData.VBRTableSize + 1));
 
@@ -405,16 +430,20 @@ int32_t GetVBRiHeader(
     {
         // TBD - we should set some parameters that will alert us if the table is corrupt.
         //       I have seen zero entries in a VBRI table, so that is not invalid.
-        if (pVBRTOCTable)
+        assert(VbrHeader->VBREntryBytes <= (uint32_t)UINT8_MAX);
         {
-            *pVBRTOCTable = ExtractIVar(btVBRUnpack, iVBRiPtr, VbrHeader->VBREntryBytes); // get Data Frames.
-            pVBRTOCTable++;
+            uint8_t u8EntryBytes = (uint8_t)(VbrHeader->VBREntryBytes & 0xFFU);
+            if (pVBRTOCTable)
+            {
+                *pVBRTOCTable = ExtractIVar(btVBRUnpack, iVBRiPtr, u8EntryBytes); // get Data Frames.
+                pVBRTOCTable++;
+            }
+            else
+            {
+                ExtractIVar(btVBRUnpack, iVBRiPtr, u8EntryBytes); // get Data Frames.
+            }
+            iVBRiPtr += (int32_t)u8EntryBytes;                    // Increment Pointer.
         }
-        else
-        {
-            ExtractIVar(btVBRUnpack, iVBRiPtr, VbrHeader->VBREntryBytes); // get Data Frames.
-        }
-        iVBRiPtr += VbrHeader->VBREntryBytes;                             // Increment Pointer.
     }
 
     ptrThis->g_wVBRSignature = 'V';
@@ -439,7 +468,8 @@ int32_t GetVBRiHeader(
 ////////////////////////////////////////////////////////////////////////////////
 int32_t ExtractI4(uint8_t *buf, int32_t i)
 {
-    int32_t x;
+    uint32_t x;
+    assert((i >= 0) && (i <= (INT32_MAX - 3)));
     // big endian extract
     x = buf[i];
     x <<= 8;
@@ -449,7 +479,8 @@ int32_t ExtractI4(uint8_t *buf, int32_t i)
     x <<= 8;
     x |= buf[i + 3];
 
-    return x;
+    assert(x <= (uint32_t)INT32_MAX);
+    return (int32_t)x;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

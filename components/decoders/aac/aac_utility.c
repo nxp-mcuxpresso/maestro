@@ -19,6 +19,7 @@
 #include "codec_interface.h"
 #include "cci_metadata.h"
 #include "aac_metadata.h"
+#include <assert.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 //  External Definitions
@@ -52,6 +53,7 @@ int GetAACDWord(CCI_Ctx *Ctx, AAC_DFFI_t *ptrAac)
 {
     unsigned char word[4];
     int retdata = 0;
+    assert(ptrAac->aac_file_offset <= (INT32_MAX - 4));
     ptrAac->aac_file_offset += 4;
     Ctx->cci_dec_read(0, (uint8_t *)&word[0], 4, 0, Ctx->user_data);
     retdata = ((int)word[0] << 24);
@@ -76,6 +78,7 @@ int GetAacWord(CCI_Ctx *Ctx, AAC_DFFI_t *ptrAac)
 {
     unsigned char word[2];
     int retdata = 0;
+    assert(ptrAac->aac_file_offset <= (INT32_MAX - 2));
     ptrAac->aac_file_offset += 2;
     Ctx->cci_dec_read(0, (uint8_t *)&word[0], 2, 0, Ctx->user_data);
 
@@ -103,6 +106,7 @@ int GetAACByte(CCI_Ctx *Ctx, AAC_DFFI_t *ptrAac)
 {
     unsigned char word[1];
     int retdata = 0;
+    assert(ptrAac->aac_file_offset <= (INT32_MAX - 1));
     ptrAac->aac_file_offset += 1;
     Ctx->cci_dec_read(0, (uint8_t *)&word[0], 1, 0, Ctx->user_data);
     retdata = (int)word[0];
@@ -121,6 +125,8 @@ int GetAACByte(CCI_Ctx *Ctx, AAC_DFFI_t *ptrAac)
 /////////////////////////////////////////////////////////////////////////////////
 void SkipAACData(long AacCkSize, CCI_Ctx *Ctx, AAC_DFFI_t *ptrAac)
 {
+    assert((AacCkSize >= 0) ? (ptrAac->aac_file_offset <= (INT32_MAX - AacCkSize)) :
+                              (ptrAac->aac_file_offset >= (INT32_MIN - AacCkSize)));
     ptrAac->aac_file_offset += AacCkSize; // to Fix SDK-1198.
     Ctx->cci_dec_seek(0, ptrAac->aac_file_offset, SEEK_SET, Ctx->user_data);
 }
@@ -137,8 +143,8 @@ void SkipAACData(long AacCkSize, CCI_Ctx *Ctx, AAC_DFFI_t *ptrAac)
 /////////////////////////////////////////////////////////////////////////////////
 uint32_t ADTS_GetBytes(CCI_Ctx *Ctx, int32_t n)
 {
-    unsigned char word[4];
-    uint32_t retdata = 0;
+    unsigned char word[4] = {0};
+    uint32_t retdata      = 0;
 
     Ctx->cci_dec_read(0, (uint8_t *)&word[0], n, 0, Ctx->user_data);
     retdata = ((uint32_t)word[0] << 24);
@@ -191,7 +197,7 @@ int32_t ADTS_GetCurrentOffset(CCI_Ctx *Ctx)
 /////////////////////////////////////////////////////////////////////////////////
 uint32_t ADTS_IndexToSampleRate(int Index)
 {
-    if ((unsigned)Index >= sizeof(stc_u32SamplingRateList) / sizeof(stc_u32SamplingRateList[0]))
+    if ((Index < 0) || ((unsigned)Index >= sizeof(stc_u32SamplingRateList) / sizeof(stc_u32SamplingRateList[0])))
     {
         return 0;
     }
@@ -233,6 +239,7 @@ uint32_t ADTS_Bitrate(CCI_Ctx *Ctx, uint32_t u32FrameSize, uint32_t u32Samplingr
 
             if (u32Index <= 11 && u32NewFramesize > 7)
             {
+                assert(u32TempFrameSize <= (UINT32_MAX - u32NewFramesize));
                 u32TempFrameSize += u32NewFramesize;
                 u32Frames       = u32Frames + 1;
                 i32NewSkipBytes = (int32_t)(u32NewFramesize - (56 / 8));
@@ -248,10 +255,13 @@ uint32_t ADTS_Bitrate(CCI_Ctx *Ctx, uint32_t u32FrameSize, uint32_t u32Samplingr
 
     if (u32Frames > 0)
     {
-        uint32_t u32SecPerFrame, u32BytesPerFrame;
+        uint32_t u32SecPerFrame, u32BytesPerFrame, u32FrameProduct;
         u32SecPerFrame   = u32Samplingrate / 1024;
         u32BytesPerFrame = u32TempFrameSize / u32Frames;
-        u32Bitrate       = 8 * (u32BytesPerFrame * u32SecPerFrame);
+        assert((u32SecPerFrame == 0) || (u32BytesPerFrame <= (UINT32_MAX / u32SecPerFrame)));
+        u32FrameProduct = u32BytesPerFrame * u32SecPerFrame;
+        assert(u32FrameProduct <= (UINT32_MAX / 8U));
+        u32Bitrate = 8U * u32FrameProduct;
     }
     return (u32Bitrate);
 }

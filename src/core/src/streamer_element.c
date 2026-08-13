@@ -17,6 +17,7 @@
 #include "streamer_api.h"
 #include "pipeline.h"
 #include "streamer_element.h"
+#include <assert.h>
 
 /* Elements */
 #ifdef STREAMER_ENABLE_AUDIO_SRC
@@ -321,10 +322,12 @@ int32_t link_elements(ElementHandle src_handle, int8_t src_pad_index, ElementHan
      * StreamPad indexes valid.
      * Both elements are part of same pipeline.
      */
+    assert(src_pad_index >= 0);
+    assert(sink_pad_index >= 0);
     CHK_ARGS(src_element == NULL || sink_element == NULL ||
                  /* Valid pad index */
-                 src_pad_index >= NUM_SRCS(ELEMENT_TYPE(src_element)) ||
-                 sink_pad_index >= NUM_SINKS(ELEMENT_TYPE(sink_element)) ||
+                 (uint32_t)src_pad_index >= NUM_SRCS(ELEMENT_TYPE(src_element)) ||
+                 (uint32_t)sink_pad_index >= NUM_SINKS(ELEMENT_TYPE(sink_element)) ||
 
                  /* Should pe part of a have valid pipeline */
                  ELEMENT_PARENT_PIPELINE(src_element) == NULL || ELEMENT_PARENT_PIPELINE(sink_element) == NULL ||
@@ -372,11 +375,13 @@ int32_t unlink_elements(ElementHandle src_handle,
      * StreamPad indexes valid.
      * Both elements are part of same pipeline.
      */
+    assert(src_pad_index >= 0);
+    assert(sink_pad_index >= 0);
     CHK_ARGS(src_element == NULL || sink_element == NULL ||
 
                  /* Valid pad index */
-                 src_pad_index >= NUM_SRCS(ELEMENT_TYPE(src_element)) ||
-                 sink_pad_index >= NUM_SINKS(ELEMENT_TYPE(sink_element)) ||
+                 (uint32_t)src_pad_index >= NUM_SRCS(ELEMENT_TYPE(src_element)) ||
+                 (uint32_t)sink_pad_index >= NUM_SINKS(ELEMENT_TYPE(sink_element)) ||
 
                  /* Should pe part of a have valid pipeline */
                  ELEMENT_PARENT_PIPELINE(src_element) == NULL || ELEMENT_PARENT_PIPELINE(sink_element) == NULL ||

@@ -11,6 +11,7 @@
 
 #include "file_utils.h"
 #include "fsl_debug_console.h"
+#include <assert.h>
 
 #ifdef FILE_ENABLE_SEMI
 #include <stdio.h>
@@ -227,7 +228,7 @@ int32_t file_open(const char *pathname, uint32_t mode)
     BYTE fatfs_mode        = 0;
     uint_fast8_t uniq_flag = 0;
 #ifdef FILE_UTILS_SEMI_CACHE
-    get_fd(fd)->dirty = 0;
+    get_fd(fd)->dirty      = 0;
 #endif // FILE_UTILS_SEMI_CACHE
     if (mode & FILE_RDONLY)
     {
@@ -266,7 +267,13 @@ int32_t file_open(const char *pathname, uint32_t mode)
         get_fd(fd)->dirty = 1;
 #endif
     }
-    FRESULT ret = f_open(&get_fd(fd)->file_struct.fatfs_file, pathname, fatfs_mode);
+    File_Fs_Rec *fs_rec = get_fd(fd);
+    if (fs_rec == NULL)
+    {
+        free_fd(fd);
+        return -1;
+    }
+    FRESULT ret = f_open(&fs_rec->file_struct.fatfs_file, pathname, fatfs_mode);
     if (ret != FR_OK)
     {
         free_fd(fd);
@@ -392,6 +399,7 @@ int32_t file_read(int32_t fd, void *buff, size_t btr)
         {
             return -(int32_t)res;
         }
+        assert(br <= (uint32_t)INT32_MAX);
         return (int32_t)br;
     }
 #endif // FILE_ENABLE_FATFS
@@ -411,7 +419,7 @@ int32_t file_read(int32_t fd, void *buff, size_t btr)
         {
             br = (int32_t)fread(buff, 1, btr, &fs_rec->file_struct.semi_file);
         }
-#else // FILE_UTILS_SEMI_CACHE
+#else  // FILE_UTILS_SEMI_CACHE
         br         = fread(buff, 1, btr, &fs_rec->file_struct.semi_file);
 #endif
         return br;
@@ -436,6 +444,7 @@ int32_t file_write(int32_t fd, void *buff, size_t cnt)
         {
             return -((int32_t)res);
         }
+        assert(written <= (uint32_t)INT32_MAX);
         return (int32_t)written;
     }
 #endif // FILE_ENABLE_FATFS
@@ -499,7 +508,9 @@ int32_t file_getsize(int32_t fd)
 #ifdef FILE_ENABLE_FATFS
     if (fs_rec->fs_type == FILE_UTILS_FATFS)
     {
-        return (int32_t)f_size(&fs_rec->file_struct.fatfs_file);
+        FSIZE_t size = f_size(&fs_rec->file_struct.fatfs_file);
+        assert(size <= (FSIZE_t)INT32_MAX);
+        return (int32_t)size;
     }
 #endif // FILE_ENABLE_FATFS
 #ifdef FILE_ENABLE_SEMI

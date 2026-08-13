@@ -20,6 +20,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <error.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <stdint.h>
 #include "cci_metadata.h"
 #include "wavedefs.h"
 #include "wavedata.h"
@@ -102,7 +104,8 @@ uint64_t BigNum_Divide_64_by_32_wav(uint64_t n, uint32_t base)
     {
         high /= base;
         res = (uint64_t)high << 32;
-        rem -= (uint64_t)(high * base) << 32;
+        assert(rem >= (((uint64_t)high * base) << 32));
+        rem -= ((uint64_t)high * base) << 32;
     }
 
     while ((int64_t)b > 0 && b < rem)
@@ -116,6 +119,7 @@ uint64_t BigNum_Divide_64_by_32_wav(uint64_t n, uint32_t base)
         if (rem >= b)
         {
             rem -= b;
+            assert((UINT64_MAX - res) >= d);
             res += d;
         }
         b >>= 1;
@@ -133,6 +137,7 @@ void StrToWStrN(uint8_t *pWStr, uint8_t *pStr, int32_t n)
         return;
     }
 
+    assert(n >= 0);
     while (n-- > 0 && *pStr != '\0')
     {
         *pWStr       = *pStr++;
@@ -202,7 +207,13 @@ RtStatus_t CodecExtractMetaDataAdpcm(file_meta_data_t *MetaData, CCI_Ctx *Ctx)
             }
 
             // Subtract this chunk size from the current level
-            i32DataSize[i32chunklevel] -= (i32ckSize + 8);
+            assert(i32ckSize <= (INT32_MAX - 8));
+            {
+                int32_t i32ChunkTotal = i32ckSize + 8;
+                int64_t i64NewLevel   = (int64_t)i32DataSize[i32chunklevel] - (int64_t)i32ChunkTotal;
+                assert((i64NewLevel >= INT32_MIN) && (i64NewLevel <= INT32_MAX));
+                i32DataSize[i32chunklevel] = (int32_t)i64NewLevel;
+            }
             // Skip unknown chunks
             if (i32ckIDval == UNKNOWN_CKID)
             {
@@ -267,14 +278,23 @@ RtStatus_t CodecExtractMetaDataAdpcm(file_meta_data_t *MetaData, CCI_Ctx *Ctx)
         // Update remaining Metadata fields
         if (Retcode == SUCCESS)
         {
-            MetaData->sample_rate  = wav.gwSamplesPerSec;
+            int32_t bitRate = wav.wBitsPerSample * wav.gwSamplesPerSec * wav.gwChannels;
+            assert(wav.gwAvgBytesPerSec >= 0);
+            uint64_t totTime =
+                BigNum_Divide_64_by_32_wav(((uint64_t)MetaData->num_bytes * 1000), (uint32_t)wav.gwAvgBytesPerSec);
+
+            int32_t avgBitRate = wav.gwAvgBytesPerSec * 8;
+
+            assert(wav.gwSamplesPerSec >= 0);
+            MetaData->sample_rate  = (uint32_t)wav.gwSamplesPerSec;
             MetaData->num_channels = wav.gwChannels;
-            MetaData->bit_rate     = wav.wBitsPerSample * wav.gwSamplesPerSec * wav.gwChannels;
-            MetaData->total_time   = (uint32_t)BigNum_Divide_64_by_32_wav(
-                ((uint64_t)MetaData->num_bytes * 1000),
-                (wav.gwAvgBytesPerSec)); //(((uint64_t)MetaData->num_bytes*1000)/(wav.gwAvgBytesPerSec));
-                                           //// convert to mSec
-            MetaData->avg_bit_rate    = (wav.gwAvgBytesPerSec * 8);
+            assert(bitRate >= 0);
+            MetaData->bit_rate = (uint32_t)bitRate;
+            MetaData->total_time =
+                (uint32_t)(totTime & 0xFFFFFFFFU); //(((uint64_t)MetaData->num_bytes*1000)/(wav.gwAvgBytesPerSec));
+                                                   //// convert to mSec
+            assert(avgBitRate >= 0);
+            MetaData->avg_bit_rate    = (uint32_t)avgBitRate;
             MetaData->bits_per_sample = wav.wBitsPerSample;
         }
     }
@@ -308,12 +328,14 @@ void Decode_MS_ADPCM_header(WAVDEC *ptrThis, CCI_Ctx *Ctx, int32_t *i32ckSize)
     ptrThis->wcbSize           = data[1];
     ptrThis->wnSamplesPerBlock = data[2];
     ptrThis->wnNumCoef         = data[3];
+    assert(*i32ckSize >= 8L);
     *i32ckSize -= 8;
     for (i = 0; i < ptrThis->wnNumCoef; i++)
     {
         Ctx->cci_dec_read(0, (uint8_t *)data, 2 * 2, 0, Ctx->user_data);
         ptrThis->u.ms.wCoef1[i] = data[0];
         ptrThis->u.ms.wCoef2[i] = data[1];
+        assert(*i32ckSize >= 4L);
         *i32ckSize -= 4;
     }
 }
@@ -335,6 +357,7 @@ void Decode_IMA_ADPCM_header(WAVDEC *ptrThis, CCI_Ctx *Ctx, int32_t *i32ckSize)
     ptrThis->wBitsPerSample    = data[0];
     ptrThis->wcbSize           = data[1];
     ptrThis->wnSamplesPerBlock = data[2];
+    assert(*i32ckSize >= 6L);
     *i32ckSize -= 6;
 }
 
@@ -353,18 +376,30 @@ int Decode_WAVEFORMATEXTENSIBLE_header(WAVDEC *ptrThis, CCI_Ctx *Ctx, int32_t *i
     int i;
     GUID Wave_Data;
     Ctx->cci_dec_read(0, (uint8_t *)data, 26, 0, Ctx->user_data);
-    ptrThis->wBitsPerSample      = (data[1] << 8) | data[0];
-    ptrThis->wcbSize             = (data[3] << 8) | data[2];
-    ptrThis->wValidBitsPerSample = (data[5] << 8) | data[4];
-    ptrThis->dwChannelMask       = (data[9] << 24) | (data[8] << 16) | (data[7] << 8) | data[6];
-    Wave_Data.Data1              = (data[13] << 24) | (data[12] << 16) | (data[11] << 8) | data[10];
-    Wave_Data.Data2              = (data[15] << 8) | data[14];
-    Wave_Data.Data3              = (data[17] << 8) | data[16];
+    uint16_t u16BitsPerSample = (uint16_t)((((uint32_t)data[1] << 8) | data[0]) & 0xFFFFU);
+    assert(u16BitsPerSample <= (uint16_t)INT16_MAX);
+    ptrThis->wBitsPerSample = (int16_t)u16BitsPerSample;
+    uint16_t u16CbSize      = (uint16_t)((((uint32_t)data[3] << 8) | data[2]) & 0xFFFFU);
+    assert(u16CbSize <= (uint16_t)INT16_MAX);
+    ptrThis->wcbSize               = (int16_t)u16CbSize;
+    uint16_t u16ValidBitsPerSample = (uint16_t)((((uint32_t)data[5] << 8) | data[4]) & 0xFFFFU);
+    assert(u16ValidBitsPerSample <= (uint16_t)INT16_MAX);
+    ptrThis->wValidBitsPerSample = (int16_t)u16ValidBitsPerSample;
+    uint32_t u32ChannelMask =
+        (uint32_t)((((uint32_t)data[9] << 24) | ((uint32_t)data[8] << 16) | ((uint32_t)data[7] << 8) | data[6]) &
+                   0xFFFFFFFFU);
+    assert(u32ChannelMask <= (uint32_t)INT32_MAX);
+    ptrThis->dwChannelMask = (int32_t)u32ChannelMask;
+
+    Wave_Data.Data1 = ((uint32_t)data[13] << 24) | ((uint32_t)data[12] << 16) | ((uint32_t)data[11] << 8) | data[10];
+    Wave_Data.Data2 = (uint16_t)((((uint32_t)data[15] << 8) | data[14]) & 0xFFFFU);
+    Wave_Data.Data3 = (uint16_t)((((uint32_t)data[17] << 8) | data[16]) & 0xFFFFU);
     for (i = 0; i < 8; i++)
     {
         Wave_Data.Data4[i] = data[i + 18];
     }
 
+    assert(*i32ckSize >= 26L);
     *i32ckSize -= 26;
 
     if (DffiCompareGUID(&PCMGUID, &Wave_Data) == 1)
@@ -378,14 +413,18 @@ int Decode_WAVEFORMATEXTENSIBLE_header(WAVDEC *ptrThis, CCI_Ctx *Ctx, int32_t *i
     // Fudge the Block Align to process more samples, simultaneously, so rest of the processing is unchanged
     ptrThis->gwBlockAlign = 504; // This ensures that we can process both 24 bit and 16 bit sample blocks
     // Dummy variable below for processing blocks of data.
+    assert(ptrThis->gwChannels >= 1);
+    uint16_t u16SamplesPerBlock;
     if (ptrThis->wBitsPerSample == 16)
-        ptrThis->wnSamplesPerBlock = (252 >> (ptrThis->gwChannels - 1));
+        u16SamplesPerBlock = (uint16_t)(((uint32_t)252U >> (ptrThis->gwChannels - 1)) & 0xFFFFU);
     else if (ptrThis->wBitsPerSample == 24)
-        ptrThis->wnSamplesPerBlock = (168 >> (ptrThis->gwChannels - 1));
+        u16SamplesPerBlock = (uint16_t)(((uint32_t)168U >> (ptrThis->gwChannels - 1)) & 0xFFFFU);
     else if (ptrThis->wBitsPerSample == 32)
-        ptrThis->wnSamplesPerBlock = (126 >> (ptrThis->gwChannels - 1));
+        u16SamplesPerBlock = (uint16_t)(((uint32_t)126U >> (ptrThis->gwChannels - 1)) & 0xFFFFU);
     else
-        ptrThis->wnSamplesPerBlock = (504 >> (ptrThis->gwChannels - 1)); // Got to be 8 bit PC
+        u16SamplesPerBlock = (uint16_t)(((uint32_t)504U >> (ptrThis->gwChannels - 1)) & 0xFFFFU); // Got to be 8 bit PC
+    assert(u16SamplesPerBlock <= (uint16_t)INT16_MAX);
+    ptrThis->wnSamplesPerBlock = (int16_t)u16SamplesPerBlock;
 
     return 0;
 }
@@ -433,16 +472,21 @@ RtStatus_t DffiCompareGUID(GUID *pLeft, GUID *pRight)
 void Decode_PCM_header(WAVDEC *ptrThis, CCI_Ctx *Ctx, int32_t *i32ckSize)
 {
     Ctx->cci_dec_read(0, (uint8_t *)&ptrThis->wBitsPerSample, 2, 0, Ctx->user_data);
+    assert(*i32ckSize >= 2L);
     *i32ckSize -= 2;
     // Fudge the Block Align to process more samples, simultaneously, so rest of the processing is unchanged
     ptrThis->gwBlockAlign = 504; // This ensures that we can process both 24 bit and 16 bit sample blocks
     // Dummy variable below for processing blocks of data.
+    assert(ptrThis->gwChannels >= 1);
+    uint16_t u16SamplesPerBlock;
     if (ptrThis->wBitsPerSample == 16)
-        ptrThis->wnSamplesPerBlock = (252 >> (ptrThis->gwChannels - 1));
+        u16SamplesPerBlock = (uint16_t)(((uint32_t)252U >> (ptrThis->gwChannels - 1)) & 0xFFFFU);
     else if (ptrThis->wBitsPerSample == 24)
-        ptrThis->wnSamplesPerBlock = (168 >> (ptrThis->gwChannels - 1));
+        u16SamplesPerBlock = (uint16_t)(((uint32_t)168U >> (ptrThis->gwChannels - 1)) & 0xFFFFU);
     else
-        ptrThis->wnSamplesPerBlock = (504 >> (ptrThis->gwChannels - 1)); // Got to be 8 bit PCM
+        u16SamplesPerBlock = (uint16_t)(((uint32_t)504U >> (ptrThis->gwChannels - 1)) & 0xFFFFU); // Got to be 8 bit PCM
+    assert(u16SamplesPerBlock <= (uint16_t)INT16_MAX);
+    ptrThis->wnSamplesPerBlock = (int16_t)u16SamplesPerBlock;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -592,6 +636,7 @@ int32_t DffiProcessChunk(
             // changed from if(MetaData->xxx) to if(MetaData). It is struct, so MetaData->xxx is always nonzero
             if (MetaData)
             {
+                assert((imax_length >= 0) && (imax_length <= (int32_t)sizeof(MetaData->song_artist)));
                 memcpy((uint8_t *)MetaData->song_artist, Bufstring, imax_length);
             }
             i32ret_val = 0;
@@ -613,6 +658,7 @@ int32_t DffiProcessChunk(
             // changed from if(MetaData->xxx) to if(MetaData). It is struct, so MetaData->xxx is always nonzero
             if (MetaData)
             {
+                assert((imax_length >= 0) && (imax_length <= (int32_t)sizeof(MetaData->song_title)));
                 memcpy(MetaData->song_title, Bufstring, imax_length);
             }
             i32ret_val = 0;
@@ -633,6 +679,7 @@ int32_t DffiProcessChunk(
             // changed from if(MetaData->xxx) to if(MetaData). It is struct, so MetaData->xxx is always nonzero
             if (MetaData)
             {
+                assert((imax_length >= 0) && (imax_length <= (int32_t)sizeof(MetaData->song_genre)));
                 memcpy((uint8_t *)MetaData->song_genre, Bufstring, imax_length);
             }
             i32ret_val = 0;
@@ -706,11 +753,21 @@ void DffiProcess_Common_Fmt_Header(WAVDEC *ptrThis, CCI_Ctx *Ctx, int32_t *i32ck
     unsigned short data[14];
     Ctx->cci_dec_read(0, (uint8_t *)data, 2 * 7, 0, Ctx->user_data);
 
-    ptrThis->gwFormatTag      = data[0];
-    ptrThis->gwChannels       = data[1];
-    ptrThis->gwSamplesPerSec  = (((unsigned int)data[3]) << 16) | data[2];
-    ptrThis->gwAvgBytesPerSec = (((unsigned int)data[5]) << 16) | data[4];
-    ptrThis->gwBlockAlign     = data[6];
+    ptrThis->gwFormatTag = data[0];
+    uint16_t u16Channels = (uint16_t)(data[1] & 0xFFFFU);
+    assert(u16Channels <= (uint16_t)INT16_MAX);
+    ptrThis->gwChannels       = (int16_t)u16Channels;
+    uint32_t u32SamplesPerSec = (uint32_t)(((((uint32_t)data[3]) << 16) | data[2]) & 0xFFFFFFFFU);
+    assert(u32SamplesPerSec <= (uint32_t)INT32_MAX);
+    ptrThis->gwSamplesPerSec   = (int32_t)u32SamplesPerSec;
+    uint32_t u32AvgBytesPerSec = (uint32_t)(((((uint32_t)data[5]) << 16) | data[4]) & 0xFFFFFFFFU);
+    assert(u32AvgBytesPerSec <= (uint32_t)INT32_MAX);
+    ptrThis->gwAvgBytesPerSec = (int32_t)u32AvgBytesPerSec;
+    uint16_t u16BlockAlign    = (uint16_t)(data[6] & 0xFFFFU);
+    assert(u16BlockAlign <= (uint16_t)INT16_MAX);
+    ptrThis->gwBlockAlign = (int16_t)u16BlockAlign;
+
+    assert(*i32ckSize >= 14L);
     *i32ckSize -= 14;
 }
 

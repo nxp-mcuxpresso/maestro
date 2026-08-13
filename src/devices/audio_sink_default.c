@@ -11,6 +11,7 @@
  *
  */
 
+#include <assert.h>
 #include <string.h>
 
 #include "pipeline.h"
@@ -57,9 +58,9 @@ AudioSinkStreamErrorType audiosink_default_init_params(ElementAudioSink *audio_s
     /* Set audio/PCM channel. */
     /* Set PCM data format (bits per sample, tx fmt) */
     /* Setup pipeline in/out ports */
-    ret =
-        audio_sink_ptr->appFunctions.set_param_func(audio_sink_ptr->sample_rate, audio_sink_ptr->bits_per_sample,
-                                                    audio_sink_ptr->num_channels, true, false, audio_sink_ptr->volume);
+    ret = audio_sink_ptr->appFunctions.set_param_func(audio_sink_ptr->sample_rate, audio_sink_ptr->bits_per_sample,
+                                                      (uint8_t)(audio_sink_ptr->num_channels & 0xFFU), true, false,
+                                                      audio_sink_ptr->volume);
 
     if (ret != 0)
     {
@@ -163,7 +164,7 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
 {
     ElementAudioSink *audio_sink_ptr = NULL;
     AudioPacketHeader *data_packet   = NULL;
-    DefaultSinkDeviceInfo *dev_info      = NULL;
+    DefaultSinkDeviceInfo *dev_info  = NULL;
 
     int8_t *buffer_ptr   = NULL;
     uint32_t buffer_size = 0;
@@ -195,7 +196,8 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
     audio_sink_ptr->num_channels    = AUDIO_NUM_CHANNELS(data_packet);
     audio_sink_ptr->format          = AUDIO_FORMAT(data_packet);
 
-    buffer_ptr  = (BUFFER_PTR(buffer) + sizeof(AudioPacketHeader));
+    buffer_ptr = (BUFFER_PTR(buffer) + sizeof(AudioPacketHeader));
+    assert(BUFFER_SIZE(buffer) >= sizeof(AudioPacketHeader));
     buffer_size = (BUFFER_SIZE(buffer) - sizeof(AudioPacketHeader));
 
     if (audio_sink_ptr->last_time_sample_rate != AUDIO_SAMPLE_RATE(data_packet) ||
@@ -210,8 +212,8 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
         STREAMER_LOG_DEBUG(DBG_AUDIO_SINK, "[DEFAULT Sink] Init params\n");
 
         /* Initialize the HW codec parameters */
-        audio_sink_ptr->codec_bits_per_sample = audio_sink_ptr->bits_per_sample;
-        audio_sink_ptr->codec_num_channels    = audio_sink_ptr->num_channels;
+        audio_sink_ptr->codec_bits_per_sample = (uint8_t)(audio_sink_ptr->bits_per_sample & 0xFFU);
+        audio_sink_ptr->codec_num_channels    = (uint8_t)(audio_sink_ptr->num_channels & 0xFFU);
 
         if (audiosink_default_init_params(audio_sink_ptr) != AUDIO_SINK_SUCCESS)
         {
@@ -234,7 +236,12 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
             {
                 uint32_t samples =
                     audio_sink_ptr->chunk_size / audio_sink_ptr->num_channels / (audio_sink_ptr->bits_per_sample >> 3);
-                samples = samples * audio_sink_ptr->codec_num_channels * (audio_sink_ptr->codec_bits_per_sample >> 3);
+                uint32_t codec_bytes = (audio_sink_ptr->codec_bits_per_sample >> 3);
+                assert((audio_sink_ptr->codec_num_channels == 0U) ||
+                       (samples <= (UINT32_MAX / audio_sink_ptr->codec_num_channels)));
+                samples = samples * audio_sink_ptr->codec_num_channels;
+                assert((codec_bytes == 0U) || (samples <= (UINT32_MAX / codec_bytes)));
+                samples              = samples * codec_bytes;
                 dev_info->alloc_size = (samples < MIN_AUDIO_BUFFER_SIZE) ? MIN_AUDIO_BUFFER_SIZE : samples;
             }
             else
@@ -278,7 +285,7 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
             int8_t *input_buffer      = buffer_ptr;
             int8_t *audio_buffer_head = (int8_t *)dev_info->audbuf[dev_info->input_index];
 
-            uint8_t input_buffer_step = audio_sink_ptr->bits_per_sample >> 3;
+            uint8_t input_buffer_step = (uint8_t)((audio_sink_ptr->bits_per_sample >> 3) & 0xFFU);
             uint8_t audio_buffer_step = audio_sink_ptr->codec_bits_per_sample >> 3;
             uint32_t i;
             uint8_t k;
@@ -292,7 +299,9 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
                 {
                     for (j = (audio_buffer_step - 1), o = (input_buffer_step - 1); j >= 0; j--, o--)
                     {
-                        audio_buffer_head[j] = o >= 0 ? input_buffer[o] : 0xFF;
+                        int sample = (o >= 0) ? input_buffer[o] : -1;
+                        assert((sample >= INT8_MIN) && (sample <= INT8_MAX));
+                        audio_buffer_head[j] = (int8_t)sample;
                     }
 
                     /* Update pointers */
@@ -316,8 +325,12 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
             /* Update the buffer size to the actual value */
             buffer_size =
                 audio_sink_ptr->chunk_size / audio_sink_ptr->num_channels / (audio_sink_ptr->bits_per_sample >> 3);
-            buffer_size =
-                buffer_size * audio_sink_ptr->codec_num_channels * (audio_sink_ptr->codec_bits_per_sample >> 3);
+            assert(audio_sink_ptr->codec_num_channels != 0U);
+            assert(buffer_size <= (0xFFFFFFFFU / audio_sink_ptr->codec_num_channels));
+            buffer_size = buffer_size * audio_sink_ptr->codec_num_channels;
+            assert((audio_sink_ptr->codec_bits_per_sample >> 3) != 0U);
+            assert(buffer_size <= (0xFFFFFFFFU / (audio_sink_ptr->codec_bits_per_sample >> 3)));
+            buffer_size = buffer_size * (audio_sink_ptr->codec_bits_per_sample >> 3);
         }
         else
         {

@@ -15,6 +15,7 @@
  */
 
 #include <string.h>
+#include <assert.h>
 #include "pipeline.h"
 
 #include "streamer_element_properties.h"
@@ -100,7 +101,7 @@ int streamer_msg_get_track_info(STREAMER_T *streamer, void *msg_data)
         return ERRCODE_GENERAL_ERROR;
     }
 
-    if (streamer_msg->pipeline_index >= MAX_PIPELINES)
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
     {
         ret = STREAM_ERR_INVALID_ARGS;
     }
@@ -138,7 +139,7 @@ int streamer_msg_set_state(STREAMER_T *task_data, void *msg_data)
 
     streamer_msg = (STREAMER_MSG_T *)msg_data;
 
-    if (streamer_msg->pipeline_index >= MAX_PIPELINES)
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
     {
         ret = STREAM_ERR_INVALID_ARGS;
     }
@@ -179,7 +180,7 @@ int streamer_msg_get_state(STREAMER_T *task_data, void *msg_data)
 
     streamer_msg = (STREAMER_MSG_T *)msg_data;
 
-    if (streamer_msg->pipeline_index >= MAX_PIPELINES)
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
     {
         ret = STREAM_ERR_INVALID_ARGS;
     }
@@ -223,7 +224,7 @@ int streamer_msg_send_query(STREAMER_T *task_data, void *msg_data)
 
     streamer_msg = (STREAMER_MSG_T *)msg_data;
 
-    if (streamer_msg->pipeline_index >= MAX_PIPELINES)
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
     {
         ret = STREAM_ERR_INVALID_ARGS;
     }
@@ -266,7 +267,7 @@ int streamer_msg_seek_pipeline(STREAMER_T *task_data, void *msg_data)
 
     streamer_msg = (STREAMER_MSG_T *)msg_data;
 
-    if (streamer_msg->pipeline_index >= MAX_PIPELINES)
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
     {
         ret = STREAM_ERR_INVALID_ARGS;
     }
@@ -295,10 +296,12 @@ static int streamer_get_element_index(STREAMER_T *task_data, ELEMENT_PROPERTY_T 
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    mask = property.prop & PROP_ELEMENT_MASK;
+    uint16_t masked_prop = (uint16_t)(property.prop & PROP_ELEMENT_MASK);
+    assert(masked_prop <= (uint16_t)INT16_MAX);
+    mask = (int16_t)masked_prop;
 
     /* Find the index of the element associated with this property */
-    for (index = 0; index < sizeof(property_lookup_table) / sizeof(ElementPropertyLookup); index++)
+    for (index = 0; index < (int)(sizeof(property_lookup_table) / sizeof(ElementPropertyLookup)); index++)
     {
         if (property_lookup_table[index].property == mask)
         {
@@ -341,6 +344,12 @@ int streamer_msg_set_property(STREAMER_T *task_data, void *msg_data)
     element_index = streamer_get_element_index(task_data, property);
 
     if (ELEMENT_NOT_USED == element_index)
+    {
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_INVALID_ARGS;
+    }
+
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
     {
         STREAMER_FUNC_EXIT(DBG_CORE);
         return STREAM_ERR_INVALID_ARGS;
@@ -393,6 +402,12 @@ int streamer_msg_get_property(STREAMER_T *task_data, void *msg_data)
         return STREAM_ERR_INVALID_ARGS;
     }
 
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
+    {
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_INVALID_ARGS;
+    }
+
     if (!task_data->elems[streamer_msg->pipeline_index][element_index])
     {
         STREAMER_FUNC_EXIT(DBG_CORE);
@@ -421,139 +436,146 @@ int streamer_msg_get_property(STREAMER_T *task_data, void *msg_data)
  */
 int streamer_msg_set_file(STREAMER_T *task_data, void *msg_data)
 {
-     STREAMER_MSG_T *streamer_msg;
-     ELEMENT_PROPERTY_T property;
-     int ret = STREAM_OK;
-     char *filename;
-     StreamerFileSrcConfig config;
+    STREAMER_MSG_T *streamer_msg;
+    ELEMENT_PROPERTY_T property;
+    int ret = STREAM_OK;
+    char *filename;
+    StreamerFileSrcConfig config;
 
-     STREAMER_FUNC_ENTER(DBG_CORE);
+    STREAMER_FUNC_ENTER(DBG_CORE);
 
-     streamer_msg = (STREAMER_MSG_T *)msg_data;
-     property     = streamer_msg->element_property;
-     filename     = (char *)property.val;
+    streamer_msg = (STREAMER_MSG_T *)msg_data;
+    property     = streamer_msg->element_property;
+    filename     = (char *)property.val;
 
-     /* STOP THE PIPELINE TO BE SAFE */
-     if (!task_data->pipes[streamer_msg->pipeline_index])
-     {
-         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Unable to find pipeline object:%d\n",
-                          streamer_msg->pipeline_index);
-         STREAMER_FUNC_EXIT(DBG_CORE);
-         return STREAM_ERR_GENERAL;
-     }
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
+    {
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_INVALID_ARGS;
+    }
 
-     ret = set_state_pipeline(task_data->pipes[streamer_msg->pipeline_index], STATE_NULL);
-     if (STREAM_OK != ret)
-     {
-         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set state failed:%d\n", ret);
-         STREAMER_FUNC_EXIT(DBG_CORE);
-         return ret;
-     }
+    /* STOP THE PIPELINE TO BE SAFE */
+    if (!task_data->pipes[streamer_msg->pipeline_index])
+    {
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Unable to find pipeline object:%d\n",
+                         streamer_msg->pipeline_index);
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_GENERAL;
+    }
 
-     /* DETERMINE THE DECODER AND PARSER TYPE BASED ON FILENAME */
-     // TODO: Commented to pass Zephyr build
-     ret = file_src_get_decoder_type(filename, &config);
-     if (STREAM_OK != ret)
-     {
-         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "streamer_get_fs_pipeline_config failed:%d\n", ret);
-         STREAMER_FUNC_EXIT(DBG_CORE);
-         return STREAM_ERR_INVALID_ARGS;
-     }
+    ret = set_state_pipeline(task_data->pipes[streamer_msg->pipeline_index], STATE_NULL);
+    if (STREAM_OK != ret)
+    {
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set state failed:%d\n", ret);
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return ret;
+    }
 
-     /* SET THE FILE PATH FOR FILESOURCE ELEMENT */
-     if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX])
-     {
-         property.prop = PROP_FILESRC_SET_LOCATION;
-         ret           = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX],
-                                              property.prop, property.val);
-         if (STREAM_OK != ret)
-         {
-             STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                              ELEMENT_FILE_SRC_INDEX, PROP_FILESRC_SET_LOCATION, ret);
-             STREAMER_FUNC_EXIT(DBG_CORE);
-             return ret;
-         }
-     }
-     else
-     {
-         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "File Source Element does not exist.\n");
-         STREAMER_FUNC_EXIT(DBG_CORE);
-         return STREAM_ERR_ELEMENT_NOT_FOUND;
-     }
+    /* DETERMINE THE DECODER AND PARSER TYPE BASED ON FILENAME */
+    // TODO: Commented to pass Zephyr build
+    ret = file_src_get_decoder_type(filename, &config);
+    if (STREAM_OK != ret)
+    {
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "streamer_get_fs_pipeline_config failed:%d\n", ret);
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_INVALID_ARGS;
+    }
 
-     if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX])
-     {
-         property.prop = PROP_DECODER_DECODER_TYPE;
-         property.val  = config.decoder_type;
-         ret = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX], property.prop,
-                                    property.val);
-         if (STREAM_OK != ret)
-         {
-             STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                              ELEMENT_DECODER_INDEX, PROP_DECODER_DECODER_TYPE, ret);
-             STREAMER_FUNC_EXIT(DBG_CORE);
-             return ret;
-         }
+    /* SET THE FILE PATH FOR FILESOURCE ELEMENT */
+    if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX])
+    {
+        property.prop = PROP_FILESRC_SET_LOCATION;
+        ret           = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX],
+                                             property.prop, property.val);
+        if (STREAM_OK != ret)
+        {
+            STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
+                             ELEMENT_FILE_SRC_INDEX, PROP_FILESRC_SET_LOCATION, ret);
+            STREAMER_FUNC_EXIT(DBG_CORE);
+            return ret;
+        }
+    }
+    else
+    {
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "File Source Element does not exist.\n");
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_ELEMENT_NOT_FOUND;
+    }
 
-         if (DECODER_TYPE_WAV == config.decoder_type)
-         {
-             property.prop = PROP_FILESRC_SET_CHUNK_SIZE;
-             property.val  = STREAMER_WAVE_FILE_CHUNK_SIZE;
-             ret           = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX],
-                                                  property.prop, property.val);
+    if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX])
+    {
+        property.prop = PROP_DECODER_DECODER_TYPE;
+        assert(config.decoder_type >= 0);
+        property.val = (uintptr_t)config.decoder_type;
+        ret = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX], property.prop,
+                                   property.val);
+        if (STREAM_OK != ret)
+        {
+            STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
+                             ELEMENT_DECODER_INDEX, PROP_DECODER_DECODER_TYPE, ret);
+            STREAMER_FUNC_EXIT(DBG_CORE);
+            return ret;
+        }
 
-             if (STREAM_OK != ret)
-             {
-                 STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                                  ELEMENT_FILE_SRC_INDEX, PROP_FILESRC_SET_CHUNK_SIZE, ret);
-             }
-         }
-     }
-     else
-     {
-         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Decoder object not found.\n");
-         STREAMER_FUNC_EXIT(DBG_CORE);
-         return STREAM_ERR_ELEMENT_NOT_FOUND;
-     }
+        if (DECODER_TYPE_WAV == config.decoder_type)
+        {
+            property.prop = PROP_FILESRC_SET_CHUNK_SIZE;
+            property.val  = STREAMER_WAVE_FILE_CHUNK_SIZE;
+            ret           = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_FILE_SRC_INDEX],
+                                                 property.prop, property.val);
 
-     /* CCI contains the parsers, omit the streamer parser element if using CCI */
-     if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX])
-     {
-         /* CONFIGURE DECODER ACCORDING TO PARSER TYPE*/
-         property.prop = PROP_DECODER_PARSE_TAG;
-         property.val  = PARSER_TYPE_BY_PASS == config.parser_type ? true : false;
+            if (STREAM_OK != ret)
+            {
+                STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
+                                 ELEMENT_FILE_SRC_INDEX, PROP_FILESRC_SET_CHUNK_SIZE, ret);
+            }
+        }
+    }
+    else
+    {
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Decoder object not found.\n");
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_ELEMENT_NOT_FOUND;
+    }
 
-         ret = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX], property.prop,
-                                    property.val);
+    /* CCI contains the parsers, omit the streamer parser element if using CCI */
+    if (task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX])
+    {
+        /* CONFIGURE DECODER ACCORDING TO PARSER TYPE*/
+        property.prop = PROP_DECODER_PARSE_TAG;
+        property.val  = PARSER_TYPE_BY_PASS == config.parser_type ? true : false;
 
-         if (STREAM_OK != ret)
-         {
-             STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
-                              ELEMENT_DECODER_INDEX, PROP_DECODER_PARSE_TAG, ret);
-             STREAMER_FUNC_EXIT(DBG_CORE);
-             return ret;
-         }
-     }
-     else
-     {
-         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Parser object not found.\n");
-         STREAMER_FUNC_EXIT(DBG_CORE);
-         return STREAM_ERR_ELEMENT_NOT_FOUND;
-     }
+        ret = element_set_property(task_data->elems[streamer_msg->pipeline_index][ELEMENT_DECODER_INDEX], property.prop,
+                                   property.val);
 
-     /* Update the pipeline state */
-     ret = set_state_pipeline(task_data->pipes[streamer_msg->pipeline_index], streamer_msg->state);
-     if (STREAM_OK != ret)
-     {
-         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "streamer_set_file: set state failed:%d\n", ret);
-         STREAMER_FUNC_EXIT(DBG_CORE);
-         return ret;
-     }
+        if (STREAM_OK != ret)
+        {
+            STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "set element(%d) property(%d) failed:%d\n",
+                             ELEMENT_DECODER_INDEX, PROP_DECODER_PARSE_TAG, ret);
+            STREAMER_FUNC_EXIT(DBG_CORE);
+            return ret;
+        }
+    }
+    else
+    {
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "Parser object not found.\n");
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return STREAM_ERR_ELEMENT_NOT_FOUND;
+    }
 
-     streamer_msg->errorcode = ret;
+    /* Update the pipeline state */
+    ret = set_state_pipeline(task_data->pipes[streamer_msg->pipeline_index], streamer_msg->state);
+    if (STREAM_OK != ret)
+    {
+        STREAMER_LOG_ERR(DBG_CORE, ERRCODE_INTERNAL, "streamer_set_file: set state failed:%d\n", ret);
+        STREAMER_FUNC_EXIT(DBG_CORE);
+        return ret;
+    }
 
-     STREAMER_FUNC_EXIT(DBG_CORE);
-     return (int)ret;
+    streamer_msg->errorcode = ret;
+
+    STREAMER_FUNC_EXIT(DBG_CORE);
+    return (int)ret;
 }
 #endif
 
@@ -578,7 +600,7 @@ int streamer_msg_set_repeat(STREAMER_T *task_data, void *msg_data)
     streamer_msg   = (STREAMER_MSG_T *)msg_data;
     bool repeat_on = streamer_msg->element_property.val;
 
-    if (streamer_msg->pipeline_index >= MAX_PIPELINES)
+    if ((streamer_msg->pipeline_index < 0) || (streamer_msg->pipeline_index >= MAX_PIPELINES))
     {
         ret = STREAM_ERR_INVALID_ARGS;
     }

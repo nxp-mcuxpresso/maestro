@@ -10,6 +10,8 @@
  */
 
 #include <string.h>
+#include <assert.h>
+#include <limits.h>
 
 #include "process_sink.h"
 #include "pipeline.h"
@@ -43,7 +45,7 @@ static uint8_t processsink_sink_pad_activation_handler(StreamPad *pad, uint8_t a
     {
         /* Activate/Deactivate peer source pads in PUSH mode */
         process_sink_element->current_index = 0;
-        ret                             = pad_activate_push(pad->peer, active);
+        ret                                 = pad_activate_push(pad->peer, active);
     }
 
     if (ret != true)
@@ -71,8 +73,8 @@ static uint8_t processsink_sink_pad_activation_handler(StreamPad *pad, uint8_t a
 static FlowReturn processsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *buf)
 {
     ElementProcessSink *process_sink_element = NULL;
-    FlowReturn ret                   = FLOW_OK;
-    uint32_t pkt_hdr_size            = 0, raw_data_size;
+    FlowReturn ret                           = FLOW_OK;
+    uint32_t pkt_hdr_size                    = 0, raw_data_size;
     int8_t *data_ptr;
     int dummy_arg = 0;
     int process_ret;
@@ -99,6 +101,7 @@ static FlowReturn processsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffe
      * Get the raw data size considering the offset as offset into raw data
      * from which data has to be written.
      */
+    assert(buf->size >= pkt_hdr_size);
     raw_data_size = buf->size - pkt_hdr_size;
 
     STREAMER_LOG_DEBUG(DBG_PROCESS_SINK, "\traw_data_size = %d\n", raw_data_size);
@@ -138,7 +141,8 @@ static FlowReturn processsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffe
         STREAMER_LOG_DEBUG(DBG_PROCESS_SINK, "[Process SINK]External PROCESS process function is not registered");
         return FLOW_ERROR;
     }
-    process_ret = process_sink_element->proc_func((void *)&pkt_hdr_size, (void *)buf, chunk_size);
+    assert(chunk_size <= (uint32_t)INT_MAX);
+    process_ret = process_sink_element->proc_func((void *)&pkt_hdr_size, (void *)buf, (int)chunk_size);
     if (process_ret != 0)
     {
         STREAMER_LOG_DEBUG(DBG_PROCESS_SINK, "[Process SINK]PROCESS Execute: %d\n", process_ret);
@@ -231,7 +235,7 @@ static int32_t processsink_change_state(StreamElement *element_ptr, PipelineStat
 {
     PipelineStateChange state_change;
     ElementProcessSink *process_sink_ptr = (ElementProcessSink *)element_ptr;
-    int32_t ret                  = STREAM_OK;
+    int32_t ret                          = STREAM_OK;
 
     STREAMER_FUNC_ENTER(DBG_PROCESS_SINK);
 
@@ -352,9 +356,9 @@ static int32_t processsink_set_property(StreamElement *element_ptr, uint16_t pro
         case PROP_VITSINK_FUNCPTR:
         {
             EXT_PROCESS_DESC_T *desc_ptr = (EXT_PROCESS_DESC_T *)val;
-            ret                          = process_register_ext_processing((ElementHandle)element_ptr, desc_ptr->init_func,
-                                                                       (ProcessSinkPostProcFunc)desc_ptr->proc_func, desc_ptr->deinit_func,
-                                                                       desc_ptr->arg_ptr);
+            ret = process_register_ext_processing((ElementHandle)element_ptr, desc_ptr->init_func,
+                                                  (ProcessSinkPostProcFunc)desc_ptr->proc_func, desc_ptr->deinit_func,
+                                                  desc_ptr->arg_ptr);
         }
         break;
             /*
@@ -413,8 +417,8 @@ static int32_t processsink_get_property(StreamElement *element_ptr, uint16_t pro
 
 int32_t processsink_init_element(StreamElement *element_ptr)
 {
-    int32_t ret                  = STREAM_OK;
-    uint32_t i                   = 0;
+    int32_t ret                          = STREAM_OK;
+    uint32_t i                           = 0;
     ElementProcessSink *process_sink_ptr = (ElementProcessSink *)element_ptr;
 
     STREAMER_FUNC_ENTER(DBG_PROCESS_SINK);
@@ -468,7 +472,7 @@ ERR:
 int32_t processsink_set_buffer(ElementHandle element_hdl, char *location_ptr, uint32_t size)
 {
     ElementProcessSink *process_sink_ptr = (ElementProcessSink *)element_hdl;
-    StreamReturnType ret         = STREAM_OK;
+    StreamReturnType ret                 = STREAM_OK;
 
     STREAMER_FUNC_ENTER(DBG_PROCESS_SINK);
 
@@ -490,7 +494,7 @@ int32_t processsink_set_buffer(ElementHandle element_hdl, char *location_ptr, ui
 int32_t processsink_set_raw_write_mode(ElementHandle element_hdl, uint8_t raw_write_mode)
 {
     ElementProcessSink *process_sink_ptr = (ElementProcessSink *)element_hdl;
-    StreamReturnType ret         = STREAM_OK;
+    StreamReturnType ret                 = STREAM_OK;
 
     STREAMER_FUNC_ENTER(DBG_PROCESS_SINK);
 
@@ -509,10 +513,10 @@ int32_t processsink_set_raw_write_mode(ElementHandle element_hdl, uint8_t raw_wr
 }
 
 int32_t process_register_ext_processing(ElementHandle element,
-                                    ProcessSinkInitFunc init_func_ptr,
-                                    ProcessSinkPostProcFunc proc_func_ptr,
-                                    ProcessSinkDeinitFunc deinit_func_ptr,
-                                    void *arg_ptr)
+                                        ProcessSinkInitFunc init_func_ptr,
+                                        ProcessSinkPostProcFunc proc_func_ptr,
+                                        ProcessSinkDeinitFunc deinit_func_ptr,
+                                        void *arg_ptr)
 {
     int32_t ret = STREAM_OK;
 

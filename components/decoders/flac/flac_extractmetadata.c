@@ -27,6 +27,9 @@
 #include "codec_interface.h"
 #include "cci_metadata.h"
 #include <stdlib.h> // atoi()
+#include <assert.h>
+#include <limits.h>
+#include <stdint.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 //  External Definitions
@@ -108,7 +111,8 @@ uint64_t BigNum_Divide_64_by_32_flac(uint64_t n, uint32_t base)
     {
         high /= base;
         res = (uint64_t)high << 32;
-        rem -= (uint64_t)(high * base) << 32;
+        assert(rem >= (((uint64_t)high * (uint64_t)base) << 32));
+        rem -= ((uint64_t)high * (uint64_t)base) << 32;
     }
 
     while ((int64_t)b > 0 && b < rem)
@@ -122,6 +126,7 @@ uint64_t BigNum_Divide_64_by_32_flac(uint64_t n, uint32_t base)
         if (rem >= b)
         {
             rem -= b;
+            assert(res <= (UINT64_MAX - d));
             res += d;
         }
         b >>= 1;
@@ -305,7 +310,8 @@ int CheckFlacId(CCI_Ctx *Ctx, file_meta_data_t *MetaData)
                     skip |= (u32Temp & 0x7f);
                 }
                 /* skip the rest of the tag */
-                Ctx->cci_dec_seek(0, skip, SEEK_CUR, Ctx->user_data);
+                assert(skip <= (unsigned)LONG_MAX);
+                Ctx->cci_dec_seek(0, (long)skip, SEEK_CUR, Ctx->user_data);
                 u32Temp = 0;
                 Ctx->cci_dec_read(0, (uint8_t *)&u32Temp, 4, 0, Ctx->user_data);
                 if (FLAC_FILE_IDENTIFIER == u32Temp)
@@ -429,24 +435,27 @@ int FLACReadStreamInfoMetadata(CCI_Ctx *Ctx, file_meta_data_t *MetaData, uint32_
 
     u64Temp = total_samples;
 
+    uint32_t u32StreamInfo = (uint32_t)(u64Temp & 0xFFFFFFFFU);
+
     // sample rate is of 20 bits
-    sample_rate = (0xFFFFF000 & u64Temp) >> 12;
+    sample_rate = (int32_t)((u32StreamInfo & 0xFFFFF000U) >> 12);
 
     // channel is of 3 bits
-    channels = (0x7 & (u64Temp >> 9)) + 1;
+    channels = (int32_t)((0x7U & (u32StreamInfo >> 9)) + 1U);
 
     // currently only 2 channels are supported.
     if (channels > MAX_CHANNELS)
         return ERROR;
 
     // bits per sample is of 5 bits
-    bits_per_sample = (0x1F & (u64Temp >> 4)) + 1;
+    bits_per_sample = (int32_t)((0x1FU & (u32StreamInfo >> 4)) + 1U);
 
     total_samples = 0xF & u64Temp;
 
     if ((i32Temp2 = GetFlacBytes(Ctx, 4, (uint8_t *)&u64Temp)) == -1)
         return ERROR;
     // total samples are 36 bits wide
+    assert((i32Temp2 >= 0) && (total_samples <= (INT64_MAX - i32Temp2)));
     total_samples = total_samples + i32Temp2;
 
     // read md5 sum
@@ -457,9 +466,11 @@ int FLACReadStreamInfoMetadata(CCI_Ctx *Ctx, file_meta_data_t *MetaData, uint32_
     MetaData->sample_rate     = sample_rate;
     MetaData->num_channels    = channels;
     MetaData->bits_per_sample = bits_per_sample;
-    MetaData->total_time      = (uint32_t)BigNum_Divide_64_by_32_flac(
-        ((uint64_t)total_samples * 1000),
-        sample_rate); //(((uint64_t)total_samples*1000) / sample_rate);// convert to mSec
+    assert(total_samples >= 0);
+    assert((uint64_t)total_samples <= (UINT64_MAX / 1000ULL));
+    uint64_t total_time_ms = BigNum_Divide_64_by_32_flac(((uint64_t)total_samples * 1000ULL), (uint32_t)sample_rate);
+    assert(total_time_ms <= UINT32_MAX);
+    MetaData->total_time = (uint32_t)total_time_ms; // convert to mSec
 
     return SUCCESS;
 }
@@ -499,7 +510,9 @@ int FLACReadVorbisCommentMetadata(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uin
         if (u32Length < MAX_STRING_LEN)
         {
             // read vendor string text
-            if (Ctx->cci_dec_read(0, (uint8_t *)&strCommentString, u32Length, 0, Ctx->user_data) != u32Length)
+            int32_t vendorReadLen = Ctx->cci_dec_read(0, (uint8_t *)&strCommentString, u32Length, 0, Ctx->user_data);
+            assert(vendorReadLen >= 0);
+            if ((uint32_t)vendorReadLen != u32Length)
                 return ERROR;
 
             strCommentString[u32Length] = '\0';
@@ -513,7 +526,9 @@ int FLACReadVorbisCommentMetadata(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uin
             strCommentString[MAX_STRING_LEN] = '\0';
 
             // skip remaining data
-            if (Ctx->cci_dec_seek(0, u32Length - MAX_STRING_LEN, SEEK_CUR, Ctx->user_data) != SUCCESS)
+            assert(u32Length >= MAX_STRING_LEN);
+            assert((u32Length - MAX_STRING_LEN) <= (uint32_t)LONG_MAX);
+            if (Ctx->cci_dec_seek(0, (long)(u32Length - MAX_STRING_LEN), SEEK_CUR, Ctx->user_data) != SUCCESS)
             {
                 return ERROR;
             }
@@ -540,7 +555,10 @@ int FLACReadVorbisCommentMetadata(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uin
                 if (u32Length < MAX_STRING_LEN)
                 {
                     // read comment string
-                    if (Ctx->cci_dec_read(0, (uint8_t *)&strCommentString, u32Length, 0, Ctx->user_data) != u32Length)
+                    int32_t commentReadLen =
+                        Ctx->cci_dec_read(0, (uint8_t *)&strCommentString, u32Length, 0, Ctx->user_data);
+                    assert(commentReadLen >= 0);
+                    if ((uint32_t)commentReadLen != u32Length)
                         return ERROR;
 
                     strCommentString[u32Length] = '\0';
@@ -555,7 +573,9 @@ int FLACReadVorbisCommentMetadata(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uin
                     strCommentString[MAX_STRING_LEN] = '\0';
 
                     // skip remaining data
-                    if (Ctx->cci_dec_seek(0, u32Length - MAX_STRING_LEN, SEEK_CUR, Ctx->user_data) != SUCCESS)
+                    assert(u32Length >= MAX_STRING_LEN);
+                    assert((u32Length - MAX_STRING_LEN) <= (uint32_t)LONG_MAX);
+                    if (Ctx->cci_dec_seek(0, (long)(u32Length - MAX_STRING_LEN), SEEK_CUR, Ctx->user_data) != SUCCESS)
                     {
                         return ERROR;
                     }
@@ -598,8 +618,11 @@ int FLACReadVorbisCommentMetadata(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uin
                             break;
                             case 1:
                             {
-                                shift_comments          = 12;
-                                pMetaData->track_number = atoi(strCommentString + shift_comments);
+                                shift_comments        = 12;
+                                int track_number_temp = atoi(strCommentString + shift_comments);
+                                assert(track_number_temp >= 0);
+
+                                pMetaData->track_number = (uint32_t)track_number_temp;
                                 destLocal               = NULL;
                             }
                             break;
@@ -627,7 +650,8 @@ int FLACReadVorbisCommentMetadata(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uin
                             case 5:
                             {
                                 shift_comments = 5;
-                                if ((u32Length - shift_comments) > YEAR_SIZE)
+                                assert(u32Length >= (uint32_t)shift_comments);
+                                if ((u32Length - (uint32_t)shift_comments) > YEAR_SIZE)
                                     u32Length = YEAR_SIZE + shift_comments;
                                 destPtr   = (int *)&(pMetaData->song_year);
                                 destLocal = (char *)destPtr;
@@ -642,19 +666,28 @@ int FLACReadVorbisCommentMetadata(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, uin
                         {
                             int jj = 0;
 
-                            int comment_lengths8    = u32Length - shift_comments;
+                            assert(u32Length >= (uint32_t)shift_comments);
+                            assert((u32Length - (uint32_t)shift_comments) <= (uint32_t)INT_MAX);
+                            int comment_lengths8    = (int)(u32Length - (uint32_t)shift_comments);
                             int uBytesConsumed      = 0;
                             int uBytesConsumedTotal = 0;
+                            if (comment_lengths8 > (CASCFG_TRACK_TITLE_LEN - 1))
+                                comment_lengths8 = CASCFG_TRACK_TITLE_LEN - 1;
+
                             while (comment_lengths8)
                             {
+                                assert(jj < CASCFG_TRACK_TITLE_LEN);
                                 uBytesConsumed = flac_copy_one_byte(
                                     (char *)((strCommentString + shift_comments) + uBytesConsumedTotal),
                                     (char *)(destLocal + jj));
                                 jj += 1;
+                                assert(uBytesConsumedTotal <= (INT_MAX - uBytesConsumed));
                                 uBytesConsumedTotal += uBytesConsumed;
+                                assert(comment_lengths8 >= uBytesConsumed);
                                 comment_lengths8 -= uBytesConsumed;
                             }
                             /* Null terminate the strings */
+                            assert(jj < CASCFG_TRACK_TITLE_LEN);
                             *((char *)(destLocal + jj)) = 0;
 
                         } // if(destLocal)

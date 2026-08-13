@@ -179,9 +179,14 @@ void print_message(char *message)
     /* Printing enter and exit for this function is too messy. */
 
     char logoutput[LOG_MAX_FULL_LINE_SIZE + 1];
+    int ret;
 
     /* Add trailing '\r' for FreeRTOS for proper newline with MCUXpresso SDK. */
-    snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s\r", message);
+    ret = snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s\r", message);
+    if (ret < 0)
+    {
+        logoutput[0] = '\0';
+    }
     logoutput[LOG_MAX_FULL_LINE_SIZE] = '\0';
 
     /* print to console */
@@ -201,23 +206,37 @@ void lprintf(const uint32_t module, const uint8_t level, const uint32_t error, c
     va_list args;
     char buffer[LOG_MAX_TXT_LINE_SIZE + 1];
     char logoutput[LOG_MAX_FULL_LINE_SIZE + 1];
+    int ret;
 
     if ((level & (LOGLVL_DEFAULTLEVEL)) || ((module & ActiveModules) && (level & ActiveLevel)))
     {
         va_start(args, message);
-        vsnprintf(buffer, sizeof(buffer), message, args);
+        ret = vsnprintf(buffer, sizeof(buffer), message, args);
         va_end(args);
+        if (ret < 0)
+        {
+            buffer[0] = '\0';
+        }
         buffer[LOG_MAX_TXT_LINE_SIZE] = '\0';
 
         if (level < LOGLVL_INFO)
         {
-            snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %016"PRIx32" %s %s", module_name(module), level_name(level),
-                     error, error_name(error), buffer);
+            ret = snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %016" PRIx32 " %s %s", module_name(module),
+                           level_name(level), error, error_name(error), buffer);
+            if (ret < 0)
+            {
+                logoutput[0] = '\0';
+            }
             logoutput[LOG_MAX_FULL_LINE_SIZE] = '\0';
         }
         else
         {
-            snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %s", module_name(module), level_name(level), buffer);
+            ret =
+                snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %s", module_name(module), level_name(level), buffer);
+            if (ret < 0)
+            {
+                logoutput[0] = '\0';
+            }
             logoutput[LOG_MAX_FULL_LINE_SIZE] = '\0';
         }
 
@@ -233,15 +252,24 @@ void dlprintf(const uint32_t module, const char *message, ...)
     va_list args;
     char buffer[LOG_MAX_TXT_LINE_SIZE + 1];
     char logoutput[LOG_MAX_FULL_LINE_SIZE + 1];
+    int ret;
 
     if ((LOGLVL_DEBUG & (LOGLVL_DEFAULTLEVEL)) || ((module & ActiveModules) && (LOGLVL_DEBUG & ActiveLevel)))
     {
         va_start(args, message);
-        vsnprintf(buffer, sizeof(buffer), message, args);
+        ret = vsnprintf(buffer, sizeof(buffer), message, args);
         va_end(args);
+        if (ret < 0)
+        {
+            buffer[0] = '\0';
+        }
         buffer[LOG_MAX_TXT_LINE_SIZE] = '\0';
 
-        snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %s", module_name(module), "DEBUG", buffer);
+        ret = snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %s", module_name(module), "DEBUG", buffer);
+        if (ret < 0)
+        {
+            logoutput[0] = '\0';
+        }
         logoutput[LOG_MAX_FULL_LINE_SIZE] = '\0';
 
         print_message(logoutput);
@@ -256,15 +284,24 @@ void ilprintf(const uint32_t module, const char *message, ...)
     va_list args;
     char buffer[LOG_MAX_TXT_LINE_SIZE + 1];
     char logoutput[LOG_MAX_FULL_LINE_SIZE + 1];
+    int ret;
 
     if ((LOGLVL_INFO & (LOGLVL_DEFAULTLEVEL)) || ((module & ActiveModules) && (LOGLVL_INFO & ActiveLevel)))
     {
         va_start(args, message);
-        vsnprintf(buffer, sizeof(buffer), message, args);
+        ret = vsnprintf(buffer, sizeof(buffer), message, args);
         va_end(args);
+        if (ret < 0)
+        {
+            buffer[0] = '\0';
+        }
         buffer[LOG_MAX_TXT_LINE_SIZE] = '\0';
 
-        snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %s", module_name(module), "INFO", buffer);
+        ret = snprintf(logoutput, LOG_MAX_FULL_LINE_SIZE, "%s %s %s", module_name(module), "INFO", buffer);
+        if (ret < 0)
+        {
+            logoutput[0] = '\0';
+        }
         logoutput[LOG_MAX_FULL_LINE_SIZE] = '\0';
 
         print_message(logoutput);
@@ -347,7 +384,7 @@ void clear_debug_out(const uint8_t output)
 uint32_t add_name_into_array(const uint32_t module, const char *name, name_id_link_t *name_array, uint32_t size)
 {
 #ifdef LOG_ENABLED
-    int i;
+    uint32_t i;
 
     COMMON_ENTER;
 
@@ -373,7 +410,8 @@ uint32_t add_name_into_array(const uint32_t module, const char *name, name_id_li
         {
             name_array[i].id = module;
             strncpy(name_array[i].name, name, LOG_NAME_LENGTH);
-            dlprintf(LOGMDL_COMMON, "   [%d] = %x  %s\n", i, name_array[i].id, name_array[i].name);
+            name_array[i].name[LOG_NAME_LENGTH] = '\0';
+            dlprintf(LOGMDL_COMMON, "   [%u] = %x  %s\n", i, name_array[i].id, name_array[i].name);
 
             COMMON_EXIT;
             return ERRCODE_NO_ERROR;
@@ -398,7 +436,7 @@ uint32_t add_name_into_array(const uint32_t module, const char *name, name_id_li
 uint32_t remove_name_from_array(const uint32_t module, name_id_link_t *name_array, uint32_t size)
 {
 #ifdef LOG_ENABLED
-    int i;
+    uint32_t i;
 
     COMMON_ENTER;
 
@@ -409,7 +447,7 @@ uint32_t remove_name_from_array(const uint32_t module, name_id_link_t *name_arra
         // removed always true (name_array[i].name != NULL)
         if (name_array[i].id == module)
         {
-            dlprintf(LOGMDL_COMMON, "   Removed [%d] = %x  %s\n", i, name_array[i].id, name_array[i].name);
+            dlprintf(LOGMDL_COMMON, "   Removed [%u] = %x  %s\n", i, name_array[i].id, name_array[i].name);
             name_array[i].id      = 0;
             name_array[i].name[0] = '\0';
 

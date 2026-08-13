@@ -9,6 +9,8 @@
  * @brief  This file contains the implementation for the AudioProc integration
  */
 
+#include <assert.h>
+#include <limits.h>
 #include <string.h>
 
 #include "audio_proc.h"
@@ -104,6 +106,7 @@ static FlowReturn audio_proc_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
      * Get the raw data size considering the offset as offset into raw data
      * from which data has to be written.
      */
+    assert(buf->size >= pkt_hdr_size);
     raw_data_size = buf->size - pkt_hdr_size;
 
     STREAMER_LOG_DEBUG(DBG_AUDIO_PROC, "\traw_data_size = %d\n", raw_data_size);
@@ -159,6 +162,7 @@ static FlowReturn audio_proc_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
         return FLOW_ERROR;
     }
 
+    assert(chunk_size <= INT_MAX);
     audio_proc_ret = audio_proc_element->proc_func((void *)&pkt_hdr_size, (void *)buf, chunk_size);
     if (audio_proc_ret != 0)
     {
@@ -654,4 +658,3 @@ int32_t audio_proc_register_ext_processing(ElementHandle element,
     STREAMER_FUNC_EXIT(DBG_AUDIO_PROC);
     return ret;
 }
-

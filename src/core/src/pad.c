@@ -141,7 +141,7 @@ uint8_t pad_push_event(StreamPad *pad, StreamEvent *event)
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 
-    CHK_ARGS(pad == NULL || event == NULL || EVENT_TYPE(event) == EVENT_UNKNOWN, (uint8_t)FLOW_BAD_PARAMETER);
+    CHK_ARGS(pad == NULL || event == NULL || EVENT_TYPE(event) == EVENT_UNKNOWN, (uint8_t)(FLOW_BAD_PARAMETER & 0xFF));
 
     /* (un)set the FLUSHING flag for flushing events */
     switch (EVENT_TYPE(event))

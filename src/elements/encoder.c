@@ -16,6 +16,7 @@
 #include "pad.h"
 #include "cei.h"
 #include "encoder.h"
+#include <assert.h>
 
 int32_t encoder_init_element(StreamElement *element)
 {
@@ -547,6 +548,7 @@ int32_t encoder_src_pad_process_handler(StreamPad *pad)
         }
 
         // Actual size of the payload (pulled data)
+        assert(inBuf.size >= hdrSize);
         size_t payloadSize = inBuf.size - hdrSize;
 
         // Construct the offset buffer
@@ -572,7 +574,7 @@ int32_t encoder_src_pad_process_handler(StreamPad *pad)
             {
                 // Converting endianness is just a matter of swapping the bytes
                 // around.
-                ptr[i] = (ptr[i] >> 8) | (ptr[i] << 8);
+                ptr[i] = (uint16_t)(((ptr[i] >> 8) | (ptr[i] << 8)) & 0xFFFFU);
             }
         }
 
@@ -602,6 +604,7 @@ int32_t encoder_src_pad_process_handler(StreamPad *pad)
         // Invoke the encoder and advance the current encoder location (to facilitate
         // offset when pulling data from the preceeding pad).
         retCode = fn.fnEncode(element->enc_info, &rawInBuf, &rawOutBuf);
+        assert(element->offset <= (UINT32_MAX - rawInBuf.size));
         element->offset += rawInBuf.size;
 
         if (retCode == 0)

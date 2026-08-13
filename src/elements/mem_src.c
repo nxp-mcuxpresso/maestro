@@ -13,6 +13,8 @@
  * INCLUDE FILES
  */
 #include <string.h>
+#include <assert.h>
+#include <stdint.h>
 #include "streamer_element.h"
 #include "mem_src.h"
 #include "pipeline.h"
@@ -260,12 +262,15 @@ static FlowReturn memsrc_read(ElementMemSrc *memsrc, int32_t offset, int32_t len
 
     STREAMER_FUNC_ENTER(DBG_MEMSRC);
 
+    CHK_ARGS(memsrc == NULL || buf == NULL || buf->buffer == NULL || memsrc->location == NULL, FLOW_ERROR);
+
     STREAMER_LOG_DEBUG(DBG_MEMSRC, "[MemSRC]pos: %d\n", memsrc->read_position);
 
     /* if the required offset is not same as the last read offset */
-    if (memsrc->read_position != offset)
+    assert(offset >= 0);
+    if (memsrc->read_position != (uint32_t)offset)
     {
-        memsrc->read_position = offset;
+        memsrc->read_position = (uint32_t)offset;
     }
 
     STREAMER_LOG_DEBUG(DBG_MEMSRC, "[MemSRC]read: size: %d, offset: %d\n", length, offset);
@@ -287,12 +292,13 @@ static FlowReturn memsrc_read(ElementMemSrc *memsrc, int32_t offset, int32_t len
 
     /* Check if we are reading within the array bounds.
      * If not adjust the read size */
-    if (memsrc->read_position + bytes_read > memsrc->size)
+    assert(bytes_read >= 0);
+    if (memsrc->read_position > (memsrc->size - (uint32_t)bytes_read))
     {
         // Case of final read: read as many bytes as we have left
         if (memsrc->size > memsrc->read_position)
         {
-            bytes_read = memsrc->size - memsrc->read_position;
+            bytes_read = (int32_t)(memsrc->size - memsrc->read_position);
         }
         else
         {
@@ -300,10 +306,15 @@ static FlowReturn memsrc_read(ElementMemSrc *memsrc, int32_t offset, int32_t len
         }
     }
 
+    if (data_buf == NULL)
+    {
+        goto eos;
+    }
     memcpy(data_buf, &(memsrc->location[memsrc->read_position]), bytes_read);
 
     /* increment read position */
-    memsrc->read_position += bytes_read;
+    assert(bytes_read >= 0);
+    memsrc->read_position += (uint32_t)bytes_read;
 
     /* update buffer offset */
     buf->offset = offset;
@@ -371,12 +382,15 @@ int32_t memsrc_src_pad_process(StreamPad *pad)
  */
 int32_t memsrc_src_pad_process(StreamPad *pad)
 {
-    ElementMemSrc *memsrc = (ElementMemSrc *)pad->parent;
+    ElementMemSrc *memsrc = NULL;
     FlowReturn ret        = FLOW_OK;
     uint32_t length = 0, offset = 0;
     StreamBuffer buf;
 
     STREAMER_FUNC_ENTER(DBG_MEMSRC);
+
+    CHK_ARGS(pad == NULL || pad->parent == NULL, STREAM_ERR_INVALID_ARGS);
+    memsrc = (ElementMemSrc *)pad->parent;
 
     /*2. Get the chunk size to read from memory */
     length = memsrc->chunk_size;
@@ -385,7 +399,7 @@ int32_t memsrc_src_pad_process(StreamPad *pad)
     /* init buffer metadata */
     buf.buffer = NULL;
     buf.size   = 0;
-    buf.time   = (uint32_t)-1; /* Don't know anything about time */
+    buf.time   = UINT32_MAX; /* Don't know anything about time */
     buf.offset = 0;
 
     /* Its an end of stream */
@@ -395,7 +409,9 @@ int32_t memsrc_src_pad_process(StreamPad *pad)
         buf.buffer = memsrc->buffer;
 
         /* read chunk_size of data */
-        ret = memsrc_read(memsrc, offset, length, &buf);
+        assert(offset <= (uint32_t)INT32_MAX);
+        assert(length <= (uint32_t)INT32_MAX);
+        ret = memsrc_read(memsrc, (int32_t)offset, (int32_t)length, &buf);
         if (ret == FLOW_EOS)
         {
             StreamEvent event;
@@ -418,14 +434,21 @@ int32_t memsrc_src_pad_process(StreamPad *pad)
             }
 
             /* Set pointer to read data to buffer */
+            if (buf.buffer == NULL)
+            {
+                STREAMER_FUNC_EXIT(DBG_MEMSRC);
+                return STREAM_ERR_GENERAL;
+            }
             if (memsrc->mem_type == RAW_DATA)
             {
+                assert(length <= (SIZE_MAX - sizeof(RawPacketHeader)));
                 memset(buf.buffer + sizeof(RawPacketHeader), 0, length);
                 buf.size = sizeof(RawPacketHeader) + length;
             }
             else if (memsrc->mem_type == AUDIO_DATA)
             {
                 /* Set pointer to read data to buffer */
+                assert(length <= (SIZE_MAX - sizeof(AudioPacketHeader)));
                 memset(buf.buffer + sizeof(AudioPacketHeader), 0, length);
                 buf.size = sizeof(AudioPacketHeader) + length;
             }
@@ -448,7 +471,7 @@ int32_t memsrc_src_pad_process(StreamPad *pad)
         }
 
         /* Update audio packet header values as values may have been changed in the AUDIO_PROC element. */
-        if (memsrc->mem_type == AUDIO_DATA)
+        if (memsrc->mem_type == AUDIO_DATA && buf.buffer != NULL)
         {
             AudioPacketHeader *pkt_hdr = NULL;
             /* set data type id */
@@ -502,7 +525,10 @@ static FlowReturn memsrc_pull(StreamPad *pad, StreamBuffer *buffer, uint32_t siz
     ((AudioPacketHeader *)BUFFER_PTR(buffer))->id = RAW_DATA;
 
     /* read chunk_size of data */
-    ret = memsrc_read(memsrc, offset, size, buffer);
+    assert(offset <= (uint32_t)INT32_MAX);
+    assert(size <= (uint32_t)INT32_MAX);
+    ret = memsrc_read(memsrc, (int32_t)offset, (int32_t)size, buffer);
+
     if (ret == FLOW_EOS)
     {
         /* Its an end of stream */

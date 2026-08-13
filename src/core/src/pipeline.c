@@ -13,6 +13,7 @@
  * INCLUDE FILES
  */
 #include <string.h>
+#include <assert.h>
 
 #include "audio_cfg.h"
 #include "streamer_api.h"
@@ -83,7 +84,7 @@ static int pipeline_path_blocked(StreamElement *element);
  * GLOBAL FUNCTIONS
  */
 
-int32_t create_pipeline(PipelineHandle *handle, unsigned int index, STREAMER_OUT_MESSAGE_CHANNEL_T * message_channel_out)
+int32_t create_pipeline(PipelineHandle *handle, unsigned int index, STREAMER_OUT_MESSAGE_CHANNEL_T *message_channel_out)
 {
     Pipeline *pipeline = NULL;
     int32_t ret        = STREAM_OK;
@@ -106,7 +107,7 @@ int32_t create_pipeline(PipelineHandle *handle, unsigned int index, STREAMER_OUT
         return STREAM_ERR_NO_MEM;
     }
 
-    pipeline->index  = index;
+    pipeline->index               = index;
     pipeline->message_channel_out = message_channel_out;
 
     PIPELINE_STATE(pipeline) = STATE_NULL;
@@ -201,7 +202,9 @@ int32_t set_state_pipeline(PipelineHandle handle, PipelineState state)
 
                 while (current_state != state)
                 {
-                    next_state = (PipelineState)(((uint32_t)current_state + increment) & PIPELINE_STATE_MASK);
+                    assert(((int32_t)current_state + (int32_t)increment) >= 0);
+                    next_state = (PipelineState)(((uint32_t)((int32_t)current_state + (int32_t)increment)) &
+                                                 PIPELINE_STATE_MASK);
 
                     /* Activate or deactivate the pad if we are making a
                      * transitions from READY to PAUSE or vice versa
@@ -365,7 +368,7 @@ int32_t seek_relative(PipelineHandle handle, int32_t time_msec)
 
     if (STREAM_OK == ret)
     {
-        new_time = ((int32_t)data.value32u + time_msec);
+        new_time = (int32_t)((int32_t)data.value32u + time_msec);
         if (duration < new_time)
         {
             new_time = duration - 1000;
@@ -632,7 +635,9 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
     /* If any of the arguments are invalid */
     CHK_ARGS(pipeline == NULL || msg == NULL, STREAM_ERR_INVALID_ARGS);
 
-    streamer_msg.pipeline_index = pipeline->index;
+    uint8_t u8PipelineIndex = (uint8_t)((uint32_t)pipeline->index & 0xFFU);
+    assert(u8PipelineIndex <= (uint8_t)INT8_MAX);
+    streamer_msg.pipeline_index = (int8_t)u8PipelineIndex;
     streamer_msg.state          = pipeline->state;
     switch (msg->message)
     {
@@ -651,16 +656,20 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
             }
             break;
         case MSG_INFO_AUDIO_BITRATE:
-            pipeline->track_info.bit_rate = msg->data;
+            assert(msg->data <= INT32_MAX);
+            pipeline->track_info.bit_rate = (int32_t)msg->data;
             break;
         case MSG_INFO_AUDIO_CHANNELS:
-            pipeline->track_info.channels = msg->data;
+            assert(msg->data <= INT32_MAX);
+            pipeline->track_info.channels = (int32_t)msg->data;
             break;
         case MSG_INFO_AUDIO_SAMPLERATE:
-            pipeline->track_info.sample_rate = msg->data;
+            assert(msg->data <= INT32_MAX);
+            pipeline->track_info.sample_rate = (int32_t)msg->data;
             break;
         case MSG_INFO_AUDIO_TYPE:
-            pipeline->track_info.audio_type = msg->data;
+            assert(msg->data <= INT32_MAX);
+            pipeline->track_info.audio_type = (int32_t)msg->data;
             break;
         case MSG_INFO_CODEC_INFO:
             strncpy(pipeline->track_info.codec_info, (char *)msg->data, CODEC_INFO_LEN - 1);
@@ -670,8 +679,9 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
             if (pipeline->message_channel_out->is_mq_created)
             {
                 streamer_msg.id = STREAM_MSG_UPDATE_DURATION;
-                streamer_msg.event_data = msg->data;
-                ret = OSA_MsgQPut(pipeline->message_channel_out->mq, (char *)&streamer_msg);
+                assert(msg->data <= INT32_MAX);
+                streamer_msg.event_data = (int)msg->data;
+                ret                     = OSA_MsgQPut(pipeline->message_channel_out->mq, (char *)&streamer_msg);
             }
             break;
         case MSG_INFO_ALBUM:
@@ -724,8 +734,9 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
         case MSG_INFO_POSITION:
             if (pipeline->message_channel_out->is_mq_created)
             {
-                streamer_msg.id         = STREAM_MSG_UPDATE_POSITION;
-                streamer_msg.event_data = msg->data;
+                streamer_msg.id = STREAM_MSG_UPDATE_POSITION;
+                assert(msg->data <= INT32_MAX);
+                streamer_msg.event_data = (int)msg->data;
                 ret                     = OSA_MsgQPut(pipeline->message_channel_out->mq, (char *)&streamer_msg);
             }
             break;
@@ -741,8 +752,9 @@ int32_t send_msg_pipeline(Pipeline *pipeline, StreamMessage *msg)
         case MSG_STREAM_ERROR:
             if (pipeline->message_channel_out->is_mq_created)
             {
-                streamer_msg.id         = STREAM_MSG_ERROR;
-                streamer_msg.event_data = msg->data;
+                streamer_msg.id = STREAM_MSG_ERROR;
+                assert(msg->data <= INT32_MAX);
+                streamer_msg.event_data = (int)msg->data;
                 ret                     = OSA_MsgQPut(pipeline->message_channel_out->mq, (char *)&streamer_msg);
             }
             break;

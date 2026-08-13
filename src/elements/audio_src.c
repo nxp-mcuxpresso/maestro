@@ -13,6 +13,7 @@
  * INCLUDE FILES
  */
 #include <string.h>
+#include <assert.h>
 #include "audio_cfg.h"
 #include "streamer_element.h"
 #include "audio_src.h"
@@ -52,38 +53,31 @@ static int32_t audiosrc_set_num_channels(ElementHandle element, uint32_t num_cha
  * AudioSrcOpenDevice:
  */
 static AudioSrcStreamErrorType (*AudioSrcOpenDevice[LAST_AUDIOSRC_DEVICE_DRIVER_TYPE])(ElementAudioSrc *audiosrc) = {
-    audio_src_default_init_device
-};
+    audio_src_default_init_device};
 
 /**
  * AudioSrcCloseDevice:
  */
 static AudioSrcStreamErrorType (*AudioSrcCloseDevice[LAST_AUDIOSRC_DEVICE_DRIVER_TYPE])(ElementAudioSrc *audiosrc) = {
-    audio_src_default_deinit_device
-};
+    audio_src_default_deinit_device};
 
 /**
  * AudioSrcStartDevice:
  */
 static AudioSrcStreamErrorType (*AudioSrcStartDevice[LAST_AUDIOSRC_DEVICE_DRIVER_TYPE])(ElementAudioSrc *audiosrc) = {
-    audio_src_default_start_device
-};
+    audio_src_default_start_device};
 
 /**
  * AudioSrcStopDevice:
  */
 static AudioSrcStreamErrorType (*AudioSrcStopDevice[LAST_AUDIOSRC_DEVICE_DRIVER_TYPE])(ElementAudioSrc *audiosrc) = {
-    audio_src_default_stop_device
-};
+    audio_src_default_stop_device};
 
 /**
  * AudioSrcReadDevice:
  */
-static AudioSrcStreamErrorType (*AudioSrcReadDevice[LAST_AUDIOSRC_DEVICE_DRIVER_TYPE])(ElementAudioSrc *audiosrc,
-                                                                                       uint32_t len,
-                                                                                       StreamBuffer *buf) = {
-    audio_src_default_read_device
-};
+static AudioSrcStreamErrorType (*AudioSrcReadDevice[LAST_AUDIOSRC_DEVICE_DRIVER_TYPE])(
+    ElementAudioSrc *audiosrc, uint32_t len, StreamBuffer *buf) = {audio_src_default_read_device};
 
 /*
  * LOCAL FUNCTIONS
@@ -598,7 +592,7 @@ static int32_t audiosrc_src_process(StreamPad *pad)
     /* init buffer metadata */
     buf.buffer = NULL;
     buf.size   = 0;
-    buf.time   = (uint32_t)-1; /* Don't know anything about time */
+    buf.time   = UINT32_MAX; /* Don't know anything about time */
     buf.offset = 0;
 
     /* Its an end of stream */
@@ -696,7 +690,7 @@ static FlowReturn audiosrc_src_pull_handler(StreamPad *pad, StreamBuffer *buffer
     /* init buffer metadata */
     buffer->buffer = NULL;
     buffer->size   = 0;
-    buffer->time   = (uint32_t)-1; /* Don't know anything about time */
+    buffer->time   = UINT32_MAX; /* Don't know anything about time */
     buffer->offset = offset;
 
     /* Its an end of stream */
@@ -830,10 +824,10 @@ static uint8_t audiosrc_src_activate_push(StreamPad *pad, uint8_t active)
          * Init will Open pcm device for audio capture
          */
         /* call the device driver specific open function */
-        ret = AudioSrcOpenDevice[audiosrc->device_driver_type](audiosrc);
+        AudioSrcStreamErrorType open_ret = AudioSrcOpenDevice[audiosrc->device_driver_type](audiosrc);
 
         /* check for device open success */
-        ret = ret == 0;
+        ret = (open_ret == AUDIOSRC_SUCCESS);
     }
     else
     {
@@ -890,10 +884,10 @@ static uint8_t audiosrc_src_activate_pull(StreamPad *pad, uint8_t active)
          * Init will Open pcm device for audio capture
          */
         /* call the device driver specific open function */
-        ret = AudioSrcOpenDevice[audiosrc->device_driver_type](audiosrc);
+        AudioSrcStreamErrorType open_ret = AudioSrcOpenDevice[audiosrc->device_driver_type](audiosrc);
 
         /* check for device open success */
-        ret = ret == 0;
+        ret = (open_ret == AUDIOSRC_SUCCESS);
     }
     else
     {

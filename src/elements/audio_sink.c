@@ -8,6 +8,8 @@
  * @file    audio_sink.c
  * @brief  This file contains the audio sink element implementation.
  */
+#include <assert.h>
+#include <limits.h>
 #include <string.h>
 #include "audio_cfg.h"
 #include "streamer.h"
@@ -135,10 +137,14 @@ static FlowReturn audiosink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer 
     {
         uint32_t bytes_per_sample;
         bytes_per_sample = AUDIO_BITS_PER_SAMPLE(data_packet) / 8;
+        assert(channels != 0U);
+        assert(bytes_per_sample <= (0xFFFFFFFFU / channels));
+        assert(sample_rate != 0U);
+        assert((bytes_per_sample * channels) <= (0xFFFFFFFFU / sample_rate));
         audio_sink_ptr->elapsed_time_usec +=
             (((uint64_t)chunk_size * (uint64_t)1000000) / (bytes_per_sample * channels * sample_rate));
 
-        audio_sink_ptr->elapsed_time_msec += (audio_sink_ptr->elapsed_time_usec / 1000);
+        audio_sink_ptr->elapsed_time_msec += (uint32_t)((audio_sink_ptr->elapsed_time_usec / 1000) & 0xFFFFFFFFU);
         audio_sink_ptr->elapsed_time_usec = (audio_sink_ptr->elapsed_time_usec % 1000);
 
         if (time_report_diff)
@@ -539,6 +545,7 @@ static int32_t audiosink_set_property(StreamElement *element_ptr, uint16_t prop,
         case PROP_SPEAKER_DEVICE_DRIVER_TYPE:
         case PROP_USB_SINK_DEVICE_DRIVER_TYPE:
             STREAMER_LOG_DEBUG(DBG_AUDIO_SINK, "[Audio sink] driver type: %d\n", val);
+            assert(val < (uint32_t)LAST_AUDIO_SINK_DEVICE_DRIVER_TYPE);
             ret =
                 audiosink_set_device_driver_type((ElementHandle)(uintptr_t)element_ptr, (AudioSinkDeviceDriverType)val);
             if (AUDIO_SINK_SUCCESS == ret)
@@ -564,6 +571,7 @@ static int32_t audiosink_set_property(StreamElement *element_ptr, uint16_t prop,
 
         case PROP_SPEAKER_SET_VOLUME:
         case PROP_USB_SINK_SET_VOLUME:
+            assert(val <= (uint32_t)INT_MAX);
             _ret = audio_sink_ptr->device_ptr->set_volume_func(audio_sink_ptr, (int)val);
             if (_ret != AUDIO_SINK_SUCCESS)
                 ret = STREAM_ERR_GENERAL;

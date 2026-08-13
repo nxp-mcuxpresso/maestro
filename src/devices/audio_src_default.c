@@ -13,6 +13,7 @@
 #include "audio_cfg.h"
 #include "audio_src_default.h"
 #include <string.h>
+#include <assert.h>
 
 /*!
  * @param audio_src_element: pointer to an audio src instance
@@ -51,9 +52,10 @@ AudioSrcStreamErrorType audiosrc_default_init_params(ElementAudioSrc *audio_src_
         return AUDIOSRC_FAILED;
     }
 
-    ret = audio_src_element->appFunctions.set_param_func(
-        audio_src_element->sample_rate, audio_src_element->pkt_hdr.bits_per_sample,
-        audio_src_element->pkt_hdr.num_channels, false, audio_src_element->dummy_tx, 0);
+    uint8_t num_channels = (uint8_t)(audio_src_element->pkt_hdr.num_channels & 0xFFU);
+    ret                  = audio_src_element->appFunctions.set_param_func(audio_src_element->sample_rate,
+                                                                          audio_src_element->pkt_hdr.bits_per_sample, num_channels,
+                                                                          false, audio_src_element->dummy_tx, 0);
     if (ret != 0)
     {
         STREAMER_LOG_ERR(DBG_AUDIO_SRC, ERRCODE_NOT_SUPPORTED, "[Audio SRC] failed to set device params\n");
@@ -191,7 +193,9 @@ AudioSrcStreamErrorType audio_src_default_start_device(ElementAudioSrc *audio_sr
     audio_src_element->pkt_hdr.chunk_size = audio_src_element->chunk_size;
     audio_src_element->first_run          = true;
 
-    alloc_size = sizeof(AudioPacketHeader) + audio_src_element->chunk_size;
+    uint32_t total_size = (uint32_t)sizeof(AudioPacketHeader) + audio_src_element->chunk_size;
+    assert(total_size <= 0xFFFFU);
+    alloc_size = (uint16_t)(total_size & 0xFFFFU);
     for (int i = 0; i < AUDIO_SRC_BUFFER_NUM; i++)
     {
         dev_info->unaligned_buf[i] = OSA_MemoryAllocate(alloc_size + SIZE_ALIGNMENT);
@@ -263,10 +267,10 @@ AudioSrcStreamErrorType audio_src_default_read_device(ElementAudioSrc *audio_src
                                                       uint32_t length,
                                                       StreamBuffer *buf)
 {
-    AudioPacketHeader *pkt_hdr  = NULL;
+    AudioPacketHeader *pkt_hdr     = NULL;
     DefaultSrcDeviceInfo *dev_info = NULL;
-    char *buffer_ptr            = NULL;
-    int8_t next_index           = 0;
+    char *buffer_ptr               = NULL;
+    int8_t next_index              = 0;
     int ret;
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SRC);
@@ -308,7 +312,9 @@ AudioSrcStreamErrorType audio_src_default_read_device(ElementAudioSrc *audio_src
     pkt_hdr             = (AudioPacketHeader *)(&audio_src_element->pkt_hdr);
     pkt_hdr->chunk_size = audio_src_element->chunk_size;
 
-    next_index                      = ((int8_t)dev_info->buff_index + 1) % AUDIO_SRC_BUFFER_NUM;
+    uint8_t cur_index = dev_info->buff_index;
+    assert(cur_index <= (uint8_t)INT8_MAX);
+    next_index                      = ((int8_t)cur_index + 1) % AUDIO_SRC_BUFFER_NUM;
     buffer_ptr                      = dev_info->audbuf[next_index];
     dev_info->buff_size[next_index] = pkt_hdr->chunk_size;
 
@@ -316,8 +322,14 @@ AudioSrcStreamErrorType audio_src_default_read_device(ElementAudioSrc *audio_src
     ret = audio_src_element->appFunctions.process_func((uint8_t *)(buffer_ptr + sizeof(AudioPacketHeader)),
                                                        dev_info->buff_size[next_index]);
 
-    dev_info->buffer_queue.buffer_idx[dev_info->buffer_queue.write_idx] = next_index;
-    dev_info->buffer_queue.write_idx = (dev_info->buffer_queue.write_idx + 1) % dev_info->buffer_queue.size;
+    int8_t write_idx = dev_info->buffer_queue.write_idx;
+    assert((write_idx >= 0) && (write_idx < (int8_t)sizeof(dev_info->buffer_queue.buffer_idx)));
+    dev_info->buffer_queue.buffer_idx[write_idx] = next_index;
+    int next_write_idx                           = (write_idx + 1) % dev_info->buffer_queue.size;
+    assert((next_write_idx >= 0) && (next_write_idx <= INT8_MAX));
+    dev_info->buffer_queue.write_idx = (int8_t)next_write_idx;
+
+    assert(dev_info->buff_index < AUDIO_SRC_BUFFER_NUM);
 
     if (ret < 0)
     {
@@ -327,9 +339,15 @@ AudioSrcStreamErrorType audio_src_default_read_device(ElementAudioSrc *audio_src
     }
     else if ((ret == 0) && (!audio_src_element->first_run))
     {
-        buf->buffer = (int8_t *)dev_info->audbuf[dev_info->buffer_queue.buffer_idx[dev_info->buffer_queue.read_idx]];
-        buf->size   = dev_info->buff_size[dev_info->buff_index] + sizeof(AudioPacketHeader);
-        dev_info->buffer_queue.read_idx = (dev_info->buffer_queue.read_idx + 1) % dev_info->buffer_queue.size;
+        int8_t read_idx = dev_info->buffer_queue.read_idx;
+        assert((read_idx >= 0) && (read_idx < (int8_t)sizeof(dev_info->buffer_queue.buffer_idx)));
+        int8_t buf_idx = dev_info->buffer_queue.buffer_idx[read_idx];
+        assert((buf_idx >= 0) && (buf_idx < AUDIO_SRC_BUFFER_NUM));
+        buf->buffer       = (int8_t *)dev_info->audbuf[buf_idx];
+        buf->size         = dev_info->buff_size[dev_info->buff_index] + sizeof(AudioPacketHeader);
+        int next_read_idx = (read_idx + 1) % dev_info->buffer_queue.size;
+        assert((next_read_idx >= 0) && (next_read_idx <= INT8_MAX));
+        dev_info->buffer_queue.read_idx = (int8_t)next_read_idx;
     }
     else
     {

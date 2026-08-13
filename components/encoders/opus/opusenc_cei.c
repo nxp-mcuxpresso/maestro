@@ -14,6 +14,9 @@
 #include "opus.h"
 #include "opus_types.h"
 
+#include <assert.h>
+#include <limits.h>
+
 // (u)int32_t little-endian to big-endian conversion macro
 #define LEBE32(x) (((x >> 24) & 0xff) | ((x << 8) & 0xff0000) | ((x >> 8) & 0xff00) | ((x << 24) & 0xff000000))
 
@@ -38,7 +41,9 @@ typedef struct
 int OPUSEncoderGetMemorySize(uint8_t channels)
 {
     // Allocating OpusEncoderInfo and the OpusEncoder struct
-    return sizeof(OpusEncoderInfo) + opus_encoder_get_size(channels);
+    size_t total = sizeof(OpusEncoderInfo) + (size_t)opus_encoder_get_size(channels);
+    assert(total <= (size_t)INT_MAX);
+    return (int)total;
 }
 
 int OPUSEncoderInit(void *memory, uint32_t sampleRate, uint8_t channels)
@@ -54,7 +59,8 @@ int OPUSEncoderInit(void *memory, uint32_t sampleRate, uint8_t channels)
     OpusEncoder *enc = (OpusEncoder *)((uint8_t *)memory + sizeof(OpusEncoderInfo));
 
     // Initialize the decoder state
-    ret = opus_encoder_init(enc, sampleRate, channels, OPUS_APPLICATION_AUDIO);
+    assert(sampleRate <= (uint32_t)INT32_MAX);
+    ret = opus_encoder_init(enc, (opus_int32)sampleRate, channels, OPUS_APPLICATION_AUDIO);
     if (ret != OPUS_OK)
         goto end;
 
@@ -229,11 +235,14 @@ int OPUSEncoderEncode(void *memory, BufferInfo *source, BufferInfo *dest)
     OpusEncoder *enc         = (OpusEncoder *)((uint8_t *)memory + sizeof(OpusEncoderInfo));
 
     // Encode
+    assert(dest->size >= sizeof(OpusPacketHeader));
+    size_t maxPayload = dest->size - sizeof(OpusPacketHeader);
+    assert(maxPayload <= (size_t)INT32_MAX);
     int ret =
         opus_encode(enc, source->ptr,
                     source->size / encInfo->channels / sizeof(opus_int16), // Number of samples in the source buffer
                     (uint8_t *)dest->ptr + sizeof(OpusPacketHeader), // Payload is offset because of the packet header
-                    dest->size - sizeof(OpusPacketHeader) // Maximum payload size does not contain the packet header
+                    (opus_int32)maxPayload // Maximum payload size does not contain the packet header
         );
 
     // Lower than zero, that designates an error
@@ -258,7 +267,9 @@ int OPUSEncoderEncode(void *memory, BufferInfo *source, BufferInfo *dest)
 
     // Header is at the beginning of the packet
     OpusPacketHeader *hdr = (OpusPacketHeader *)dest->ptr;
-    hdr->len              = LEBE32(ret); // Output is big endian
+    uint32_t retLen       = (uint32_t)ret;
+    uint32_t beLen        = (uint32_t)LEBE32(retLen);
+    hdr->len              = (int32_t)beLen; // Output is big endian
 
     // Get the entropy from the encoder and save it
     uint32_t hdrEntropy = 0;
@@ -266,7 +277,9 @@ int OPUSEncoderEncode(void *memory, BufferInfo *source, BufferInfo *dest)
     hdr->entropy = LEBE32(hdrEntropy); // Output is big endian
 
     // We produced (header + payload length) bytes
-    return sizeof(OpusPacketHeader) + ret;
+    size_t packetSize = sizeof(OpusPacketHeader) + (size_t)ret;
+    assert(packetSize <= (size_t)INT_MAX);
+    return (int)packetSize;
 }
 
 #endif /* OPUS_ENCODE */

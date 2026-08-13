@@ -21,6 +21,8 @@
 //  Includes
 ////////////////////////////////////////////////////////////////////////////////
 #include <string.h>
+#include <assert.h>
+#include <stdint.h>
 #include "cci_metadata.h"
 #include "mp3_metadata.h"
 #include "mp3_id3v2_internal.h"
@@ -483,12 +485,24 @@ int32_t Mp3MetaDataReadID3V2(CCI_Ctx *Ctx, int32_t iIgnored, file_meta_data_t *p
                         else
                         {
                             // Not supported version ...
-                            Ctx->cci_dec_seek(0, uCurrentPos + uHeaderSize, SEEK_SET, Ctx->user_data);
+                            assert(uCurrentPos >= 0);
+                            assert((uint32_t)uCurrentPos <= (UINT32_MAX - uHeaderSize));
+                            {
+                                uint32_t u32SeekPos = (uint32_t)uCurrentPos + uHeaderSize;
+                                assert(u32SeekPos <= (uint32_t)INT32_MAX);
+                                Ctx->cci_dec_seek(0, (int32_t)u32SeekPos, SEEK_SET, Ctx->user_data);
+                            }
                             break;
                         }
                     }
                     // seek past the ID3V2.4 header, or back to where we started if there was no tag present.
-                    Ctx->cci_dec_seek(0, uCurrentPos + uHeaderSize, SEEK_SET, Ctx->user_data);
+                    assert(uCurrentPos >= 0);
+                    assert((uint32_t)uCurrentPos <= (UINT32_MAX - uHeaderSize));
+                    {
+                        uint32_t u32SeekPos = (uint32_t)uCurrentPos + uHeaderSize;
+                        assert(u32SeekPos <= (uint32_t)INT32_MAX);
+                        Ctx->cci_dec_seek(0, (int32_t)u32SeekPos, SEEK_SET, Ctx->user_data);
+                    }
                     uCurrentPos = Ctx->cci_dec_tell(0, Ctx->user_data);
 
                     uHeaderSize = 0;
@@ -496,7 +510,13 @@ int32_t Mp3MetaDataReadID3V2(CCI_Ctx *Ctx, int32_t iIgnored, file_meta_data_t *p
                 } // ID3
                 else
                 {
-                    Ctx->cci_dec_seek(0, uCurrentPos + uHeaderSize, SEEK_SET, Ctx->user_data);
+                    assert(uCurrentPos >= 0);
+                    assert((uint32_t)uCurrentPos <= (UINT32_MAX - uHeaderSize));
+                    {
+                        uint32_t u32SeekPos = (uint32_t)uCurrentPos + uHeaderSize;
+                        assert(u32SeekPos <= (uint32_t)INT32_MAX);
+                        Ctx->cci_dec_seek(0, (int32_t)u32SeekPos, SEEK_SET, Ctx->user_data);
+                    }
                     break;
                 }
             }
@@ -628,8 +648,8 @@ bool Id3V2ReadFrame(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
                         break;
                     case TRCK:
                     {
-                        uint16_t pTracknum[TRACKNUM_SIZE];
-                        uint32_t TracknumSize = 0;
+                        uint16_t pTracknum[TRACKNUM_SIZE] = {0};
+                        uint32_t TracknumSize             = 0;
                         uint32_t TmpVal[3];
                         uint16_t *pTmp;
 
@@ -637,7 +657,10 @@ bool Id3V2ReadFrame(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
                         for (pTmp = pTracknum, TracknumSize = 0; (*pTmp != 0) && (*pTmp != '/'); pTmp++)
                         {
                             if (*pTmp != ' ') // ignoring initial spaces from actual number
+                            {
+                                assert(TracknumSize < UINT32_MAX);
                                 TracknumSize++;
+                            }
                         }
 
                         TmpVal[0] = 0;
@@ -645,8 +668,12 @@ bool Id3V2ReadFrame(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
                         while (TracknumSize)
                         {
                             pTmp--;
-                            TmpVal[2] = *pTmp - '0';
+                            assert((*pTmp >= '0') && (*pTmp <= '9'));
+                            TmpVal[2] = (uint32_t)(*pTmp - '0');
+                            assert((TmpVal[2] == 0U) || (TmpVal[1] <= (UINT32_MAX / TmpVal[2])));
+                            assert(TmpVal[0] <= (UINT32_MAX - (TmpVal[1] * TmpVal[2])));
                             TmpVal[0] += TmpVal[1] * TmpVal[2];
+                            assert(TmpVal[1] <= (UINT32_MAX / 10U));
                             TmpVal[1] *= 10;
                             TracknumSize--;
                         }
@@ -663,17 +690,26 @@ bool Id3V2ReadFrame(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
                 100. These don't fit the above processing, so you'll have to rewrite the algorithm a bit. */
             }
             /* if you want to handle a new type of frame, put that here! */
-            if ((lStartOfFrame + uFrameSize) >= mp3_GetFileSize(Ctx))
+            assert(lStartOfFrame >= 0);
+            assert((uint32_t)lStartOfFrame <= (UINT32_MAX - uFrameSize));
             {
-                bValidFrame = 0;
-                return bValidFrame;
+                uint32_t u32FrameEnd = (uint32_t)lStartOfFrame + uFrameSize;
+                if (u32FrameEnd >= (uint32_t)mp3_GetFileSize(Ctx))
+                {
+                    bValidFrame = 0;
+                    return bValidFrame;
+                }
+                /* go back to the start of the frame data */
+                assert(u32FrameEnd <= (uint32_t)INT32_MAX);
+                Ctx->cci_dec_seek(0, (int32_t)u32FrameEnd, SEEK_SET, Ctx->user_data);
             }
-            /* go back to the start of the frame data */
-            Ctx->cci_dec_seek(0, lStartOfFrame + uFrameSize, SEEK_SET, Ctx->user_data);
         }
         else
+        {
             /* seek to the next frame. */
-            Ctx->cci_dec_seek(0, uFrameSize, SEEK_CUR, Ctx->user_data);
+            assert(uFrameSize <= (uint32_t)INT32_MAX);
+            Ctx->cci_dec_seek(0, (int32_t)uFrameSize, SEEK_CUR, Ctx->user_data);
+        }
     }
     else
         /* seek to where we started reading */
@@ -725,8 +761,8 @@ bool Id3V2ReadFramev2(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
             if (uFrameType == 'T')
             {
                 /* If its a text frame, lets process it this way to save a little memory. */
-                uint16_t *pString = NULL;
-                uint16_t ShortBuf[64];
+                uint16_t *pString     = NULL;
+                uint16_t ShortBuf[64] = {0};
                 uint32_t iBufferLength;
                 switch (uFrameSubType)
                 {
@@ -795,22 +831,29 @@ bool Id3V2ReadFramev2(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
                     case TRK:
                     {
                         /* Track ID */
-                        uint16_t pTracknum[TRACKNUM_SIZE];
+                        uint16_t pTracknum[TRACKNUM_SIZE] = {0};
                         uint32_t TracknumSize;
                         uint32_t TmpVal[3];
                         uint16_t *pTmp;
 
                         Id3V2ReadVariedStringToUnicodeBuffer(Ctx, uFrameFlags, uFrameSize, pTracknum, TRACKNUM_SIZE);
                         for (pTmp = pTracknum, TracknumSize = 0; (*pTmp != 0) && (*pTmp != '/'); pTmp++)
+                        {
+                            assert(TracknumSize < UINT32_MAX);
                             TracknumSize++;
+                        }
 
                         TmpVal[0] = 0;
                         TmpVal[1] = 1;
                         while (TracknumSize)
                         {
                             pTmp--;
-                            TmpVal[2] = *pTmp - '0';
+                            assert((*pTmp >= '0') && (*pTmp <= '9'));
+                            TmpVal[2] = (uint32_t)(*pTmp - '0');
+                            assert((TmpVal[2] == 0U) || (TmpVal[1] <= (UINT32_MAX / TmpVal[2])));
+                            assert(TmpVal[0] <= (UINT32_MAX - (TmpVal[1] * TmpVal[2])));
                             TmpVal[0] += TmpVal[1] * TmpVal[2];
+                            assert(TmpVal[1] <= (UINT32_MAX / 10U));
                             TmpVal[1] *= 10;
                             TracknumSize--;
                         }
@@ -828,11 +871,20 @@ bool Id3V2ReadFramev2(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
                 100. these don't fit the above processing, so you'll have to rewrite the algorithm a bit. */
             }
             /* if you want to handle a new type of frame, put that here! */
-            Ctx->cci_dec_seek(0, lStartOfFrame + uFrameSize, SEEK_SET, Ctx->user_data);
+            assert(lStartOfFrame >= 0);
+            assert((uint32_t)lStartOfFrame <= (UINT32_MAX - uFrameSize));
+            {
+                uint32_t u32FrameEnd = (uint32_t)lStartOfFrame + uFrameSize;
+                assert(u32FrameEnd <= (uint32_t)INT32_MAX);
+                Ctx->cci_dec_seek(0, (int32_t)u32FrameEnd, SEEK_SET, Ctx->user_data);
+            }
         }
         else
+        {
             /* seek to the next frame. */
-            Ctx->cci_dec_seek(0, uFrameSize, SEEK_CUR, Ctx->user_data);
+            assert(uFrameSize <= (uint32_t)INT32_MAX);
+            Ctx->cci_dec_seek(0, (int32_t)uFrameSize, SEEK_CUR, Ctx->user_data);
+        }
     }
     else
         /* seek to where we started reading */
@@ -870,9 +922,15 @@ uint32_t Id3V2ReadInt(CCI_Ctx *Ctx, bool bSyncSafe)
     {
         Ctx->cci_dec_read(0, (uint8_t *)&iTemp, 1, 0, Ctx->user_data);
         if (!bSyncSafe)
+        {
+            assert(iReturn <= ((UINT32_MAX - iTemp) >> 8));
             iReturn = (iReturn << 8) + iTemp; // Version 3 is not sync-safe.
+        }
         else                                  // Assume future releases will include sync-safe integers.
+        {
+            assert(iReturn <= ((UINT32_MAX - iTemp) >> 7));
             iReturn = (iReturn << 7) + iTemp; // Version 4 is sync-safe
+        }
     }
     return iReturn;
 }
@@ -906,9 +964,15 @@ uint32_t Id3V2ReadIntv2(CCI_Ctx *Ctx, bool bSyncSafe)
     {
         Ctx->cci_dec_read(0, (uint8_t *)&iTemp, 1, 0, Ctx->user_data);
         if (!bSyncSafe)
+        {
+            assert(iReturn <= ((UINT32_MAX - iTemp) >> 8));
             iReturn = (iReturn << 8) + iTemp; // Version 3 is not sync-safe.
+        }
         else                                  // Assume future releases will include sync-safe integers.
+        {
+            assert(iReturn <= ((UINT32_MAX - iTemp) >> 7));
             iReturn = (iReturn << 7) + iTemp; // Version 4 is sync-safe
+        }
     }
     return iReturn;
 }
@@ -939,6 +1003,7 @@ int Id3V2ReadVariedStringToUnicodeBuffer(
     int32_t iTemp = 0;
     /* Read in the encoding type */
     Ctx->cci_dec_read(0, (uint8_t *)&iTemp, 1, 0, Ctx->user_data);
+    assert(uFrameSize >= 1U);
     uFrameSize--; /* subtract one off for the encoding type */
 
     switch (iTemp)
@@ -1014,6 +1079,7 @@ int Id3V2ReadVariedStringToUnicodeBuffer(
             Ctx->cci_dec_read(0, (uint8_t *)&iTemp, 2, 0, Ctx->user_data);
             if (iTemp == BOM_BIG_ENDIAN || iTemp == BOM_LITTLE_ENDIAN)
             {
+                assert(uFrameSize >= 2U);
                 uFrameSize -= 2;
                 Id3V2ReadUTF16String(Ctx, iTemp, uFlags, uFrameSize, pString, iBufferLength);
             }
@@ -1056,19 +1122,27 @@ int Id3V2ReadUTF16String(
     int32_t iTemp2 = 0;
     uint16_t uValue;
     int32_t iCounter = 0;
-    uFrameSize       = (uFrameSize + 1) / 2; /* Reference from 3500. The frame size should be bytes, now its words. */
-    if (uFrameSize >= iBufferLength)
-        uFrameSize = iBufferLength - 1;
+    assert(iBufferLength >= 1);
+    assert(uFrameSize <= (UINT32_MAX - 1U));
+    uFrameSize = (uFrameSize + 1) / 2; /* Reference from 3500. The frame size should be bytes, now its words. */
+    if (uFrameSize >= (uint32_t)iBufferLength)
+        uFrameSize = (uint32_t)(iBufferLength - 1);
 
-    while (iCounter < uFrameSize)
+    while ((uint32_t)iCounter < uFrameSize)
     {
         /* don't need to check for iBUfferlength overflow (handled below in DBCSToUnicode) */
         Ctx->cci_dec_read(0, (uint8_t *)&iTemp1, 1, 0, Ctx->user_data);
         Ctx->cci_dec_read(0, (uint8_t *)&iTemp2, 1, 0, Ctx->user_data);
+        assert((iTemp1 >= 0) && (iTemp1 <= 0xFF));
+        assert((iTemp2 >= 0) && (iTemp2 <= 0xFF));
         if (uEndianNess == BOM_BIG_ENDIAN)
-            uValue = (iTemp1 << 8) | (iTemp2);
+        {
+            uValue = (uint16_t)(((uint32_t)iTemp1 << 8) | (uint32_t)iTemp2);
+        }
         else
-            uValue = (iTemp2 << 8) | (iTemp1);
+        {
+            uValue = (uint16_t)(((uint32_t)iTemp2 << 8) | (uint32_t)iTemp1);
+        }
         pString[iCounter++] = uValue;
         pString[iCounter]   = 0; /* null terminate */
     }
@@ -1096,10 +1170,11 @@ int Id3V2ReadUTF8String(CCI_Ctx *Ctx, uint32_t uFrameSize, uint16_t *pString, in
 {
     int32_t i       = 0;
     uint16_t iTemp1 = 0;
-    if (uFrameSize >= iBufferLength)
-        uFrameSize = iBufferLength - 1;
+    assert(iBufferLength >= 1);
+    if (uFrameSize >= (uint32_t)iBufferLength)
+        uFrameSize = (uint32_t)(iBufferLength - 1);
 
-    for (i = 0; i < uFrameSize; i++)
+    for (i = 0; (uint32_t)i < uFrameSize; i++)
     {
         Ctx->cci_dec_read(0, (uint8_t *)&iTemp1, 1, 0, Ctx->user_data);
         pString[i] = iTemp1;

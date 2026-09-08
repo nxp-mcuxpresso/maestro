@@ -557,6 +557,11 @@ bool Id3V2ReadFrame(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, bool bSyncSafe)
     uint32_t uFrameSize    = 0;
     uint32_t u32FilePosAfterFrameSubType;
 
+    if ((NULL == Ctx) || (NULL == pMetaData))
+    {
+        return false;
+    }
+
     Ctx->cci_dec_read(0, (uint8_t *)&uFrameType, 1, 0, Ctx->user_data);
     Ctx->cci_dec_read(0, (uint8_t *)&uFrameSubType, 3, 0, Ctx->user_data);
     u32FilePosAfterFrameSubType = Ctx->cci_dec_tell(0, Ctx->user_data);

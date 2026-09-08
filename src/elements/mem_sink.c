@@ -38,6 +38,7 @@ static uint8_t memsink_sink_pad_activation_handler(StreamPad *pad, uint8_t activ
 
     /* get the parent element from the pad */
     mem_sink_element = (ElementMemSink *)PAD_PARENT(pad);
+    CHK_ARGS(NULL == mem_sink_element, false);
 
     STREAMER_LOG_DEBUG(DBG_MEM_SINK, "[Memory SINK]Activate pad: %d\n", active);
 
@@ -45,7 +46,8 @@ static uint8_t memsink_sink_pad_activation_handler(StreamPad *pad, uint8_t activ
     {
         /* Activate/Deactivate peer source pads in PUSH mode */
         mem_sink_element->current_index = 0;
-        ret                             = pad_activate_push(pad->peer, active);
+        CHK_ARGS(NULL == pad->peer, false);
+        ret = pad_activate_push(pad->peer, active);
     }
 
     STREAMER_FUNC_EXIT(DBG_MEM_SINK);
@@ -77,10 +79,12 @@ static FlowReturn memsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *b
 
     STREAMER_FUNC_ENTER(DBG_MEM_SINK);
 
-    CHK_ARGS((NULL == pad) || (NULL == buf), FLOW_UNEXPECTED);
+    CHK_ARGS((NULL == pad) || (NULL == buf) || (NULL == buf->buffer), FLOW_UNEXPECTED);
 
     /* get the parent element from the pad */
     mem_sink_element = (ElementMemSink *)PAD_PARENT(pad);
+
+    CHK_ARGS(NULL == mem_sink_element, FLOW_UNEXPECTED);
 
     /* the buffer should be written to memory here */
     /* check what data packet header the buffer has and typecast accordingly to

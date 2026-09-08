@@ -454,14 +454,24 @@ int Mp3MetaDataReadID3V1(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, MP3_DFFI_t *
     uint32_t uLength;
     uint32_t uTemp = 0;
     uint8_t Bufstring[31];
-    uint8_t *pStringbuf    = &Bufstring[0];
-    uint8_t *pTempString   = pMetaData->song_title;
-    uint8_t *pStringTitle  = pMetaData->song_title;
-    uint8_t *pStringArtist = pMetaData->song_artist;
-    uint8_t *pStringAlbum  = pMetaData->song_album;
-    uint8_t *pStringYear   = pMetaData->song_year;
+    uint8_t *pStringbuf = &Bufstring[0];
+    uint8_t *pStringTitle;
+    uint8_t *pStringArtist;
+    uint8_t *pStringAlbum;
+    uint8_t *pStringYear;
+    int32_t uPosition;
 
-    int32_t uPosition = Ctx->cci_dec_tell(0, Ctx->user_data);
+    if ((NULL == Ctx) || (NULL == pMetaData))
+    {
+        return ERROR_GENERIC;
+    }
+
+    pStringTitle  = pMetaData->song_title;
+    pStringArtist = pMetaData->song_artist;
+    pStringAlbum  = pMetaData->song_album;
+    pStringYear   = pMetaData->song_year;
+
+    uPosition = Ctx->cci_dec_tell(0, Ctx->user_data);
 
     if (Ctx->cci_dec_seek(0, -128, SEEK_END, Ctx->user_data) != ERROR_GENERIC)
         Ctx->cci_dec_read(0, (uint8_t *)&uTemp, 3, 0, Ctx->user_data);
@@ -475,23 +485,19 @@ int Mp3MetaDataReadID3V1(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, MP3_DFFI_t *
 
         // Read in the song title.
         Ctx->cci_dec_read(0, (uint8_t *)Bufstring, 30, 0, Ctx->user_data);
-        // changed from if(pMetaData->xxx) to if(pMetaData). It is struct, so pMetaData->xxx is always nonzero
-        if (pMetaData)
-        {
-            uint8_t bytesConsumed = 0;
-            uLength               = 31;
-            if (TITLE_SIZE < uLength)
-                uLength = TITLE_SIZE;
+        /* pMetaData is guaranteed non-NULL by the entry guard above. */
+        uint8_t bytesConsumed = 0;
 
-            while (uLength)
-            {
-                bytesConsumed = mp3_copy_one_byte((char *)pStringbuf, (char *)pStringTitle);
-                // assert(pTempString == pStringTitle);
-                pStringbuf += bytesConsumed;
-                pStringTitle++;
-                pTempString++;
-                uLength -= bytesConsumed;
-            }
+        uLength = 31;
+        if (TITLE_SIZE < uLength)
+            uLength = TITLE_SIZE;
+
+        while (uLength)
+        {
+            bytesConsumed = mp3_copy_one_byte((char *)pStringbuf, (char *)pStringTitle);
+            pStringbuf += bytesConsumed;
+            pStringTitle++;
+            uLength -= bytesConsumed;
         }
 
         memset((void *)Bufstring, 0, 31);
@@ -499,8 +505,7 @@ int Mp3MetaDataReadID3V1(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, MP3_DFFI_t *
 
         // Read in the song artist.
         Ctx->cci_dec_read(0, (uint8_t *)Bufstring, 30, 0, Ctx->user_data);
-        // changed from if(pMetaData->xxx) to if(pMetaData). It is struct, so pMetaData->xxx is always nonzero
-        if (pMetaData)
+        /* pMetaData is guaranteed non-NULL by the entry guard above. */
         {
             uLength = 31;
             if (ARTIST_SIZE < uLength)
@@ -519,11 +524,11 @@ int Mp3MetaDataReadID3V1(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, MP3_DFFI_t *
 
         // Read in the song album.
         Ctx->cci_dec_read(0, (uint8_t *)Bufstring, 30, 0, Ctx->user_data);
-        // changed from if(pMetaData->xxx) to if(pMetaData). It is struct, so pMetaData->xxx is always nonzero
-        if (pMetaData)
+        /* pMetaData is guaranteed non-NULL by the entry guard above. */
         {
             uLength = 31;
             if (ALBUM_SIZE < uLength)
+
                 uLength = ALBUM_SIZE;
 
             while (uLength)
@@ -539,10 +544,10 @@ int Mp3MetaDataReadID3V1(CCI_Ctx *Ctx, file_meta_data_t *pMetaData, MP3_DFFI_t *
 
         // Read in the year.
         Ctx->cci_dec_read(0, (uint8_t *)Bufstring, 4, 0, Ctx->user_data);
-        // changed from if(pMetaData->xxx) to if(pMetaData). It is struct, so pMetaData->xxx is always nonzero
-        if (pMetaData)
+        /* pMetaData is guaranteed non-NULL by the entry guard above. */
         {
             uLength = 5;
+
             if (YEAR_SIZE < uLength)
                 uLength = YEAR_SIZE;
 

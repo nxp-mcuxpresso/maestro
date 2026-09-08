@@ -500,6 +500,8 @@ static uint8_t audiosrc_src_activate(StreamPad *pad, uint8_t active)
         ElementAudioSrc *audiosrc = (ElementAudioSrc *)PAD_PARENT(pad);
         PadScheduling mode        = PAD_SCHEDULING(pad);
 
+        CHK_ARGS(NULL == audiosrc, false);
+
         STREAMER_LOG_DEBUG(DBG_AUDIO_SRC, "[AudioSRC]Deactivate src pad\n");
 
         if (SCHEDULING_PUSH == mode)
@@ -587,6 +589,12 @@ static int32_t audiosrc_src_process(StreamPad *pad)
     STREAMER_FUNC_ENTER(DBG_AUDIO_SRC);
 
     /*2. Get the chunk size to read from file */
+    if (NULL == audiosrc)
+    {
+        STREAMER_FUNC_EXIT(DBG_AUDIO_SRC);
+        return (int32_t)FLOW_ERROR;
+    }
+
     length = audiosrc->chunk_size;
 
     /* init buffer metadata */
@@ -685,6 +693,12 @@ static FlowReturn audiosrc_src_pull_handler(StreamPad *pad, StreamBuffer *buffer
     STREAMER_FUNC_ENTER(DBG_AUDIO_SRC);
 
     /*2. Get the chunk size to read from file */
+    if (NULL == audiosrc)
+    {
+        STREAMER_FUNC_EXIT(DBG_AUDIO_SRC);
+        return FLOW_ERROR;
+    }
+
     length = audiosrc->chunk_size;
 
     /* init buffer metadata */
@@ -794,9 +808,12 @@ static uint8_t audiosrc_src_activate_push(StreamPad *pad, uint8_t active)
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SRC);
 
+    CHK_ARGS(NULL == audiosrc, false);
+
     STREAMER_LOG_DEBUG(DBG_AUDIO_SRC, " [Audio Src]: Activate push: %d\n", active);
 
     /* Activate pad in PUSH mode */
+
     if (active)
     {
         /* set default chunk size if not already set */
@@ -854,7 +871,9 @@ static uint8_t audiosrc_src_activate_pull(StreamPad *pad, uint8_t active)
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SRC);
 
-    STREAMER_LOG_DEBUG(DBG_AUDIO_SRC, " [Audio Src]: Activate push: %d\n", active);
+    CHK_ARGS(NULL == audiosrc, false);
+
+    STREAMER_LOG_DEBUG(DBG_AUDIO_SRC, " [Audio Src]: Activate pull: %d\n", active);
 
     /* Activate pad in PULL mode */
     if (active)

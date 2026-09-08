@@ -230,12 +230,19 @@ err:
 
 int OPUSEncoderEncode(void *memory, BufferInfo *source, BufferInfo *dest)
 {
+    // Validate arguments before dereferencing
+    if ((memory == NULL) || (source == NULL) || (dest == NULL) || (source->ptr == NULL) || (dest->ptr == NULL))
+    {
+        return CEI_ENCODER_ENCODEERR;
+    }
+
     // Cast memory
     OpusEncoderInfo *encInfo = (OpusEncoderInfo *)memory;
     OpusEncoder *enc         = (OpusEncoder *)((uint8_t *)memory + sizeof(OpusEncoderInfo));
 
     // Encode
     assert(dest->size >= sizeof(OpusPacketHeader));
+
     size_t maxPayload = dest->size - sizeof(OpusPacketHeader);
     assert(maxPayload <= (size_t)INT32_MAX);
     int ret =

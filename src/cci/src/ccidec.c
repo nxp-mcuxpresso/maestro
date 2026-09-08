@@ -307,15 +307,15 @@ int32_t ccidec_decode_frame(ElementDecoder *element)
     {
         if (CODEC_MEMORY_EXCEED == ret)
         {
-            STREAMER_LOG_CATA(DBG_CCID, ERRCODE_OUT_OF_MEMORY, "[CCID]Codec Memory Exceed\n", ret);
+            STREAMER_LOG_CATA(DBG_CCID, ERRCODE_OUT_OF_MEMORY, "[CCID]Codec Memory Exceed (ret=%d)\n", ret);
         }
         else if (CODEC_UNSUPPORTED_FILE == ret)
         {
-            STREAMER_LOG_CATA(DBG_CCID, ERRCODE_NOT_SUPPORTED, "[CCID]Codec unsupported Track\n", ret);
+            STREAMER_LOG_CATA(DBG_CCID, ERRCODE_NOT_SUPPORTED, "[CCID]Codec unsupported Track (ret=%d)\n", ret);
         }
         else
         {
-            STREAMER_LOG_CATA(DBG_CCID, ERRCODE_GENERAL_ERROR, "[CCID]Codec Decode Failed\n", ret);
+            STREAMER_LOG_CATA(DBG_CCID, ERRCODE_GENERAL_ERROR, "[CCID]Codec Decode Failed (ret=%d)\n", ret);
         }
     }
     else
@@ -495,26 +495,26 @@ uint8_t get_cci_metadata(ElementDecoder *element)
 
     /* sending title */
     send_msg_element(decoder, MSG_INFO_TITLE, (uintptr_t)metadata_string);
-    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Title : %d\n", cci_dec->metadata->song_title);
+    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Title : %p\n", (void *)cci_dec->metadata->song_title);
     smallest = smallest_int(2 * ARTIST_SIZE, CASCFG_TRACK_ARTIST_LEN);
     memcpy(metadata_string, cci_dec->metadata->song_artist, smallest);
 
     /* sending artist */
     send_msg_element(decoder, MSG_INFO_ARTIST, (uintptr_t)metadata_string);
-    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Artist : %d\n", cci_dec->metadata->song_artist);
+    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Artist : %p\n", (void *)cci_dec->metadata->song_artist);
 
     smallest = smallest_int(2 * ALBUM_SIZE, CASCFG_TRACK_ALBUM_LEN);
     memcpy(metadata_string, cci_dec->metadata->song_album, smallest);
 
     /* sending album */
     send_msg_element(decoder, MSG_INFO_ALBUM, (uintptr_t)metadata_string);
-    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Album : %d\n", cci_dec->metadata->song_album);
+    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Album : %p\n", (void *)cci_dec->metadata->song_album);
     smallest = smallest_int(2 * GENRE_SIZE, CASCFG_TRACK_GENRE_LEN);
     memcpy(metadata_string, cci_dec->metadata->song_genre, smallest);
 
     /* sending genre */
     send_msg_element(decoder, MSG_INFO_GENRE, (uintptr_t)metadata_string);
-    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Genre : %d\n", cci_dec->metadata->song_genre);
+    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Genre : %p\n", (void *)cci_dec->metadata->song_genre);
     /* sending track number */
     send_msg_element(decoder, MSG_INFO_TRACK, (uintptr_t)cci_dec->metadata->track_number);
     STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Track Number : %d\n", cci_dec->metadata->track_number);
@@ -524,7 +524,7 @@ uint8_t get_cci_metadata(ElementDecoder *element)
 
     /* sending year */
     send_msg_element(decoder, MSG_INFO_YEAR, (uintptr_t)metadata_string);
-    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Year : %d\n", cci_dec->metadata->song_year);
+    STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Year : %p\n", (void *)cci_dec->metadata->song_year);
 
     send_msg_element(decoder, MSG_STREAM_INFO_UPDATED, 0);
 
@@ -541,11 +541,12 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
     int32_t dec_out_frame_size;
     CCIDecInfo *cci_dec = NULL;
     int32_t cci_mem_size;
-    int32_t i = 0;
 
     STREAMER_FUNC_ENTER(DBG_CCID);
     /* get the parent element from the pad */
     element = (ElementDecoder *)PAD_PARENT(pad);
+
+    CHK_ARGS(NULL == element, false);
 
     /* activate the pad */
     if ((uint8_t) true == active)
@@ -659,7 +660,7 @@ uint8_t ccidec_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
                 (uint8_t *)MEM4_ALIGN((uintptr_t)cci_dec->unaligned_filesrc_buffer[i] + sizeof(RawPacketHeader));
         }
 
-        for (i = 0; i < NUM_OF_PING_PONG_BUFFER; i++)
+        for (uint8_t i = 0; i < NUM_OF_PING_PONG_BUFFER; i++)
         {
             cci_dec->packed_buffer[i] =
                 (void *)MEM4_ALIGN((uintptr_t)cci_dec->unaligned_packed_buffer +

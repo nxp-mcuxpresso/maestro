@@ -336,8 +336,8 @@ int streamer_msg_set_property(STREAMER_T *task_data, void *msg_data)
 {
     STREAMER_MSG_T *streamer_msg;
     ELEMENT_PROPERTY_T property;
-    int ret           = STREAM_OK;
-    int element_index = ELEMENT_NOT_USED;
+    int ret = STREAM_OK;
+    int element_index;
 
     streamer_msg  = (STREAMER_MSG_T *)msg_data;
     property      = streamer_msg->element_property;
@@ -388,8 +388,8 @@ int streamer_msg_set_property(STREAMER_T *task_data, void *msg_data)
 int streamer_msg_get_property(STREAMER_T *task_data, void *msg_data)
 {
     STREAMER_MSG_T *streamer_msg;
-    int ret           = STREAM_OK;
-    int element_index = ELEMENT_NOT_USED;
+    int ret = STREAM_OK;
+    int element_index;
 
     STREAMER_FUNC_ENTER(DBG_CORE);
 

@@ -213,6 +213,7 @@ static uint8_t memsrc_src_activate(StreamPad *pad, uint8_t active)
         if (SCHEDULING_PUSH == mode)
         {
             ElementMemSrc *memsrc = (ElementMemSrc *)PAD_PARENT(pad);
+            CHK_ARGS(NULL == memsrc, false);
 
             STREAMER_LOG_DEBUG(DBG_MEMSRC, "[MemSRC]Deactivate src pad\n");
             ret = pad_activate_push(pad, false);
@@ -384,12 +385,14 @@ int32_t memsrc_src_pad_process(StreamPad *pad)
 {
     ElementMemSrc *memsrc = NULL;
     FlowReturn ret        = FLOW_OK;
-    uint32_t length = 0, offset = 0;
+    uint32_t length       = 0;
+    uint32_t offset       = 0;
     StreamBuffer buf;
 
     STREAMER_FUNC_ENTER(DBG_MEMSRC);
 
     CHK_ARGS(pad == NULL || pad->parent == NULL, STREAM_ERR_INVALID_ARGS);
+
     memsrc = (ElementMemSrc *)pad->parent;
 
     /*2. Get the chunk size to read from memory */
@@ -521,6 +524,9 @@ static FlowReturn memsrc_pull(StreamPad *pad, StreamBuffer *buffer, uint32_t siz
 
     STREAMER_FUNC_ENTER(DBG_MEMSRC);
 
+    CHK_ARGS(NULL == memsrc, FLOW_ERROR);
+    CHK_ARGS((NULL == buffer) || (NULL == BUFFER_PTR(buffer)), FLOW_ERROR);
+
     /* Put Raw header in the buffer */
     ((AudioPacketHeader *)BUFFER_PTR(buffer))->id = RAW_DATA;
 
@@ -567,7 +573,10 @@ static uint8_t memsrc_handle_src_event(StreamPad *pad, StreamEvent *event)
 
     STREAMER_FUNC_ENTER(DBG_MEMSRC);
 
+    CHK_ARGS(NULL == memsrc, false);
+
     /* handle the event */
+
     switch (EVENT_TYPE(event))
     {
             /* case EVENT_EOS: */
@@ -656,6 +665,7 @@ static uint8_t memsrc_handle_src_query(StreamPad *pad, StreamQuery *query)
     /* get the parent element from the pad */
     memsrc = (ElementMemSrc *)PAD_PARENT(pad);
     CHK_ARGS(memsrc == NULL, false);
+    CHK_ARGS(NULL == data, false);
 
     switch (QUERY_TYPE(query))
     {
@@ -716,8 +726,11 @@ static uint8_t memsrc_src_activate_push(StreamPad *pad, uint8_t active)
 
     STREAMER_FUNC_ENTER(DBG_MEMSRC);
 
+    CHK_ARGS(NULL == memsrc, false);
+
     /* Activate pad in PUSH mode */
     if (active)
+
     {
         /* set default chunk size if not already set */
         if (memsrc->chunk_size == 0)
@@ -829,8 +842,11 @@ static uint8_t memsrc_src_activate_pull(StreamPad *pad, uint8_t active)
 
     STREAMER_FUNC_ENTER(DBG_MEMSRC);
 
+    CHK_ARGS(NULL == memsrc, false);
+
     /* Activate pad in PULL mode */
     if (active)
+
     {
         /* set default chunk size if not already set */
         if (memsrc->chunk_size == 0)

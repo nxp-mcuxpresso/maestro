@@ -93,9 +93,9 @@ STREAMER_T *streamer_create(STREAMER_CREATE_PARAM *task_param)
     if (NULL == task_param)
     {
         STREAMER_LOG_ERR(DBG_CORE, ERRCODE_GENERAL_ERROR, "STREAMER create- Invalid parameter provided\n");
-        ret = ERRCODE_INVALID_ARGUMENT;
     }
     else
+
     {
         streamer = OSA_MemoryAllocate(sizeof(STREAMER_T));
         if (streamer)
@@ -160,7 +160,7 @@ STREAMER_T *streamer_create(STREAMER_CREATE_PARAM *task_param)
             if (streamer->streamer_mq[0] != (uint32_t)NULL)
             {
                 wait_cnt = 200;
-                OSA_MsgQPut(streamer->streamer_mq, (void *)&msg);
+                (void)OSA_MsgQPut(streamer->streamer_mq, (void *)&msg);
                 while (streamer->is_active && wait_cnt--)
                     OSA_TimeDelay(2000);
             }
@@ -206,7 +206,7 @@ int32_t streamer_destroy(STREAMER_T *streamer)
     msg.id = STREAM_MSG_CLOSE_TASK;
 
     uint32_t wait_cnt = 1000;
-    OSA_MsgQPut(streamer->streamer_mq, (void *)&msg);
+    (void)OSA_MsgQPut(streamer->streamer_mq, (void *)&msg);
     while (streamer->is_active && wait_cnt--)
         OSA_TimeDelay(10);
 
@@ -222,7 +222,7 @@ int32_t streamer_destroy(STREAMER_T *streamer)
     }
     if (streamer->message_channel_out.is_mq_created)
     {
-        OSA_MsgQPut(streamer->message_channel_out.mq, (void *)&msg);
+        (void)OSA_MsgQPut(streamer->message_channel_out.mq, (void *)&msg);
         while (streamer->message_channel_out.is_mq_created)
         {
             OSA_TimeDelay(1);
@@ -230,7 +230,6 @@ int32_t streamer_destroy(STREAMER_T *streamer)
     }
     ret |= streamer_deinit(streamer);
     OSA_MemoryFree(streamer);
-    streamer = NULL;
 
     STREAMER_FUNC_EXIT(DBG_CORE);
 

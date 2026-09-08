@@ -311,6 +311,10 @@ uint8_t encoder_src_pad_activation_handler(StreamPad *pad, uint8_t active)
 
     STREAMER_FUNC_ENTER(DBG_ENCODER);
 
+    CHK_ARGS(NULL == pad, false);
+    CHK_ARGS(NULL == element, false);
+    CHK_ARGS(NULL == pad->peer, false);
+
     // Check encoder type
     if (element->enc_type == CEIENC_LAST)
         return false;
@@ -407,6 +411,19 @@ int32_t encoder_src_pad_process_handler(StreamPad *pad)
         return false;
 
     CeiEncoderFunctions fn = ceiEncTable[element->enc_type];
+    if (fn.fnGetMemorySize == NULL || fn.fnInit == NULL || fn.fnEncode == NULL)
+    {
+        STREAMER_FUNC_EXIT(DBG_ENCODER);
+        return (int32_t)FLOW_ERROR;
+    }
+
+    // The input/output buffers must have been allocated by the activation
+    // handler; guard against a NULL buffer before dereferencing it below.
+    if (element->inBuf.ptr == NULL || element->outBuf.ptr == NULL)
+    {
+        STREAMER_FUNC_EXIT(DBG_ENCODER);
+        return (int32_t)FLOW_ERROR;
+    }
 
     if (false == (uint8_t)element->eos_done)
     {
@@ -497,8 +514,8 @@ int32_t encoder_src_pad_process_handler(StreamPad *pad)
             element->initialized = false;
 
             CeiEncoderFunctions fn = ceiEncTable[element->enc_type];
-
             // Allocate space for the encoder structure
+
             int size          = fn.fnGetMemorySize(element->bitstream_info.num_channels);
             element->enc_info = OSA_MemoryAllocate(size);
             if (element->enc_info == NULL)

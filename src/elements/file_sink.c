@@ -158,6 +158,7 @@ static uint8_t filesink_sink_pad_activation_handler(StreamPad *pad, uint8_t acti
 
     ElementFileSink *element = (ElementFileSink *)PAD_PARENT(pad);
     CHK_ARGS(NULL == element, false);
+    CHK_ARGS(NULL == pad->peer, false);
 
     if (true == ret)
     {
@@ -166,6 +167,7 @@ static uint8_t filesink_sink_pad_activation_handler(StreamPad *pad, uint8_t acti
             // Activate/Deactivate the pad peer
             ret = pad_activate_push(pad->peer, active);
         }
+
         else if (pad->scheduling == SCHEDULING_PULL)
         {
             // A pad with pull scheduling "manually" pulls data from a peer pad.
@@ -173,7 +175,8 @@ static uint8_t filesink_sink_pad_activation_handler(StreamPad *pad, uint8_t acti
             // that needs a buffer however, so we need to acquire it.
             if (true == active)
             {
-                element->rawbuf = OSA_MemoryAllocate(FILESINK_PULL_SIZE + sizeof(AudioPacketHeader) + SIZE_ALIGNMENT - 1);
+                element->rawbuf =
+                    OSA_MemoryAllocate(FILESINK_PULL_SIZE + sizeof(AudioPacketHeader) + SIZE_ALIGNMENT - 1);
                 if (element->rawbuf == NULL)
                 {
                     return false;
@@ -231,9 +234,10 @@ static FlowReturn filesink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *
 
     STREAMER_FUNC_ENTER(DBG_FILE_SINK);
 
-    CHK_ARGS((NULL == pad) || (NULL == buf), FLOW_UNEXPECTED);
+    CHK_ARGS((NULL == pad) || (NULL == buf) || (NULL == BUFFER_PTR(buf)), FLOW_UNEXPECTED);
 
     /* the buffer should be written to a file here */
+
     /* check what data packet header the buffer has  and typecast accordingly to
      * store the appropriate data
      */
@@ -271,7 +275,7 @@ static FlowReturn filesink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *
     {
         /* Allocate 20x more memory than data_size is, due to a possible delay in the FILE_Dump_Task  */
         file_dump.data_ptr_size = data_size * 20;
-        file_dump.raw_buf = (int8_t *)OSA_MemoryAllocate(file_dump.data_ptr_size + SIZE_ALIGNMENT - 1);
+        file_dump.raw_buf       = (int8_t *)OSA_MemoryAllocate(file_dump.data_ptr_size + SIZE_ALIGNMENT - 1);
         if (file_dump.raw_buf == NULL)
         {
             STREAMER_LOG_ERR(DBG_FILE_SINK, ERRCODE_GENERAL_ERROR,
@@ -351,6 +355,11 @@ static int32_t filesink_sink_pad_process_handler(StreamPad *pad)
 {
     FlowReturn flowret;
     ElementFileSink *element = (ElementFileSink *)PAD_PARENT(pad);
+
+    if (NULL == element)
+    {
+        return (int32_t)FLOW_UNEXPECTED;
+    }
 
     StreamBuffer pullBuf = {.buffer = (int8_t *)element->pullbuf, .size = FILESINK_PULL_SIZE, .offset = 0, .time = 0};
 

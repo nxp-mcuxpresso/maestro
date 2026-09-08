@@ -37,10 +37,11 @@ static uint8_t audio_proc_sink_pad_activation_handler(StreamPad *pad, uint8_t ac
 
     /* get the parent element from the pad */
     audio_proc_element = (ElementAudioProc *)PAD_PARENT(pad);
+    CHK_ARGS(NULL == audio_proc_element, false);
 
     STREAMER_LOG_DEBUG(DBG_AUDIO_PROC, "[AudioProc]Activate pad: %d\n", active);
 
-    if (true == ret)
+    if ((true == ret) && (NULL != pad->peer))
     {
         /* Activate/Deactivate peer source pads in PUSH mode */
         audio_proc_element->current_index = 0;
@@ -89,8 +90,10 @@ static FlowReturn audio_proc_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
 
     /* get the parent element from the pad */
     audio_proc_element = (ElementAudioProc *)PAD_PARENT(pad);
-    src_pad            = ELEMENT_SRC_PAD(audio_proc_element, 0);
+    CHK_ARGS(NULL == audio_proc_element, FLOW_UNEXPECTED);
+    src_pad = ELEMENT_SRC_PAD(audio_proc_element, 0);
 
+    CHK_ARGS(NULL == buf->buffer, FLOW_UNEXPECTED);
     CHK_ARGS((((RawPacketHeader *)(buf->buffer))->id != AUDIO_DATA), FLOW_NOT_SUPPORTED);
 
     /* check what data packet header the buffer has and typecast accordingly to

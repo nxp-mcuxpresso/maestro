@@ -125,8 +125,9 @@ int32_t filesrc_set_location(ElementHandle element, char *path)
     fd = file_open(path, FILE_RDONLY);
     if (fd >= 0)
     {
-        file_close(fd);
+        (void)file_close(fd);
         strncpy(src->location, path, (MAX_LOCATION_PATH_LENGTH - 1));
+
         if (src->location[MAX_LOCATION_PATH_LENGTH - 1] != 0)
         {
             STREAMER_LOG_ERR(DBG_FILESRC, ERRCODE_INTERNAL, "[FileSRC]reach the max pathname length\n");
@@ -266,6 +267,7 @@ static uint8_t filesrc_src_activate(StreamPad *pad, uint8_t active)
         if (SCHEDULING_PUSH == mode)
         {
             ElementFileSrc *filesrc = (ElementFileSrc *)PAD_PARENT(pad);
+            CHK_ARGS(NULL == filesrc, false);
 
             STREAMER_LOG_DEBUG(DBG_FILESRC, "[FileSRC]Deactivate src pad\n");
             ret = pad_activate_push(pad, false);
@@ -289,7 +291,7 @@ static uint8_t filesrc_src_activate(StreamPad *pad, uint8_t active)
                 {
                     OSA_MemoryFree(filesrc->raw_buffer);
                     filesrc->raw_buffer = NULL;
-                    filesrc->buffer = NULL;
+                    filesrc->buffer     = NULL;
                 }
             }
         }
@@ -333,7 +335,7 @@ static FlowReturn filesrc_read(ElementFileSrc *filesrc, uint32_t offset, uint32_
         /* INT31-C: Validate before unsigned to signed conversion */
         assert(offset <= (uint32_t)INT32_MAX);
         int32_t seek_offset = (int32_t)offset;
-        ret = file_seek(filesrc->fd, seek_offset);
+        ret                 = file_seek(filesrc->fd, seek_offset);
         if (ret == 0)
         {
             /* update read position */
@@ -428,6 +430,8 @@ int32_t filesrc_src_pad_process(StreamPad *pad)
     StreamBuffer buf;
 
     STREAMER_FUNC_ENTER(DBG_FILESRC);
+
+    CHK_ARGS(NULL == filesrc, STREAM_ERR_INVALID_ARGS);
 
     /*2. Get the chunk size to read from file */
     length = filesrc->chunk_size;
@@ -531,6 +535,9 @@ static FlowReturn filesrc_pull(StreamPad *pad, StreamBuffer *buffer, uint32_t si
 
     STREAMER_FUNC_ENTER(DBG_FILESRC);
 
+    CHK_ARGS(NULL == filesrc, FLOW_ERROR);
+    CHK_ARGS((NULL == buffer) || (NULL == BUFFER_PTR(buffer)), FLOW_ERROR);
+
     /* Put Raw header in the buffer */
     ((PacketHeader *)BUFFER_PTR(buffer))->id = RAW_DATA;
 
@@ -598,6 +605,8 @@ static uint8_t filesrc_handle_src_event(StreamPad *pad, StreamEvent *event)
     StreamEvent new_segment;
 
     STREAMER_FUNC_ENTER(DBG_FILESRC);
+
+    CHK_ARGS(NULL == filesrc, false);
 
     /* handle the event */
     switch (EVENT_TYPE(event))
@@ -801,6 +810,8 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
 
     STREAMER_FUNC_ENTER(DBG_FILESRC);
 
+    CHK_ARGS(NULL == filesrc, false);
+
     /* Activate pad in PUSH mode */
     if (active)
     {
@@ -816,7 +827,7 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
         {
             OSA_MemoryFree(filesrc->raw_buffer);
             filesrc->raw_buffer = NULL;
-            filesrc->buffer = NULL;
+            filesrc->buffer     = NULL;
         }
 
         /* reset to 0 */
@@ -870,9 +881,10 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
 
             /* Calculate allocation size with overflow protection */
             assert(total_size <= (SIZE_MAX - SIZE_ALIGNMENT));
-            alloc_size = total_size + SIZE_ALIGNMENT - 1U;
+            alloc_size       = total_size + SIZE_ALIGNMENT - 1U;
             void *raw_buffer = OSA_MemoryAllocate(alloc_size);
-            if (raw_buffer != NULL) {
+            if (raw_buffer != NULL)
+            {
                 // Align the pointer
                 filesrc->buffer = (int8_t *)MEM_ALIGN(raw_buffer, SIZE_ALIGNMENT);
                 // Store original pointer for later freeing (you'll need to add this field to ElementFileSrc)
@@ -952,7 +964,7 @@ static uint8_t filesrc_src_activate_push(StreamPad *pad, uint8_t active)
         {
             OSA_MemoryFree(filesrc->raw_buffer);
             filesrc->raw_buffer = NULL;
-            filesrc->buffer = NULL;
+            filesrc->buffer     = NULL;
         }
         ret = true;
     }
@@ -977,7 +989,10 @@ static uint8_t filesrc_src_activate_pull(StreamPad *pad, uint8_t active)
 
     STREAMER_FUNC_ENTER(DBG_FILESRC);
 
+    CHK_ARGS(NULL == filesrc, false);
+
     uint32_t StreamNo = 0;
+
     if ((StreamPad *)&filesrc->src_pad[0] == pad)
     {
         // Compressed Data PAD
@@ -1009,7 +1024,7 @@ static uint8_t filesrc_src_activate_pull(StreamPad *pad, uint8_t active)
         {
             OSA_MemoryFree(filesrc->raw_buffer);
             filesrc->raw_buffer = NULL;
-            filesrc->buffer = NULL;
+            filesrc->buffer     = NULL;
         }
 
         /* reset to 0 */
@@ -1054,6 +1069,7 @@ static uint8_t filesrc_src_activate_pull(StreamPad *pad, uint8_t active)
     else
     {
         /* Deactivate pad in PULL mode */
+
         STREAMER_LOG_DEBUG(DBG_FILESRC, "[FileSRC]Deactivate pull mode: %s\n", filesrc->location);
         filesrc->fd = filesrc->g_fd[StreamNo];
         if (filesrc->fd >= 0)
@@ -1075,7 +1091,7 @@ static uint8_t filesrc_src_activate_pull(StreamPad *pad, uint8_t active)
         {
             OSA_MemoryFree(filesrc->raw_buffer);
             filesrc->raw_buffer = NULL;
-            filesrc->buffer = NULL;
+            filesrc->buffer     = NULL;
         }
 
         ret = true;

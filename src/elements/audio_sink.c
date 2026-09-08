@@ -32,7 +32,7 @@ extern const AudioSinkPadDeviceIOFuncType audio_sink_device_default;
  */
 static uint8_t audiosink_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
 {
-    uint8_t ret = true;
+    uint8_t ret;
     ElementAudioSink *audio_sink_ptr;
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SINK);
@@ -41,6 +41,7 @@ static uint8_t audiosink_sink_pad_activation_handler(StreamPad *pad, uint8_t act
 
     /* get the parent element from the pad */
     audio_sink_ptr = (ElementAudioSink *)PAD_PARENT(pad);
+    CHK_ARGS(NULL == audio_sink_ptr, false);
 
     STREAMER_LOG_DEBUG(DBG_AUDIO_SINK, "[Audio sink]Activate pad: %d\n", active);
 
@@ -66,13 +67,16 @@ static uint8_t audiosink_sink_pad_activation_handler(StreamPad *pad, uint8_t act
         audio_sink_ptr->time_reported_msec = 0;
 
         /* Activate/Deactivate peer source pads according to scheduling mode */
-        if (SCHEDULING_PUSH == pad->scheduling)
+        if (NULL != pad->peer)
         {
-            ret = pad_activate_push(pad->peer, active);
-        }
-        else if (SCHEDULING_PULL == pad->scheduling)
-        {
-            ret = pad_activate_pull(pad->peer, active);
+            if (SCHEDULING_PUSH == pad->scheduling)
+            {
+                ret = pad_activate_push(pad->peer, active);
+            }
+            else if (SCHEDULING_PULL == pad->scheduling)
+            {
+                ret = pad_activate_pull(pad->peer, active);
+            }
         }
     }
 
@@ -104,11 +108,12 @@ static FlowReturn audiosink_sink_pad_chain_handler(StreamPad *pad, StreamBuffer 
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SINK);
 
-    CHK_ARGS((NULL == pad) || (NULL == buffer), FLOW_UNEXPECTED);
+    CHK_ARGS((NULL == pad) || (NULL == buffer) || (NULL == buffer->buffer), FLOW_UNEXPECTED);
     CHK_ARGS((((RawPacketHeader *)(buffer->buffer))->id != AUDIO_DATA), FLOW_NOT_SUPPORTED);
 
     /* get the parent element from the pad */
     audio_sink_ptr = (ElementAudioSink *)PAD_PARENT(pad);
+    CHK_ARGS(NULL == audio_sink_ptr, FLOW_UNEXPECTED);
 
     if (NULL == audio_sink_ptr->device_ptr)
     {
@@ -187,6 +192,11 @@ static int32_t audiosink_sink_pad_process_handler(StreamPad *pad)
     ElementAudioSink *element = (ElementAudioSink *)PAD_PARENT(pad);
     StreamBuffer buffer;
 
+    if ((NULL == element) || (NULL == element->device_ptr))
+    {
+        return (int32_t)FLOW_UNEXPECTED;
+    }
+
     flowret = (FlowReturn)element->device_ptr->proc_func(pad);
 
     if (FLOW_OK == flowret)
@@ -220,17 +230,20 @@ static int32_t audiosink_sink_pad_process_handler(StreamPad *pad)
 static uint8_t audiosink_sink_pad_event_handler(StreamPad *pad, StreamEvent *event)
 {
     ElementAudioSink *audio_sink_ptr;
-    Pipeline *pipeline = PAD_PARENT_PIPELINE(pad);
-    uint8_t ret        = true;
+    Pipeline *pipeline;
+    uint8_t ret = true;
 #ifdef LOG_ENABLED
     uint32_t milliseconds, seconds, minutes;
 #endif
     STREAMER_FUNC_ENTER(DBG_AUDIO_SINK);
 
-    CHK_ARGS(NULL == pad, false);
+    CHK_ARGS((NULL == pad) || (NULL == event) || (NULL == PAD_PARENT(pad)), false);
+
+    pipeline = PAD_PARENT_PIPELINE(pad);
 
     /* get the parent element from the pad */
     audio_sink_ptr = (ElementAudioSink *)PAD_PARENT(pad);
+    CHK_ARGS(NULL == audio_sink_ptr, false);
 
     /* call the device specific StreamEvent Handler function */
     if (audio_sink_ptr->device_ptr != NULL)
@@ -263,7 +276,7 @@ static uint8_t audiosink_sink_pad_event_handler(StreamPad *pad, StreamEvent *eve
                 break;
 
             case EVENT_FLUSH_STOP:
-                if (PIPELINE_STATE(pipeline) == STATE_PAUSED)
+                if ((NULL != pipeline) && (PIPELINE_STATE(pipeline) == STATE_PAUSED))
                 {
                     /* If the pipeline/element is in paused state, then block
                      * the pad again.
@@ -329,6 +342,12 @@ static int32_t audiosink_change_state(StreamElement *element, PipelineState new_
     /* get the transition status with the new passed state and the existing
      * state of the sink element
      */
+    if (NULL == audio_sink_ptr->device_ptr)
+    {
+        STREAMER_FUNC_EXIT(DBG_AUDIO_SINK);
+        return STREAM_ERR_ELEMENT_NOT_FOUND;
+    }
+
     state_change = (PipelineStateChange)STATE_TRANSITION(audio_sink_ptr->state, new_state);
     /* the pad state are NULL<->READY<->PAUSE<->PLAYING
      * From NULL->READY, the device data are allocated but the device file handler is null.
@@ -572,6 +591,11 @@ static int32_t audiosink_set_property(StreamElement *element_ptr, uint16_t prop,
         case PROP_SPEAKER_SET_VOLUME:
         case PROP_USB_SINK_SET_VOLUME:
             assert(val <= (uint32_t)INT_MAX);
+            if (NULL == audio_sink_ptr->device_ptr)
+            {
+                ret = STREAM_ERR_GENERAL;
+                break;
+            }
             _ret = audio_sink_ptr->device_ptr->set_volume_func(audio_sink_ptr, (int)val);
             if (_ret != AUDIO_SINK_SUCCESS)
                 ret = STREAM_ERR_GENERAL;

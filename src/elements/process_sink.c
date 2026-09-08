@@ -38,6 +38,8 @@ static uint8_t processsink_sink_pad_activation_handler(StreamPad *pad, uint8_t a
 
     /* get the parent element from the pad */
     process_sink_element = (ElementProcessSink *)PAD_PARENT(pad);
+    CHK_ARGS(NULL == process_sink_element, false);
+    CHK_ARGS(NULL == pad->peer, false);
 
     STREAMER_LOG_DEBUG(DBG_PROCESS_SINK, "[Process SINK]Activate pad: %d\n", active);
 
@@ -83,10 +85,11 @@ static FlowReturn processsink_sink_pad_chain_handler(StreamPad *pad, StreamBuffe
 
     STREAMER_FUNC_ENTER(DBG_PROCESS_SINK);
 
-    CHK_ARGS((NULL == pad) || (NULL == buf), FLOW_UNEXPECTED);
+    CHK_ARGS((NULL == pad) || (NULL == buf) || (NULL == BUFFER_PTR(buf)), FLOW_UNEXPECTED);
 
     /* get the parent element from the pad */
     process_sink_element = (ElementProcessSink *)PAD_PARENT(pad);
+    CHK_ARGS(NULL == process_sink_element, FLOW_UNEXPECTED);
 
     CHK_ARGS((((RawPacketHeader *)(buf->buffer))->id != AUDIO_DATA), FLOW_NOT_SUPPORTED);
 

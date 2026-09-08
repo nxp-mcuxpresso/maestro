@@ -319,6 +319,12 @@ AudioSrcStreamErrorType audio_src_default_read_device(ElementAudioSrc *audio_src
     dev_info->buff_size[next_index] = pkt_hdr->chunk_size;
 
     memcpy(buffer_ptr, pkt_hdr, sizeof(AudioPacketHeader));
+    if (audio_src_element->appFunctions.process_func == NULL)
+    {
+        STREAMER_LOG_ERR(DBG_AUDIO_SRC, ERRCODE_INTERNAL, "[Audio SRC] process_func is NULL\n");
+        STREAMER_FUNC_EXIT(DBG_AUDIO_SRC);
+        return AUDIOSRC_FAILED;
+    }
     ret = audio_src_element->appFunctions.process_func((uint8_t *)(buffer_ptr + sizeof(AudioPacketHeader)),
                                                        dev_info->buff_size[next_index]);
 

@@ -139,7 +139,6 @@ int32_t destroy_pipeline(PipelineHandle handle)
 
     /* De-allocate memory for the pipeline */
     OSA_MemoryFree(pipeline);
-    pipeline = NULL;
 
     STREAMER_FUNC_EXIT(DBG_CORE);
     return STREAM_OK;
@@ -368,7 +367,7 @@ int32_t seek_relative(PipelineHandle handle, int32_t time_msec)
 
     if (STREAM_OK == ret)
     {
-        new_time = (int32_t)((int32_t)data.value32u + time_msec);
+        new_time = (data.value32s + time_msec);
         if (duration < new_time)
         {
             new_time = duration - 1000;
@@ -861,6 +860,11 @@ static int pipeline_path_blocked(StreamElement *element)
         else
         {
             element = PAD_PARENT_ELEMENT(src_pad);
+            if (NULL == element)
+            {
+                STREAMER_FUNC_EXIT(DBG_CORE);
+                return true;
+            }
         }
     }
 
@@ -881,6 +885,11 @@ static int pipeline_path_blocked(StreamElement *element)
     do
     {
         peer_sink_pad = PAD_PEER(ELEMENT_SRC_PAD(element, 0));
+        if (NULL == peer_sink_pad)
+        {
+            STREAMER_FUNC_EXIT(DBG_CORE);
+            return true;
+        }
 
         /* Check if Pad is blocked on next downstream element */
         if (peer_sink_pad->process_precheck)
@@ -894,6 +903,11 @@ static int pipeline_path_blocked(StreamElement *element)
 
         /* Update element to point to next downstream element */
         element = PAD_PARENT_ELEMENT(peer_sink_pad);
+        if (NULL == element)
+        {
+            STREAMER_FUNC_EXIT(DBG_CORE);
+            return true;
+        }
 
         /*
          * Check if element is a sink or queue. If it is we have reached the
@@ -991,6 +1005,10 @@ void clear_pipeline_trackinfo(PipelineHandle handle)
 
 int32_t is_element_in_pipeline(PipelineElements pipe_elems, ElementIndex id)
 {
+    if (NULL == pipe_elems.element_ids)
+    {
+        return 0;
+    }
     for (int i = 0; i < pipe_elems.num_elements; i++)
     {
         if (id == pipe_elems.element_ids[i])

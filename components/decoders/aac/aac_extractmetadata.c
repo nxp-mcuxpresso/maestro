@@ -799,7 +799,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                     SkipAACData(2, Ctx, ptrAac);
                     u32Counter += 2;
 
-                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
+                    (void)GetAACByte(Ctx, ptrAac);
                     ++u32Counter;
                 }
 
@@ -808,7 +808,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                 u32Counter += 2;
 
                 // Stream priority
-                u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
+                (void)GetAACByte(Ctx, ptrAac);
                 ++u32Counter;
 
                 // Decoder config descriptor
@@ -828,12 +828,12 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                         SkipAACData(2, Ctx, ptrAac);
                         u32Counter += 2;
 
-                        u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
+                        (void)GetAACByte(Ctx, ptrAac);
                         ++u32Counter;
                     }
 
                     // Object type ID
-                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
+                    (void)GetAACByte(Ctx, ptrAac);
                     ++u32Counter;
 
                     // read 1 byte version string and 3-byte flag string
@@ -849,7 +849,7 @@ int32_t AacProcessChunk(int ckIDval, int32_t *AacCkSize, CCI_Ctx *Ctx, file_meta
                     u32Counter += 4;
 
                     // Decoder specific descriptor
-                    u8Temp = (uint8_t)(GetAACByte(Ctx, ptrAac) & 0xFF);
+                    (void)GetAACByte(Ctx, ptrAac);
                     ++u32Counter;
 
                     // Have we got a tag, or the length?
@@ -1315,9 +1315,9 @@ RtStatus_t AdifParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData)
             BitstreamGetBits_adif(&pbs, 8);
     }
     // 1 bit Original copy
-    temp = BitstreamGetBits_adif(&pbs, 1);
+    (void)BitstreamGetBits_adif(&pbs, 1);
     // 1 bit home
-    temp = BitstreamGetBits_adif(&pbs, 1);
+    (void)BitstreamGetBits_adif(&pbs, 1);
     // 1 bit Bitstream type
     bitstreamtype = BitstreamGetBits_adif(&pbs, 1);
     // 23 bit bitrate
@@ -1333,10 +1333,10 @@ RtStatus_t AdifParser(CCI_Ctx *Ctx, file_meta_data_t *MetaData)
     for (u32Value = 0; u32Value <= u8PCECount; u32Value++)
     {
         // instance tag
-        temp = BitstreamGetBits_adif(&pbs, 4);
+        (void)BitstreamGetBits_adif(&pbs, 4);
 
         // object type(profile)
-        temp = (uint8_t)(BitstreamGetBits_adif(&pbs, 2) & 0xFFU);
+        (void)BitstreamGetBits_adif(&pbs, 2);
         // sample rate freq index
         u8SampleFreqIdx = (uint8_t)(BitstreamGetBits_adif(&pbs, 4) & 0xFFU);
 

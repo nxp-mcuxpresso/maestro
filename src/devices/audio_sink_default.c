@@ -32,7 +32,12 @@ AudioSinkStreamErrorType audiosink_default_init_params(ElementAudioSink *audio_s
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SINK);
 
-    dev_info    = (DefaultSinkDeviceInfo *)audio_sink_ptr->device_info;
+    dev_info = (DefaultSinkDeviceInfo *)audio_sink_ptr->device_info;
+    if (NULL == dev_info)
+    {
+        STREAMER_FUNC_EXIT(DBG_AUDIO_SINK);
+        return AUDIO_SINK_FAILED;
+    }
     sign        = AUDIO_SIGNED(audio_sink_ptr);
     endianness  = AUDIO_ENDIANNESS(audio_sink_ptr);
     word_length = AUDIO_WORD_LENGTH(audio_sink_ptr);
@@ -172,9 +177,12 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
 
     STREAMER_FUNC_ENTER(DBG_AUDIO_SINK);
 
+    CHK_ARGS((NULL == pad) || (NULL == buffer) || (NULL == buffer->buffer), FLOW_ERROR);
+
     audio_sink_ptr = (ElementAudioSink *)PAD_PARENT(pad);
-    dev_info       = (DefaultSinkDeviceInfo *)audio_sink_ptr->device_info;
-    data_packet    = (AudioPacketHeader *)(BUFFER_PTR(buffer));
+    CHK_ARGS(NULL == audio_sink_ptr, FLOW_ERROR);
+    dev_info    = (DefaultSinkDeviceInfo *)audio_sink_ptr->device_info;
+    data_packet = (AudioPacketHeader *)(BUFFER_PTR(buffer));
 
     if (!dev_info)
     {
@@ -341,6 +349,12 @@ FlowReturn audiosink_default_sink_pad_chain_handler(StreamPad *pad, StreamBuffer
         dev_info->input_size = buffer_size;
 
         /* Write to PCM output driver. */
+        if (audio_sink_ptr->appFunctions.process_func == NULL)
+        {
+            STREAMER_LOG_ERR(DBG_AUDIO_SINK, ERRCODE_INTERNAL, "[DEFAULT Sink] process_func is NULL\n");
+            STREAMER_FUNC_EXIT(DBG_AUDIO_SINK);
+            return FLOW_ERROR;
+        }
         ret = audio_sink_ptr->appFunctions.process_func((uint8_t *)dev_info->audbuf[dev_info->input_index],
                                                         dev_info->input_size);
         if ((ret != 0) && (ret != 1))

@@ -219,7 +219,7 @@ uint8_t decoder_sink_pad_activation_handler(StreamPad *pad, uint8_t active)
                 ret = handler(pad, active);
             }
             /* For activation, activate the peer source pad in push mode. */
-            if ((uint8_t) true == ret)
+            if (((uint8_t) true == ret) && (NULL != pad->peer))
             {
                 /* Activate/Deactivate peer source pads in PULL mode */
                 ret = pad_activate_pull(pad->peer, active);
@@ -245,7 +245,8 @@ uint8_t decoder_sink_pad_event_handler(StreamPad *pad, StreamEvent *event)
 
     /* get the parent element from the pad */
     dec_element = (ElementDecoder *)PAD_PARENT(pad);
-    src         = ELEMENT_SRC_PAD(dec_element, 0);
+    CHK_ARGS(NULL == dec_element, false);
+    src = ELEMENT_SRC_PAD(dec_element, 0);
 
     /* call the decoder specific event handler function */
     if (dec_element->handlers != NULL && dec_element->handlers->sink_event != NULL)
@@ -279,7 +280,7 @@ uint8_t decoder_sink_pad_event_handler(StreamPad *pad, StreamEvent *event)
 
                         /* INT30-C: Prevent division by zero and multiplication overflow */
                         assert(bit_rate != 0U);
-                        quotient = offset / bit_rate;
+                        quotient  = offset / bit_rate;
                         remainder = offset % bit_rate;
                         assert(quotient <= (UINT32_MAX / 1000UL));
                         assert(remainder <= (UINT32_MAX / 1000UL));
@@ -332,9 +333,15 @@ FlowReturn decoder_sink_pad_chain_handler(StreamPad *pad, StreamBuffer *buffer)
 
     /* get the parent element from the pad */
     dec_element = (ElementDecoder *)PAD_PARENT(pad);
+    if (NULL == dec_element)
+    {
+        STREAMER_FUNC_EXIT(DBG_DECODER);
+        return FLOW_BAD_PARAMETER;
+    }
 
     /* call the decoder specific chain data function */
     if (dec_element->handlers != NULL && dec_element->handlers->sink_chain != NULL)
+
     {
         ret = dec_element->handlers->sink_chain(pad, buffer);
     }

@@ -218,18 +218,18 @@ static int32_t _seek_file_data(int32_t stream_num, int32_t offset, int32_t posit
         assert((uint32_t)absoffset >= cci_dec->filesrc_offset[stream_num]);
         reloffset = absoffset - cci_dec->filesrc_offset[stream_num];
     }
-    /* Verify If offset fall inside of current filesrc_buffer */
+    /* Verify If offset fall inside of current filesrc_buffer. A backward seek that lands inside
+     * the buffered window is a valid cache hit and must not be rejected. */
     assert(cci_dec->filesrc_buffer_idx[stream_num] >= 0);
     assert(cci_dec->filesrc_offset[stream_num] >= cci_dec->filesrc_buffer_idx[stream_num]);
     assert((cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num]) <= (uint32_t)INT32_MAX);
-    if ((reloffset >= 0) &&
-        (absoffset >= (int32_t)(cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num])) &&
+    if ((absoffset >= (int32_t)(cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num])) &&
         (reloffset < cci_dec->filesrc_size[stream_num]))
     {
         /* If offset fall inside of current buffer then Update size and
         idx variables */
         cci_dec->filesrc_size[stream_num] -= reloffset;
-        assert(reloffset >= 0);
+        assert((cci_dec->filesrc_buffer_idx[stream_num] + reloffset) >= 0);
         cci_dec->filesrc_buffer_idx[stream_num] += reloffset;
     }
     else

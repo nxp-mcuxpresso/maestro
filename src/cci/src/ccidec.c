@@ -218,18 +218,26 @@ static int32_t _seek_file_data(int32_t stream_num, int32_t offset, int32_t posit
         assert((uint32_t)absoffset >= cci_dec->filesrc_offset[stream_num]);
         reloffset = absoffset - cci_dec->filesrc_offset[stream_num];
     }
+    else
+    {
+        /* Unknown seek origin: no offset was computed, so leave the buffer state untouched and
+         * report failure instead of falling through with absoffset and reloffset still at 0. */
+        STREAMER_FUNC_EXIT(DBG_CCID);
+        return CODEC_MEDIA_READ_ERROR;
+    }
     /* Verify If offset fall inside of current filesrc_buffer. A backward seek that lands inside
-     * the buffered window is a valid cache hit and must not be rejected. */
+     * the buffered window is a valid cache hit and must not be rejected. The window is tested
+     * relative to the current position, which keeps the comparison in int32_t and avoids an
+     * unsigned subtraction of filesrc_offset. */
     assert(cci_dec->filesrc_buffer_idx[stream_num] >= 0);
-    assert(cci_dec->filesrc_offset[stream_num] >= cci_dec->filesrc_buffer_idx[stream_num]);
-    assert((cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num]) <= (uint32_t)INT32_MAX);
-    if ((absoffset >= (int32_t)(cci_dec->filesrc_offset[stream_num] - cci_dec->filesrc_buffer_idx[stream_num])) &&
+    if (((cci_dec->filesrc_buffer_idx[stream_num] + reloffset) >= 0) &&
         (reloffset < cci_dec->filesrc_size[stream_num]))
     {
         /* If offset fall inside of current buffer then Update size and
-        idx variables */
+        idx variables. A negative reloffset grows filesrc_size: the bytes it re-exposes were
+        consumed earlier but are still resident in filesrc_buffer, which is only refilled by
+        the next pad_pull_range(). */
         cci_dec->filesrc_size[stream_num] -= reloffset;
-        assert((cci_dec->filesrc_buffer_idx[stream_num] + reloffset) >= 0);
         cci_dec->filesrc_buffer_idx[stream_num] += reloffset;
     }
     else
@@ -469,7 +477,8 @@ uint8_t get_cci_metadata(ElementDecoder *element)
     send_msg_element(decoder, MSG_INFO_AUDIO_SAMPLERATE, element->sample_rate);
     STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Sample rate : %d\n", element->sample_rate);
 
-    element->num_channels = cci_dec->metadata->num_channels;
+    assert(cci_dec->metadata->num_channels >= 0);
+    element->num_channels = (uint32_t)cci_dec->metadata->num_channels;
     send_msg_element(decoder, MSG_INFO_AUDIO_CHANNELS, element->num_channels);
     STREAMER_LOG_DEBUG(DBG_CCID, "[CCID]Num channels : %d\n", element->num_channels);
 

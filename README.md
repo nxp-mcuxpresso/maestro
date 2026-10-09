@@ -4,12 +4,12 @@
 This repository is for MCUXpresso SDK maestro middleware delivery and it contains the components officially provided in NXP MCUXpresso SDK. This repository is part of the MCUXpresso SDK overall delivery which is composed of several sub-repositories/projects. Navigate to the top/parent repository (mcuxsdk-manifests) for the complete delivery of MCUXpresso SDK.
 
 ## Documentation
-Overall details can be reviewed here: [MCUXpresso SDK Online Documentation](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/introduction/README.html)
+Overall details can be reviewed here: [MCUXpresso SDK Online Documentation](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/introduction/README.html)
 
-Visit [Maestro - Documentation](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/middleware/audio_voice/maestro/index.html) to review details on the contents in this sub-repo.
+Visit [Maestro - Documentation](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/middleware/audio_voice/maestro/index.html) to review details on the contents in this sub-repo.
 
 ## Setup
-Instructions on how to install the MCUXpresso SDK provided from GitHub via west manifest [Getting Started with SDK - Detailed Installation Instructions](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/installation.html#installation)
+Instructions on how to install the MCUXpresso SDK provided from GitHub via west manifest [Getting Started with SDK - Detailed Installation Instructions](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/gsd/installation.html#installation)
 
 ## Contribution
 We welcome and encourage the community to submit patches directly to the Maestro project placed on github.
@@ -39,7 +39,7 @@ Getting started guide and further information for Maestro on Zephyr may be found
 
 ## Maestro on FreeRTOS
 
-Maestro on FreeRTOS is supported in NXP's SDK. To get started, see [mcuxsdk doc](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/index.html).
+Maestro on FreeRTOS is supported in NXP's SDK. To get started, see [mcuxsdk doc](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/index.html).
 
 ### Supported examples
 

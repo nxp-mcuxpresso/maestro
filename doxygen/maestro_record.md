@@ -272,7 +272,7 @@ Details of commands can be found [here](#commands-in-detail).
 
 ## Example configuration
 The example can be configured by user. There are several options how to configure the example settings, depending on the environment.
-For configuration using west and Kconfig, please follow the instructions [here](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/develop/build_system/Configuration_System.html).
+For configuration using west and Kconfig, please follow the instructions [here](https://docs.mcuxpresso.nxp.com/mcuxsdk/latest/develop/build_system/Configuration_System.html).
 Before configuration, please check the [table](#overview) to see if the feature is supported on the development board.
 - **Connect AUD-EXP-42448:**
     - *EVKC-MIMXRT1060:*
